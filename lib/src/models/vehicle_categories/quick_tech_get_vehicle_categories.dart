@@ -45,7 +45,7 @@ class Data {
     nameBn = json['name_bn'];
     slug = json['slug'];
     image = json['image'];
-    status = json['status'];
+    status = json['status'].toString();
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -54,7 +54,7 @@ class Data {
   String? nameBn;
   String? slug;
   String? image;
-  int? status;
+  String? status;
   String? capacity;
   String? createdAt;
   String? updatedAt;

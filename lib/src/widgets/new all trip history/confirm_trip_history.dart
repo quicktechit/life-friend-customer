@@ -41,12 +41,13 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       profileController.getProfileData();
+      _controller.getConfirmTrip();
+      _controller.getOngoingTrip();
+      _controller.getCompleteTrip();
+      _controller.getCancelTrip();
+      _controller.getCancelList();
     });
-    _controller.getConfirmTrip();
-    _controller.getOngoingTrip();
-    _controller.getCompleteTrip();
-    _controller.getCancelTrip();
-    _controller.getCancelList();
+
   }
   @override
   Widget build(BuildContext context) {

@@ -9,6 +9,7 @@ class AllTripHistoryController extends GetxController {
   final SidebarXController sidebarController =
       SidebarXController(selectedIndex: 0, extended: true);
 
+  @override
   void refresh() {
     final RentalTripHistoryController _controller =
         Get.put(RentalTripHistoryController());

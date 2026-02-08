@@ -10,8 +10,7 @@ import 'package:pickup_load_update/src/widgets/text/kText.dart';
 class ReturnDateAndTime extends StatefulWidget {
   final Function(DateTime, TimeOfDay) onReturnDateTimeSelected;
 
-  ReturnDateAndTime({Key? key, required this.onReturnDateTimeSelected})
-      : super(key: key);
+  const ReturnDateAndTime({super.key, required this.onReturnDateTimeSelected});
 
   @override
   State<ReturnDateAndTime> createState() => _ReturnDateAndTimeState();
@@ -90,9 +89,8 @@ class _ReturnDateAndTimeState extends State<ReturnDateAndTime> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: Get.width,
-      color: white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,

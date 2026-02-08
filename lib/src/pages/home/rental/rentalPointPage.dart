@@ -39,13 +39,15 @@ class RentalPointPage extends StatefulWidget {
   final bool? isAirport;
   final String tripType;
 
-  RentalPointPage(
-      {required this.carImg,
-      required this.carName,
-      required this.capacity,
-      this.isAirport,
-      required this.tripType,
-      required this.carId});
+  const RentalPointPage({
+    super.key,
+    required this.carImg,
+    required this.carName,
+    required this.capacity,
+    this.isAirport = false,
+    required this.tripType,
+    required this.carId,
+  });
 
   @override
   State<RentalPointPage> createState() => _RentalPointPageState();
@@ -53,8 +55,9 @@ class RentalPointPage extends StatefulWidget {
 
 class _RentalPointPageState extends State<RentalPointPage> {
   final noteController = TextEditingController();
-  final LocationPickerController locationMapController =
-      Get.put(LocationPickerController());
+  final LocationPickerController locationMapController = Get.put(
+    LocationPickerController(),
+  );
   final DivisionController divisionController = Get.put(DivisionController());
   var isRoundTrip = false;
   int roundTripValue = 0;
@@ -72,793 +75,1020 @@ class _RentalPointPageState extends State<RentalPointPage> {
   DateTime selectedReturnDate = DateTime.now();
   TimeOfDay selectedReturnTime = TimeOfDay.now();
   final LocationController locationController = Get.put(LocationController());
-  final RentalFormCheckController _controller =
-      Get.put(RentalFormCheckController());
+  final RentalFormCheckController _controller = Get.put(
+    RentalFormCheckController(),
+  );
   final airportController = Get.put(QuickTechAirportController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: primaryColor,
+        elevation: 4,
+        shadowColor: primaryColor.withOpacity(0.3),
         title: Text(
           widget.isAirport == true ? 'airportTrip'.tr : "requestTrip".tr,
-          style: TextStyle(color: Colors.white, fontSize: 17.h),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.h,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
         ),
       ),
-      body: ListView(
-        children: [
-          /// car selected
-          widget.tripType == '4' || widget.tripType == '6' || widget.tripType == "truck"
-              ? SizedBox()
-              : CarSelectedOption(
-                  carImg: widget.carImg,
-                  carName: widget.carName,
-                  capacity: "${widget.capacity} Seats Capacity",
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 16.0),
+          child: Column(
+            children: [
+              // Car Selection (Conditional)
+              _buildCarSelectionSection(),
+
+              SizedBox(height: 16.h),
+
+              // Airport Selection (Conditional)
+              _buildAirportSelectionSection(),
+
+              // Main Card Container
+              Card(
+                elevation: 8,color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-          sizeH5,
-          widget.isAirport == true
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: KText(
-                        text: 'pickUpFrom',
-                      ),
+                shadowColor: Colors.blueGrey.withOpacity(0.2),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.white, Colors.blueGrey[50]!],
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Obx(() => RadioListTile<String>(
-                                title: Text('fromAirport'.tr),
-                                value: 'Airport',
-                                groupValue:
-                                    airportController.selectedLocation.value,
-                                onChanged: (value) {
-                                  if (value != null)
-                                    airportController.setLocation(value);
-                                },
-                              )),
-                        ),
-                        Expanded(
-                          child: Obx(() => RadioListTile<String>(
-                                title: Text('fromHome'.tr),
-                                value: 'Home',
-                                groupValue:
-                                    airportController.selectedLocation.value,
-                                onChanged: (value) {
-                                  if (value != null)
-                                    airportController.setLocation(value);
-                                },
-                              )),
-                        ),
-                      ],
-                    )
-                  ],
-                )
-              : SizedBox(),
-          SizedBox(height: 20),
-          sizeH5,
-
-          /// for location track
-          Container(
-            width: Get.width,
-            color: white,
-            child: Padding(
-              padding: paddingH10V20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
                     children: [
-                      GestureDetector(
-                        onTap: () async {
-                          if (widget.isAirport != true) {
-                            pickupLocation =
-                                await Get.to(() => MapSinglePickerScreen(
-                                      lat: double.tryParse(locationController.selectedPickUpLat.value) ?? null,
-                                      lng: double.tryParse(locationController.selectedPickUpLng.value) ?? null,
-                                    ));
-                            if (pickupLocation != null) {
-                              Get.snackbar("Single Location",
-                                  "${pickupLocation['address']}\n(${pickupLocation['lat']}, ${pickupLocation['lng']})");
+                      // Location Tracking Section
+                      _buildLocationSection(),
 
-                              locationController.selectedPickUpLat.value=pickupLocation['lat'].toString();
-                              locationController.selectedPickUpLng.value=pickupLocation['lng'].toString();
-                              pickLat = locationController.selectedPickUpLat.value;
-                              pickLng = locationController.selectedPickUpLng.value;
-                              locationController.pickUpC.text =
-                              pickupLocation['address'].toString();
-                              locationController.pickUpLocation.value =
-                                  pickupLocation['address'].toString();
-                              if (pickupLocation['place_id'] != null) {
-                                locationController.selectPikUpAddress(
-                                  Suggestion(
-                                    placeId: pickupLocation['place_id'],
-                                    description: pickupLocation['address'],
-                                  ),
-                                );
-                              }
-                            }
-                          } else {
-                            if (airportController.selectedLocation.value ==
-                                'Home') {
-                              pickupLocation =
-                                  await Get.to(() => MapSinglePickerScreen(
-                                    lat: double.tryParse(locationController.selectedPickUpLat.value) ?? null,
-                                    lng: double.tryParse(locationController.selectedPickUpLng.value) ?? null,
-                                      ));
+                      Divider(height: 1, color: Colors.grey[200]),
 
-                              if (pickupLocation != null) {
-                                Get.snackbar("Single Location",
-                                    "${pickupLocation['address']}\n(${pickupLocation['lat']}, ${pickupLocation['lng']})");
+                      // Date and Time Selection (Conditional)
+                      _buildDateTimeSection(),
 
-                                locationController.selectedPickUpLat.value=pickupLocation['lat'].toString();
-                                locationController.selectedPickUpLng.value=pickupLocation['lng'].toString();
-                                pickLat = locationController.selectedPickUpLat.value;
-                                pickLng = locationController.selectedPickUpLng.value;
-                                locationController.pickUpC.text =
-                                pickupLocation['address'].toString();
-                                locationController.pickUpLocation.value =
-                                    pickupLocation['address'].toString();
-                                if (pickupLocation['place_id'] != null) {
-                                  locationController.selectPikUpAddress(
-                                    Suggestion(
-                                      placeId: pickupLocation['place_id'],
-                                      description: pickupLocation['address'],
-                                    ),
-                                  );
-                                }
-                              }
-                            }
-                          }
-                        },
-                        child: Image.asset(
-                          "assets/images/pick.png",
-                          scale: 12,
-                        ),
-                      ),
-                      sizeH5,
-                      Container(
-                        height: 80,
-                        width: .9,
-                        color: black,
-                      ),
-                      sizeH5,
-                      GestureDetector(
-                        onTap: () async {
-                          if (widget.isAirport != true) {
-                            dropOffLocation =
-                                await Get.to(() => MapSinglePickerScreen(
-                                  lat: double.tryParse(locationController.selectedDropUpLat.value) ?? null,
-                                  lng: double.tryParse(locationController.selectedDropUpLng.value) ?? null,
-                                    ));
-
-                            if (dropOffLocation != null) {
-                              Get.snackbar("Single Location",
-                                  "${dropOffLocation['address']}\n(${dropOffLocation['lat']}, ${dropOffLocation['lng']})");
-
-                              dropLat = dropOffLocation['lat'];
-                              dropLng = dropOffLocation['lng'];
-                              locationController.selectedDropUpLat.value=dropOffLocation['lat'].toString();
-                              locationController.selectedDropUpLng.value=dropOffLocation['lng'].toString();
-                              locationController.dropC.text =
-                                  dropOffLocation['address'].toString();
-                              locationController.dropLocation.value =
-                                  dropOffLocation['address'].toString();
-                              log(locationController.dropC.text);
-                            }
-                          } else {
-                            if (airportController.selectedLocation.value !=
-                                'Home') {
-                              dropOffLocation =
-                                  await Get.to(() => MapSinglePickerScreen(
-                                    lat: double.tryParse(locationController.selectedDropUpLat.value) ?? null,
-                                    lng: double.tryParse(locationController.selectedDropUpLng.value) ?? null,
-                                      ));
-
-                              if (dropOffLocation != null) {
-                                Get.snackbar("Single Location",
-                                    "${dropOffLocation['address']}\n(${dropOffLocation['lat']}, ${dropOffLocation['lng']})");
-                                dropLat = dropOffLocation['lat'];
-                                dropLng = dropOffLocation['lng'];
-                                locationController.selectedDropUpLat.value=dropOffLocation['lat'];
-                                locationController.selectedDropUpLng.value=dropOffLocation['lng'];
-                                locationController.dropC.text =
-                                    dropOffLocation['address'];
-                                locationController.dropLocation.value =
-                                    dropOffLocation['address'];
-                              }
-                            }
-                          }
-                        },
-                        child: Image.asset(
-                          "assets/images/map.png",
-                          scale: 12,
-                        ),
-                      ),
+                      // Round Trip or Hour Selection (Conditional)
+                      _buildTripOptionsSection(),
                     ],
                   ),
-                  sizeW20,
-                  widget.isAirport == true
-                      ? Expanded(
-                          child: Obx(() => Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  airportController.selectedLocation.value ==
-                                          'Home'
-                                      ? Column(
-                                          children: [
-                                            KText(
-                                              text: 'pickUpPoint',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            sizeH5,
+                ),
+              ),
 
-                                            /// pick up point
-                                            PickUp(),
-                                            sizeH5,
+              SizedBox(height: 16),
 
-                                            /// via location
-                                            Visibility(
-                                              visible: showViaLocation,
-                                              child: ViaLocation(),
-                                            ),
-
-                                            /// drop point
-                                            sizeH10,
-
-                                            KText(
-                                              text: 'dropOffPoint',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            sizeH5,
-                                          ],
-                                        )
-                                      : Column(
-                                          children: [
-                                            KText(
-                                              text: 'pickUpPoint',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-
-                                            /// via location
-
-                                            Container(
-                                              width: 290.w,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 12, vertical: 5),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: Colors.grey
-                                                      .withOpacity(0.2)),
-                                              child: DropdownButton<String>(
-                                                value: airportController
-                                                    .selectedAirport.value,
-                                                dropdownColor:
-                                                    Colors.blueGrey[50],
-                                                underline: SizedBox(),
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black,
-                                                ),
-                                                onChanged:
-                                                    (String? newAirport) {
-                                                  // Update the selected airport in the controller
-                                                  airportController
-                                                      .selectedAirport
-                                                      .value = newAirport!;
-                                                  locationController
-                                                      .pickUpLocation
-                                                      .value = newAirport;
-                                                  debugPrint(
-                                                      'Testing :::${locationController.pickUpLocation.value}');
-
-                                                  airportController
-                                                      .updateSelectedCoordinates(
-                                                          newAirport);
-
-
-                                                },
-                                                items: airportController
-                                                    .airports
-                                                    .map<
-                                                            DropdownMenuItem<
-                                                                String>>(
-                                                        (String airport) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: airport,
-                                                    child: SizedBox(
-                                                        width: 210.w,
-                                                        child: Text(
-                                                          airport,
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        )),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                            sizeH10,
-                                            Visibility(
-                                              visible: showViaLocation,
-                                              child: ViaLocation(),
-                                            ),
-                                          ],
-                                        ),
-
-                                  /// drop pont
-                                  airportController.selectedLocation.value ==
-                                          'Home'
-                                      ? Container(
-                                    width: 290.w,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 5),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(8),
-                                        color: Colors.grey
-                                            .withOpacity(0.2)),
-                                        child: DropdownButton<String>(
-                                            value: airportController
-                                                .selectedAirport.value,
-                                            onChanged: (String? newAirport) {
-                                              airportController.selectedAirport
-                                                  .value = newAirport!;
-                                              locationController.dropLocation
-                                                  .value = newAirport;
-                                              airportController
-                                                  .updateSelectedCoordinates(
-                                                      newAirport);
-                                            },
-                                          dropdownColor:
-                                          Colors.blueGrey[50],
-                                          underline: SizedBox(),
-                                          style: TextStyle(fontSize: 16,color: Colors.black),
-                                            items: airportController.airports
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String airport) {
-                                              return DropdownMenuItem<String>(
-                                                value: airport,
-                                                child: SizedBox(
-                                                    width: 210.w,
-                                                    child: Text(
-                                                      airport,
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow
-                                                          .ellipsis,
-                                                    )),
-                                              );
-                                            }).toList(),
-                                          ),
-                                      )
-                                      : DropWidget()
-                                ],
-                              )),
-                        )
-                      : Expanded(
-                          child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              children: [
-                                KText(
-                                  text: 'pickUpPoint',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                sizeH5,
-
-                                /// pick up point
-                                PickUp(),
-                                sizeH5,
-
-                                /// via location
-                                Visibility(
-                                  visible: showViaLocation,
-                                  child: ViaLocation(),
-                                ),
-
-                                /// drop point
-                                sizeH10,
-
-                                KText(
-                                  text: 'dropOffPoint',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                sizeH5,
-                              ],
+              // Note Field
+              Card(
+                elevation: 4,color: white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.note_add_outlined,
+                              color: primaryColor, size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            'Additional Notes',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[700],
                             ),
-
-                            /// drop pont
-                            DropWidget()
-                          ],
-                        )),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        showViaLocation = !showViaLocation;
-                      });
-                    },
-                    child: CircleAvatar(
-                      radius: 13,
-                      backgroundColor: grey.shade300,
-                      child: CircleAvatar(
-                        radius: 12,
-                        backgroundColor: white,
-                        child: Icon(
-                          showViaLocation ? Icons.close : Icons.add,
-                          color: black54,
-                        ),
+                          ),
+                        ],
                       ),
+                      SizedBox(height: 8),
+                      NoteTextFiled(controller: noteController),
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 24),
+
+              // Submit Button
+              _buildSubmitButton(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Helper Methods
+  Widget _buildCarSelectionSection() {
+    final shouldShowCar = !['4', '6', 'truck'].contains(widget.tripType);
+
+    return shouldShowCar
+        ? Card(
+      color: Colors.white,
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CarSelectedOption(
+          carImg: widget.carImg,
+          carName: widget.carName,
+          capacity: "${widget.capacity} Seats Capacity",
+        ),
+      ),
+    )
+        : const SizedBox();
+  }
+
+  Widget _buildAirportSelectionSection() {
+    if (widget.isAirport == false) return const SizedBox();
+
+    return Card(
+      elevation: 4,color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.flight_takeoff_outlined,
+                    color: primaryColor, size: 20),
+                SizedBox(width: 8),
+                Text(
+                  'pickUpFrom',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[800],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12),
+            Row(
+              children: [
+                _buildRadioTile('Airport', 'fromAirport'.tr, Icons.airplanemode_active),
+                _buildRadioTile('Home', 'fromHome'.tr, Icons.home_outlined),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRadioTile(String value, String title, IconData icon) {
+    return Expanded(
+      child: Obx(
+            () => Card(
+          elevation: 2,color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color: airportController.selectedLocation.value == value
+                  ? primaryColor
+                  : Colors.grey[300]!,
+              width: airportController.selectedLocation.value == value ? 2 : 1,
+            ),
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: () {
+              if (airportController.selectedLocation.value != value) {
+                airportController.setLocation(value);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+              child: Column(
+                children: [
+                  Icon(
+                    icon,
+                    color: airportController.selectedLocation.value == value
+                        ? primaryColor
+                        : Colors.grey[600],
+                    size: 28,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: airportController.selectedLocation.value == value
+                          ? FontWeight.w600
+                          : FontWeight.normal,
+                      color: airportController.selectedLocation.value == value
+                          ? primaryColor
+                          : Colors.grey[700],
                     ),
                   ),
+                  SizedBox(height: 4),
+                  if (airportController.selectedLocation.value == value)
+                    Container(
+                      width: 24,
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
-          sizeH5,
-          widget.tripType == '4' || widget.tripType == '6'
-              ? SizedBox()
-              : DateAndTime(
-                  onDateTimeSelected: (date, time) {
-                    selectedDate = date;
-                    selectedTime = time;
-                  },
-                ),
-          sizeH5,
+        ),
+      ),
+    );
+  }
 
-          /*widget.tripType == '4' || widget.tripType == '6'
-              ? SizedBox()
-              : widget.isAirport == true
-                  ? SizedBox()
-                  : Obx(
-                      () => Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: RadioListTile<String>(
-                                title: Text('singleTrip'.tr),
-                                value: 'round',
-                                groupValue:
-                                    airportController.selectedTripType.value,
-                                onChanged: (value) {
-                                  if (value != null)
-                                    airportController.setTripType(value);
-                                },
-                              )),
-                              Expanded(
-                                  child: RadioListTile<String>(
-                                title: Text('hourly'.tr),
-                                value: 'hourly',
-                                groupValue:
-                                    airportController.selectedTripType.value,
-                                onChanged: (value) {
-                                  if (value != null)
-                                    airportController.setTripType(value);
-                                },
-                              )),
-                            ],
-                          ),
-                          sizeH10,
-
-                        ],
-                      ),
-                    ),*/
-          if(widget.tripType!='4')
-          airportController.selectedTripType.value == 'round'
-              ? Column(
+  Widget _buildLocationSection() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Container(
-                width: Get.width,
-                color: white,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 15,
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 12,
-                        backgroundColor: black,
-                        child: CircleAvatar(
-                          radius: 11,
-                          backgroundColor: white,
-                          child: Icon(
-                            Ionicons.repeat_outline,
-                            size: 17,
-                            color: black,
-                          ),
-                        ),
-                      ),
-                      sizeW10,
-
-                      /// round trip
-                      KText(
-                        text: 'roundTrips',
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      Spacer(),
-                      CupertinoSwitch(
-                        value: isRoundTrip,
-                        activeColor: primaryColor,
-                        thumbColor: white,
-                        onChanged: (val) {
-                          setState(() {
-                            isRoundTrip = val;
-                            roundTripValue =
-                            isRoundTrip ? 1 : 0;
-                            print(
-                                "selected round trip $roundTripValue");
-                          });
-                        },
-                      )
-                    ],
-                  ),
+              Icon(Icons.location_on_outlined, color: primaryColor, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Trip Locations',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[800],
                 ),
-              ),
-              isRoundTrip != true ? Container() : sizeH5,
-              isRoundTrip != true
-                  ? Container()
-                  : ReturnDateAndTime(
-                onReturnDateTimeSelected:
-                    (date, time) {
-                  selectedReturnDate = date;
-                  selectedReturnTime = time;
-                },
               ),
             ],
-          )
-              : Container(
-            padding: EdgeInsets.all(8),
+          ),
+          SizedBox(height: 16),
+          Container(
             decoration: BoxDecoration(
-                border: Border.all(
-                    width: 1, color: Colors.grey),
-                borderRadius: BorderRadius.circular(12),
-                color: primaryColor.withOpacity(0.2)),
-            child: Row(
-              children: [
-                Expanded(
-                    flex: 3,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (airportController.hour.value >
-                            2) {
-                          airportController.hour.value =
-                              airportController
-                                  .hour.value -
-                                  1;
-                        }
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: primaryColor),
-                          padding: EdgeInsets.all(8),
-                          child: Icon(
-                            Icons.remove,
-                            size: 18,
-                            color: Colors.white,
-                          )),
-                    )),
-                Expanded(
-                    flex: 3,
-                    child: Center(
-                        child: KText(
-                            text:
-                            '${airportController.hour.value} Hour'))),
-                Expanded(
-                    flex: 3,
-                    child: GestureDetector(
-                      onTap: () {
-                        airportController.hour.value =
-                            airportController.hour.value +
-                                1;
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: primaryColor),
-                          padding: EdgeInsets.all(8),
-                          child: Icon(
-                            Icons.add,
-                            size: 18,
-                            color: Colors.white,
-                          )),
-                    ))
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                ),
               ],
             ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Location Icons with connecting line
+                  _buildLocationIcons(),
+                  SizedBox(width: 20),
+                  // Location Inputs
+                  Expanded(child: _buildLocationInputs()),
+                  // Via Location Toggle
+
+                ],
+              ),
+            ),
           ),
-
-          NoteTextFiled(
-            controller: noteController,
-          ),
-          sizeH5,
-          Obx(
-            () => _controller.isLoading.value
-                ? loader()
-                : Container(
-                    color: white,
-                    child: Padding(
-                      padding: paddingH20V20,
-                      child: primaryButton(
-                        buttonName: 'tripForm',
-                        onTap: () {
-                         /* if (locationController
-                                      .selectedDropOffDistrict.value ==
-                                  locationController
-                                      .selectedPickUpDistrict.value &&
-                              airportController.selectedTripType.value !=
-                                  'hourly' &&
-                              widget.isAirport != true &&
-                              widget.tripType != '4' &&
-                              widget.tripType != '6') {
-                            debugPrint('Same District ::');
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('hourlyService'.tr),
-                                  content: Text('hourlyMessage'.tr),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('no'.tr),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        airportController
-                                            .selectedTripType.value = 'hourly';
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('yes'.tr),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            return;
-                          } else {*/
-                            String hour = selectedTime.hourOfPeriod == 0
-                                ? '12'
-                                : '${selectedTime.hourOfPeriod}';
-                            String minute =
-                                '${selectedTime.minute}'.padLeft(2, '0');
-                            String period = selectedTime.period == DayPeriod.am
-                                ? 'AM'
-                                : 'PM';
-
-                            String returnHour = selectedTime.hourOfPeriod == 0
-                                ? '12'
-                                : '${selectedTime.hourOfPeriod}';
-                            String returnMinute =
-                                '${selectedTime.minute}'.padLeft(2, '0');
-                            String returnPeriod =
-                                selectedTime.period == DayPeriod.am
-                                    ? 'AM'
-                                    : 'PM';
-
-                            String journeyTimeAndDate =
-                                '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')} ${hour}:${minute} $period'
-                                    .toString();
-
-                            /// return journey time
-                            String returnJourneyTimeAndDate =
-                                '${selectedReturnDate.year}-${selectedReturnDate.month.toString().padLeft(2, '0')}-${selectedReturnDate.day.toString().padLeft(2, '0')} ${returnHour}:${returnMinute} $returnPeriod'
-                                    .toString();
-
-                            /// pick up lat and lang
-                            String pickLatAndLang =  widget.isAirport==true&&airportController.selectedLocation.value == 'Airport'?airportController.selectedCoordinates.value.toString():
-                                '${locationController.selectedPickUpLat} ${locationController.selectedPickUpLng}';
-
-                            /// drop off lat and lang
-
-                            String dropOfLatAndLang = widget.isAirport==true&&airportController.selectedLocation.value == 'Home'?airportController.selectedCoordinates.value.toString().replaceAll(' ', ','):
-                                '${locationController.selectedDropUpLat},${locationController.selectedDropUpLng}';
-
-
-                            if (widget.isAirport == true &&
-                                locationController.pickUpLocation.isEmpty) {
-                              locationController.pickUpLocation.value =
-                                  'Hazrat Shahjalal International Airport';
-                            } else if (widget.isAirport == true &&
-                                locationController.dropLocation.isEmpty) {
-                              locationController.dropLocation.value =
-                                  'Hazrat Shahjalal International Airport';
-                            }
-                            if (locationController.pickUpLocation.isEmpty ||
-                                locationController.dropLocation.isEmpty) {
-                              Get.snackbar(
-                                  'Sorry', "Pick & Drop Point Cannot be Empty",
-                                  colorText: white,
-                                  backgroundColor: Colors.redAccent);
-                              return;
-                            } else
-                              RentalFormCheckController().rentalForm(
-                                pickUpLocation: widget.isAirport == true &&
-                                        airportController
-                                                .selectedLocation.value ==
-                                            'Airport'
-                                    ? airportController.selectedAirport.value
-                                    : locationController.pickUpLocation
-                                        .toString(),
-                                viaLocation:
-                                    locationController.viaLocation.toString(),
-                                dropLocation: widget.isAirport == true &&
-                                        airportController
-                                                .selectedLocation.value ==
-                                            'Home'
-                                    ? airportController.selectedAirport.value
-                                    : locationController.dropLocation
-                                        .toString(),
-                                dateTime: journeyTimeAndDate,
-                                map: pickLatAndLang,
-                                roundTrip: roundTripValue.toString(),
-                                roundTripTimeDate: returnJourneyTimeAndDate,
-                                vehicleId: widget.carId,
-                                dropMap: dropOfLatAndLang,
-                              );
-                            debugPrint('Category id ::: ${widget.tripType}');
-                            Get.to(() => TripDetailsPage(
-                                  carImg: widget.carImg,
-                                  carName: widget.carName,
-                                  capacity: widget.capacity,
-                                  carId: widget.carId,
-                                  pickUpPoint: widget.isAirport == true &&
-                                          airportController
-                                                  .selectedLocation.value ==
-                                              'Airport'
-                                      ? airportController.selectedAirport.value
-                                      : locationController.pickUpLocation
-                                          .toString(),
-                                  dropPoint: widget.isAirport == true &&
-                                          airportController
-                                                  .selectedLocation.value ==
-                                              'Home'
-                                      ? airportController.selectedAirport.value
-                                      : locationController.dropLocation
-                                          .toString(),
-                                  viaPoint:
-                                      locationController.viaLocation.toString(),
-                                  note: noteController.text,
-                                  tripDetailsJourney: journeyTimeAndDate,
-                                  roundTrip: roundTripValue.toString(),
-                                  map: pickLatAndLang.toString(),
-                                  roundTripDetailsJourney:
-                                      returnJourneyTimeAndDate,
-                                  pickupDivision: locationController.pickupDivision.value,
-                                  // dropOfDivision: "${divisionController.selectedDropDivision.value?.id}",
-                                  isAirport:
-                                      widget.isAirport == true ? true : false,
-                                  dropOffMap: dropOfLatAndLang.toString(),
-                                  categoryID: widget.tripType,
-                                ));
-
-                          }
-                       /* },*/
-                      ),
-                    ),
-                  ),
-          )
         ],
       ),
     );
   }
+
+  Widget _buildLocationIcons() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        children: [
+          // Pickup Icon with animation
+          _buildLocationDot(Icons.circle, primaryColor),
+          SizedBox(height: 8),
+          // Animated connecting line
+          Container(
+            width: 2,
+            height: 60,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  primaryColor.withOpacity(0.3),
+                  Colors.grey[300]!,
+                  primaryColor.withOpacity(0.3),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+          ),
+          SizedBox(height: 8),
+          // Dropoff Icon
+          _buildLocationDot(Icons.location_on_outlined, Colors.redAccent),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationDot(IconData icon, Color color) {
+    return Container(
+      width: 36,
+      height: 36,
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        shape: BoxShape.circle,
+        border: Border.all(color: color.withOpacity(0.3), width: 1.5),
+      ),
+      child: Center(
+        child: Icon(icon, color: color, size: 18),
+      ),
+    );
+  }
+
+  Widget _buildViaLocationToggle() {
+    return Tooltip(
+      message: showViaLocation ? 'Remove via location' : 'Add via location',
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            showViaLocation = !showViaLocation;
+          });
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            color: showViaLocation ? Colors.orange[50] : Colors.grey[50],
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: showViaLocation ? Colors.orange : Colors.grey[300]!,
+              width: 1.5,
+            ),
+          ),
+          child: Center(
+            child: AnimatedSwitcher(
+              duration: Duration(milliseconds: 300),
+              child: showViaLocation
+                  ? Icon(Icons.remove, color: Colors.orange, size: 18, key: Key('remove'))
+                  : Icon(Icons.add, color: Colors.grey[600], size: 18, key: Key('add')),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAirportDropdown({required bool isPickup}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.grey[50],
+        border: Border.all(color: Colors.grey[300]!, width: 1.5),
+      ),
+      child: Obx(
+            () => DropdownButton<String>(
+          value: airportController.selectedAirport.value,
+          dropdownColor: Colors.white,
+          underline: const SizedBox(),
+          icon: Icon(Icons.airplanemode_active, color: primaryColor),
+          style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+          borderRadius: BorderRadius.circular(12),
+          onChanged: (newAirport) {
+            if (newAirport == null) return;
+            airportController.selectedAirport.value = newAirport;
+            if (isPickup) {
+              locationController.pickUpLocation.value = newAirport;
+            } else {
+              locationController.dropLocation.value = newAirport;
+            }
+            airportController.updateSelectedCoordinates(newAirport);
+          },
+          items: airportController.airports.map((airport) {
+            return DropdownMenuItem<String>(
+              value: airport,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Text(
+                  airport,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateTimeSection() {
+    final shouldShowDateTime = !['4', '6'].contains(widget.tripType);
+
+    return shouldShowDateTime
+        ? Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.calendar_today_outlined,
+                  color: primaryColor, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Schedule Trip',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          DateAndTime(
+            onDateTimeSelected: (date, time) {
+              selectedDate = date;
+              selectedTime = time;
+            },
+          ),
+        ],
+      ),
+    )
+        : const SizedBox();
+  }
+
+  Widget _buildTripOptionsSection() {
+    if (widget.tripType == '4') return const SizedBox();
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.trip_origin_outlined, color: primaryColor, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Trip Options',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          airportController.selectedTripType.value == 'round'
+              ? _buildRoundTripSection()
+              : _buildHourSelectionSection(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRoundTripSection() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey[50],
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey[300]!, width: 1.5),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: primaryColor.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Ionicons.repeat_outline,
+                  size: 20,
+                  color: primaryColor,
+                ),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Round Trip',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey[800],
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Enable for return journey',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Transform.scale(
+                scale: 1.2,
+                child: CupertinoSwitch(
+                  value: isRoundTrip,
+                  activeColor: primaryColor,
+                  trackColor: Colors.grey[300],
+                  onChanged: (value) {
+                    setState(() {
+                      isRoundTrip = value;
+                      roundTripValue = isRoundTrip ? 1 : 0;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (isRoundTrip) ...[
+          SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.blue[50],
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.blue[100]!, width: 1.5),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.timer_outlined, color: Colors.blue[700], size: 18),
+                    SizedBox(width: 8),
+                    Text(
+                      'Return Schedule',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12),
+
+                DateAndTime(
+                  onDateTimeSelected: (date, time) {
+                    selectedReturnDate = date;
+                    selectedReturnTime = time;
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildHourSelectionSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.blue[50]!, Colors.purple[50]!],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.blue[100]!, width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.timer_outlined, color: Colors.blue[700], size: 18),
+              SizedBox(width: 8),
+              Text(
+                'Hourly Booking',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.blue[700],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: _buildHourButton(
+                  icon: Icons.remove,
+                  onTap: () {
+                    if (airportController.hour.value > 2) {
+                      airportController.hour.value--;
+                    }
+                  },
+                  color: Colors.red[400],
+                ),
+              ),
+              SizedBox(width: 24),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.2),
+                      blurRadius: 8,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      airportController.hour.value.toString(),
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                    Text(
+                      'Hours',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 24),
+              Expanded(
+                child: _buildHourButton(
+                  icon: Icons.add,
+                  onTap: () => airportController.hour.value++,
+                  color: Colors.green[400],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHourButton({
+    required IconData icon,
+    required VoidCallback onTap,
+    required Color? color,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: color!.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withOpacity(0.3), width: 1.5),
+        ),
+        child: Center(
+          child: Icon(icon, color: color, size: 24),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return Obx(() {
+      if (_controller.isLoading.value) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+            ),
+          ),
+        );
+      }
+
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [primaryColor, primaryColor.withOpacity(0.8)],
+          ),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: primaryColor.withOpacity(0.3),
+              blurRadius: 15,
+              spreadRadius: 2,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: InkWell(
+          onTap: _handleSubmit,
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.directions_car_filled_outlined,
+                    color: Colors.white, size: 24),
+                SizedBox(width: 12),
+                Text(
+                  'tripForm'.tr,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> _handlePickupLocationTap() async {
+    if (widget.isAirport == false ||
+        airportController.selectedLocation.value == 'Home') {
+      await _selectLocation(
+        isPickup: true,
+        lat: locationController.selectedPickUpLat.value,
+        lng: locationController.selectedPickUpLng.value,
+      );
+    }
+  }
+
+  Future<void> _handleDropoffLocationTap() async {
+    if (widget.isAirport == false ||
+        airportController.selectedLocation.value != 'Home') {
+      await _selectLocation(
+        isPickup: false,
+        lat: locationController.selectedDropUpLat.value,
+        lng: locationController.selectedDropUpLng.value,
+      );
+    }
+  }
+
+  Future<void> _selectLocation({
+    required bool isPickup,
+    required String lat,
+    required String lng,
+  }) async {
+    final location = await Get.to(
+      () => MapSinglePickerScreen(
+        lat: double.tryParse(lat),
+        lng: double.tryParse(lng),
+      ),
+    );
+
+    if (location == null) return;
+
+    _updateLocationData(location, isPickup);
+  }
+
+  void _updateLocationData(Map<String, dynamic> location, bool isPickup) {
+    final lat = location['lat'].toString();
+    final lng = location['lng'].toString();
+    final address = location['address'].toString();
+    final placeId = location['place_id'];
+
+    Get.snackbar("Single Location", "$address\n($lat, $lng)");
+
+    if (isPickup) {
+      locationController.selectedPickUpLat.value = lat;
+      locationController.selectedPickUpLng.value = lng;
+      locationController.pickUpC.text = address;
+      locationController.pickUpLocation.value = address;
+
+      if (placeId != null) {
+        locationController.selectPikUpAddress(
+          Suggestion(placeId: placeId, description: address),
+        );
+      }
+    } else {
+      locationController.selectedDropUpLat.value = lat;
+      locationController.selectedDropUpLng.value = lng;
+      locationController.dropC.text = address;
+      locationController.dropLocation.value = address;
+    }
+  }
+
+  Widget _buildLocationInputs() {
+    return widget.isAirport == true
+        ? Obx(() => _buildAirportLocationInputs())
+        : _buildRegularLocationInputs();
+  }
+
+  Widget _buildAirportLocationInputs() {
+    final isFromAirport = airportController.selectedLocation.value == 'Airport';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Pickup Section
+        Row(mainAxisAlignment:MainAxisAlignment.spaceBetween ,
+          children: [
+            KText(text: 'pickUpPoint', fontSize: 16, fontWeight: FontWeight.bold),
+            _buildViaLocationToggle(),
+          ],
+        ),
+        SizedBox(height: 5),
+
+        if (isFromAirport) ...[
+          _buildAirportDropdown(isPickup: true),
+          SizedBox(height: 10),
+        ] else ...[
+          PickUp(),
+          SizedBox(height: 5),
+        ],
+
+        // Via Location (Conditional)
+        if (showViaLocation) ViaLocation(),
+
+        // Drop Section
+        SizedBox(height: 10),
+        KText(text: 'dropOffPoint', fontSize: 16, fontWeight: FontWeight.bold),
+        SizedBox(height: 5),
+
+        isFromAirport ? DropWidget() : _buildAirportDropdown(isPickup: false),
+      ],
+    );
+  }
+
+  Widget _buildRegularLocationInputs() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Pickup Section
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            KText(text: 'pickUpPoint', fontSize: 16, fontWeight: FontWeight.bold),
+            _buildViaLocationToggle(),
+          ],
+        ),
+        SizedBox(height: 5),
+        PickUp(),
+        SizedBox(height: 5),
+
+        // Via Location (Conditional)
+        if (showViaLocation) ViaLocation(),
+
+        // Drop Section
+        SizedBox(height: 10),
+        KText(text: 'dropOffPoint', fontSize: 16, fontWeight: FontWeight.bold),
+        SizedBox(height: 5),
+        DropWidget(),
+      ],
+    );
+  }
+
+
+
+  void _handleSubmit() {
+    // Validate required fields
+    if (!_validateRequiredFields()) {
+      return;
+    }
+
+    // Prepare data for submission
+    final formData = _prepareFormData();
+
+    // Navigate to trip details
+    Get.to(
+      () => TripDetailsPage(
+        carImg: widget.carImg,
+        carName: widget.carName,
+        capacity: widget.capacity,
+        carId: widget.carId,
+        pickUpPoint: formData.pickupLocation,
+        dropPoint: formData.dropLocation,
+        viaPoint: locationController.viaLocation.toString(),
+        note: noteController.text,
+        tripDetailsJourney: formData.journeyDateTime,
+        roundTrip: roundTripValue.toString(),
+        map: formData.pickupCoordinates,
+        roundTripDetailsJourney: formData.returnDateTime,
+        pickupDivision: locationController.pickupDivision.value,
+        isAirport: widget.isAirport == true,
+        dropOffMap: formData.dropoffCoordinates,
+        categoryID: widget.tripType,
+      ),
+    );
+  }
+
+  bool _validateRequiredFields() {
+    final hasPickup = locationController.pickUpLocation.isNotEmpty;
+    final hasDropoff = locationController.dropLocation.isNotEmpty;
+
+    if (!hasPickup || !hasDropoff) {
+      Get.snackbar(
+        'Sorry',
+        "Pick & Drop Point Cannot be Empty",
+        colorText: white,
+        backgroundColor: Colors.redAccent,
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  FormData _prepareFormData() {
+    final journeyDateTime = _formatDateTime(selectedDate, selectedTime);
+    final returnDateTime = _formatDateTime(
+      selectedReturnDate,
+      selectedReturnTime,
+    );
+
+    final isAirportTrip = widget.isAirport == true;
+    final isFromAirport = airportController.selectedLocation.value == 'Airport';
+
+    return FormData(
+      pickupLocation: isAirportTrip && isFromAirport
+          ? airportController.selectedAirport.value
+          : locationController.pickUpLocation.toString(),
+      dropLocation: isAirportTrip && !isFromAirport
+          ? airportController.selectedAirport.value
+          : locationController.dropLocation.toString(),
+      journeyDateTime: journeyDateTime,
+      returnDateTime: returnDateTime,
+      pickupCoordinates: isAirportTrip && isFromAirport
+          ? airportController.selectedCoordinates.value.toString()
+          : '${locationController.selectedPickUpLat.value},${locationController.selectedPickUpLng.value}',
+      dropoffCoordinates: isAirportTrip && !isFromAirport
+          ? airportController.selectedCoordinates.value.toString()
+          : '${locationController.selectedDropUpLat.value},${locationController.selectedDropUpLng.value}',
+    );
+  }
+
+  String _formatDateTime(DateTime date, TimeOfDay time) {
+    final hour = time.hourOfPeriod == 0 ? '12' : '${time.hourOfPeriod}';
+    final minute = '${time.minute}'.padLeft(2, '0');
+    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} $hour:$minute $period';
+  }
+}
+
+// Data class for form data
+class FormData {
+  final String pickupLocation;
+  final String dropLocation;
+  final String journeyDateTime;
+  final String returnDateTime;
+  final String pickupCoordinates;
+  final String dropoffCoordinates;
+
+  FormData({
+    required this.pickupLocation,
+    required this.dropLocation,
+    required this.journeyDateTime,
+    required this.returnDateTime,
+    required this.pickupCoordinates,
+    required this.dropoffCoordinates,
+  });
 }

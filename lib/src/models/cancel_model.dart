@@ -62,7 +62,7 @@ class Data {
   final String? type;
   final String? action;
   final String? title;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -81,7 +81,7 @@ class Data {
         type = json['type'] as String?,
         action = json['action'] as String?,
         title = json['title'] as String?,
-        status = json['status'] as int?,
+        status = json['status'].toString(),
         createdAt = json['created_at'] as String?,
         updatedAt = json['updated_at'] as String?;
 
@@ -101,7 +101,7 @@ class PartnerData {
   final String? type;
   final String? action;
   final String? title;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -120,7 +120,7 @@ class PartnerData {
         type = json['type'] as String?,
         action = json['action'] as String?,
         title = json['title'] as String?,
-        status = json['status'] as int?,
+        status = json['status'].toString(),
         createdAt = json['created_at'] as String?,
         updatedAt = json['updated_at'] as String?;
 
@@ -140,7 +140,7 @@ class CustomerData {
   final String? type;
   final String? action;
   final String? title;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -159,7 +159,7 @@ class CustomerData {
         type = json['type'] as String?,
         action = json['action'] as String?,
         title = json['title'] as String?,
-        status = json['status'] as int?,
+        status = json['status'].toString(),
         createdAt = json['created_at'] as String?,
         updatedAt = json['updated_at'] as String?;
 
@@ -179,7 +179,7 @@ class CustomerBoforeData {
   final String? type;
   final String? action;
   final String? title;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -198,7 +198,7 @@ class CustomerBoforeData {
         type = json['type'] as String?,
         action = json['action'] as String?,
         title = json['title'] as String?,
-        status = json['status'] as int?,
+        status = json['status'].toString(),
         createdAt = json['created_at'] as String?,
         updatedAt = json['updated_at'] as String?;
 
@@ -218,7 +218,7 @@ class CustomerAfterData {
   final String? type;
   final String? action;
   final String? title;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -237,7 +237,7 @@ class CustomerAfterData {
         type = json['type'] as String?,
         action = json['action'] as String?,
         title = json['title'] as String?,
-        status = json['status'] as int?,
+        status = json['status'].toString(),
         createdAt = json['created_at'] as String?,
         updatedAt = json['updated_at'] as String?;
 

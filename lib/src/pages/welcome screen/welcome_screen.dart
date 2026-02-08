@@ -1,15 +1,16 @@
 import 'dart:async';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
-import 'package:pickup_load_update/src/widgets/text/kText.dart';
-
-import '../splash page/splash_page.dart';
+import 'package:velocity_x/velocity_x.dart';
+import '../../components/bottom navbar/bottom.dart';
+import '../../configs/local_storage.dart';
 import 'onboard_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
@@ -24,8 +25,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   Future<void> _loadData() async {
+    SharedPreferencesManager prefsManager =
+        await SharedPreferencesManager.getInstance();
+    token = prefsManager.getToken();
+
+    log(token.toString());
     Timer(Duration(seconds: 2), () {
-      Get.offAll(() => SplashScreen());
+      if (token == null) {
+        Get.to(() => OnboardPage());
+      } else {
+        Get.offAll(() => DashboardView());
+      }
     });
   }
 
@@ -49,22 +59,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: KText(
-              text: 'গ্রাম কিংবা শহরে\nসারা বাংলাদেশ জুড়ে!',
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: white,
+      body: Center(child: Image(image: AssetImage('assets/images/logo.png'),width: context.screenWidth/1.5,)),
     );
   }
 }

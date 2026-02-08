@@ -15,8 +15,8 @@ class SliderController extends GetxController {
   }
 
   void getSlider() async {
-    try {
-      isLoading(true);
+    // try {
+    //   isLoading(true);
 
       dynamic responseBody = await BaseClient.handleResponse(
         await BaseClient.getRequest(api: Urls.sliders),
@@ -33,10 +33,10 @@ class SliderController extends GetxController {
       } else {
         throw 'Unable to load slider data!';
       }
-    } catch (e) {
-      log("Error: $e");
-    } finally {
-      isLoading(false);
-    }
+    // } catch (e) {
+    //   log("Error: $e");
+    // } finally {
+    //   isLoading(false);
+    // }
   }
 }

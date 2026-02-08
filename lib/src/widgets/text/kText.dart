@@ -40,7 +40,7 @@ class KText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '$text'.tr,
+      text.tr,
       style: GoogleFonts.sourceCodePro(
         decoration: decoration,
         fontSize: fontSize ?? 16,

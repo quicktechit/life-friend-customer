@@ -33,7 +33,7 @@ class ProfileController extends GetxController {
 
       dynamic responseBody = await BaseClient.handleResponse(
         await BaseClient.getRequest(
-            api: Urls.profile(userToken: token.toString())),
+            api: Urls.profile()),
       );
 
       if (responseBody != null) {

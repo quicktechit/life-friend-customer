@@ -36,22 +36,22 @@ class NotificationData {
   });
 
   final int? id;
-  final int? customerId;
+  final String? customerId;
   final dynamic doneBy;
   final String? title;
   final String? body;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   factory NotificationData.fromJson(Map<String, dynamic> json) {
     return NotificationData(
       id: json["id"],
-      customerId: json["customer_id"],
+      customerId: json["customer_id"].toString(),
       doneBy: json["done_by"],
       title: json["title"],
       body: json["body"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );

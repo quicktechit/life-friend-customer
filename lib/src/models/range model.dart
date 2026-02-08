@@ -23,12 +23,13 @@ class RangeModel {
 
 class Data {
   final int? id;
-  final int? distance;
-  final int? fixedPrice;
-  final dynamic createdAt;
+
+  final String? distance;
+  final String? fixedPrice;
+  final String? createdAt;
   final String? updatedAt;
 
-  Data({
+  const Data({
     this.id,
     this.distance,
     this.fixedPrice,
@@ -36,18 +37,20 @@ class Data {
     this.updatedAt,
   });
 
+  static String? _toStr(dynamic v) => v?.toString();
+
   Data.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        distance = json['distance'] as int?,
-        fixedPrice = json['fixed_price'] as int?,
-        createdAt = json['created_at'],
-        updatedAt = json['updated_at'] as String?;
+        distance = _toStr(json['distance']),
+        fixedPrice = _toStr(json['fixed_price']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']);
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'distance' : distance,
-    'fixed_price' : fixedPrice,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt
+    'id': id,
+    'distance': distance,
+    'fixed_price': fixedPrice,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
   };
 }

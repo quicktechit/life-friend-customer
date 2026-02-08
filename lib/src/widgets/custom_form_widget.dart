@@ -15,7 +15,7 @@ class CustomForm extends StatelessWidget {
         Row(
           children: [
             KText(
-              text: '$title'.toString().tr,
+              text: title.toString().tr,
               color: black54,
             ),
             KText(

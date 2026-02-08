@@ -31,7 +31,7 @@ class SliderData {
   final String? title;
   final String? description;
   final String? image;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 

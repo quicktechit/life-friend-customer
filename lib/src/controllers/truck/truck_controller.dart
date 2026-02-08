@@ -57,7 +57,7 @@ var price=''.obs;
 
     for (int i = 0; i < service.length; i++) {
       if (checkboxStates[i].value) {
-        total += service[i].fees ?? 0;
+        total += int.parse(service[i].fees??'0');
       }
     }
 
@@ -123,7 +123,7 @@ var price=''.obs;
       'category_id': 1,
     };
 
-    try {
+    // try {
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -142,9 +142,9 @@ var price=''.obs;
       } else {
         print('Failed to send SMS. Status code: ${response.statusCode}');
       }
-    } catch (e) {
-      print('Error getting data: $e');
-    }
+    // } catch (e) {
+    //   print('Error getting data: $e');
+    // }
   }
 
 
@@ -190,7 +190,7 @@ print(id);
     final Map<String, dynamic> body = {
       'vehicle_id': id.toString(),
     };
-    try {
+    // try {
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -204,10 +204,10 @@ print(id);
         final Map<String, dynamic> responseData = jsonDecode(response.body);
 
         if (responseData['data'] != null) {
-          final amount = responseData['data']['amount'];
+          final amount = responseData['data']['amount'].toString();
 
-          if (amount != null) {
-            amounts.value=amount;
+          if (amount != 'null') {
+            amounts.value=int.parse(amount);
             print('Amount: $amount');
           } else {
             print('Amount is null');
@@ -218,9 +218,9 @@ print(id);
       } else {
         print('Failed to get data. Status code: ${response.statusCode}');
       }
-    } catch (e) {
-      print('Error getting data: $e');
-    }
+    // } catch (e) {
+    //   print('Error getting data: $e');
+    // }
   }
 
 
@@ -243,10 +243,10 @@ print(id);
   }
 
   Future<void> getRange(id) async {
-    try {
-      print(Uri.parse(Urls.range+"$id"));
+    // try {
+      print(Uri.parse("${Urls.range}$id"));
 
-      final response = await http.get(Uri.parse(Urls.range+"$id"));
+      final response = await http.get(Uri.parse("${Urls.range}$id"));
 
       if (response.statusCode == 200) {
 
@@ -255,9 +255,9 @@ print(id);
       } else {
         print("error");
       }
-    } catch (e) {
-      print(e);
-    }
+    // } catch (e) {
+    //   print(e);
+    // }
   }
 
   Future<void> sendExtraMoney({
@@ -465,8 +465,8 @@ print(id);
         } else {
           price.value = 'Bid';
         }
-        print( price.value + "amount on select location");
-        print(distance.toString() + "distance");
+        print( "${price.value}amount on select location");
+        print("${distance}distance");
       } else {
         print(
             'Invalid drop location coordinates: $dropLat, $dropLng');

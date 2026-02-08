@@ -69,7 +69,7 @@ class _CustomDropWidget extends State<CustomDropWidget> {
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide.none),
-              fillColor: greyBackgroundColor,
+              fillColor: Colors.white,
               filled: true,
             ),
           ),

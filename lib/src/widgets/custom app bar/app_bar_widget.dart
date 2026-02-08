@@ -13,6 +13,19 @@ import 'package:pickup_load_update/src/widgets/text/kText.dart';
 
 import '../return_trip_filter_widget.dart';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 class CustomCommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool? isReturn;
@@ -26,80 +39,75 @@ class CustomCommonAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.scaffoldKey,
     this.onFilterPressed,
     this.showNotificationBadge = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<CustomCommonAppBar> createState() => _CustomCommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 10);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 15);
 }
 
-class _CustomCommonAppBarState extends State<CustomCommonAppBar> {
+class _CustomCommonAppBarState extends State<CustomCommonAppBar>
+    with SingleTickerProviderStateMixin {
   final NotificationController _notificationController = Get.put(
     NotificationController(),
   );
+
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
     _notificationController.getNotification();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    return AppBar(
+      elevation: 0,
+      backgroundColor: primaryColor,
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            primaryColor,
-            primaryColor.withOpacity(0.9),
-            primaryColor.withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: Text(
-            widget.title.tr,
-            key: ValueKey(widget.title),
-            style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.5,
-              ),
+      iconTheme: const IconThemeData(color: Colors.white),
+      title: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Text(
+          widget.title.tr,
+          style: GoogleFonts.poppins(
+            textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 19.0,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.3,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
-        centerTitle: true,
-        leading: _buildLeadingWidget(),
-        actions: _buildActionWidgets(),
-        shape: const ContinuousRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(30),
-            bottomRight: Radius.circular(30),
-          ),
+      ),
+      centerTitle: true,
+      leading: _buildLeadingWidget(),
+      actions: _buildActionWidgets(),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(13),
+          bottomRight: Radius.circular(13),
         ),
       ),
     );
@@ -107,27 +115,46 @@ class _CustomCommonAppBarState extends State<CustomCommonAppBar> {
 
   Widget _buildLeadingWidget() {
     if (widget.isReturn == true) {
-      return IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-        onPressed: () => Navigator.maybePop(context),
-        splashRadius: 20,
-        tooltip: 'Back',
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: () => Navigator.maybePop(context),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white.withAlpha(80),
+              ),
+              child: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
       );
     }
 
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           onTap: () => widget.scaffoldKey?.currentState?.openDrawer(),
           child: Container(
-            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(12),
               color: Colors.white.withOpacity(0.2),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1,
+              ),
             ),
+            padding: const EdgeInsets.all(8),
             child: Image.asset(
               "assets/images/app.png",
               width: 24,
@@ -150,58 +177,77 @@ class _CustomCommonAppBarState extends State<CustomCommonAppBar> {
 
   Widget _buildFilterButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(20),
           onTap: () {
             widget.onFilterPressed?.call();
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
               backgroundColor: Colors.transparent,
-              builder: (context) =>
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme
-                          .of(context)
-                          .scaffoldBackgroundColor,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
+              builder: (context) => Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(28),
+                    topRight: Radius.circular(28),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(100),
+                      blurRadius: 20,
+                      offset: const Offset(0, -5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 12),
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
-                    child: CustomBottomSheetWidget(),
-                  ),
+                    CustomBottomSheetWidget(),
+                  ],
+                ),
+              ),
             );
           },
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(20),
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 5,
-                  offset: const Offset(0, 2),
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Icon(Icons.tune_rounded, size: 18, color: primaryColor),
+                const SizedBox(width: 6),
                 Text(
                   'filter'.tr,
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                  style: GoogleFonts.poppins(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
                     color: primaryColor,
+                    letterSpacing: 0.2,
                   ),
                 ),
-                const SizedBox(width: 6),
-                Icon(Icons.filter_alt_rounded, size: 18, color: primaryColor),
               ],
             ),
           ),
@@ -211,21 +257,25 @@ class _CustomCommonAppBarState extends State<CustomCommonAppBar> {
   }
 
   Widget _buildNotificationButton() {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Material(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(12),
               onTap: () => Get.to(() => const NotificationsPage()),
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white.withAlpha(50),
+                  border: Border.all(
+                    color: Colors.white.withAlpha(70),
+                    width: 1,
+                  ),
                 ),
                 child: Image.asset(
                   "assets/images/notification.png",
@@ -236,35 +286,45 @@ class _CustomCommonAppBarState extends State<CustomCommonAppBar> {
               ),
             ),
           ),
-        ),
-        if (widget.showNotificationBadge)
-          Positioned(
-            top: 8,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.red,
-              ),
-              constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+          if (widget.showNotificationBadge)
+            Positioned(
+              top: -4,
+              right: -4,
               child: Obx(() {
-                return Text(
-                  _notificationController.notificationData.length > 9
-                      ? '9+'
-                      : _notificationController.notificationData.length
-                      .toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+                final count = _notificationController.notificationData.length;
+                if (count == 0) return const SizedBox.shrink();
+                return Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFef4444), Color(0xFFdc2626)],
+                    ),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.red.withOpacity(0.5),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                  textAlign: TextAlign.center,
+                  constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                  child: Text(
+                    count > 9 ? '9+' : count.toString(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      height: 1,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 );
               }),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

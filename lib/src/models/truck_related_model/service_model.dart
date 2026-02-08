@@ -23,11 +23,11 @@ class ServiceModel {
 
 class Dataa {
   final int? id;
-  final int? vehicleId;
+  final String? vehicleId;
   final String? name;
   final String? nameBn;
-  final int? fees;
-  final int? status;
+  final String? fees;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -44,11 +44,11 @@ class Dataa {
 
   Dataa.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        vehicleId = json['vehicle_id'] as int?,
+        vehicleId = json['vehicle_id'] .toString(),
         name = json['name'] as String?,
         nameBn = json['name_bn'] as String?,
-        status = json['status'] as int?,
-        fees = json['fees'] as int?,
+        status = json['status'] .toString(),
+        fees = json['fees'] .toString(),
         createdAt = json['created_at'] as String?,
         updatedAt = json['updated_at'] as String?;
 

@@ -9,132 +9,336 @@ import 'package:pickup_load_update/src/controllers/profile%20controllers/profile
 import 'package:pickup_load_update/src/pages/profile/profileEditPage.dart';
 import 'package:pickup_load_update/src/widgets/appbar/customAppbar.dart';
 import 'package:pickup_load_update/src/widgets/custom_list_tile.dart';
-import 'package:pickup_load_update/src/widgets/text/kText.dart';
+
+import '../../widgets/text/kText.dart';
 
 class ProfilePage extends StatelessWidget {
   final ProfileController _profileController = Get.put(ProfileController());
 
+  ProfilePage({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext conKText) {
     return Scaffold(
-      appBar:AppBar(title:Text(
-       "profile".tr,
-        style: GoogleFonts.ubuntu(
-          textStyle: TextStyle(color: Colors.white, fontSize: 17.0),
+      appBar: AppBar(
+        title: KText(
+          text:"profile".tr,
         ),
-      ),automaticallyImplyLeading: false,),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+      ),
       body: Obx(() {
         if (_profileController.isLoading.value) {
           return Center(child: loader());
         } else {
-          return Stack(
-            children: [
-              Container(
-                width: Get.width,
-                height: Get.height,
-                color: Colors.white,
-              ),
-              Positioned(
-                bottom: 420.h,
-                left: 20.h,
-                child: Container(
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // Header Section with Profile Image
+                Container(
+                  height: 220.h,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey, width: 5),
-                    shape: BoxShape.circle,
-                  ),
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: NetworkImage(
-                      Urls.getImageURL(
-                        endPoint: _profileController.image.toString(),
-                      ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [primaryColor, primaryColor50],
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(110.h, 145.h, 3.h, 0),
-                child: GestureDetector(
-                  onTap: () async {
-                    await Get.to(EditProfilePage(
-                      firstName: _profileController.customerName.toString(),
-                      lastName: '',
-                      address: _profileController.address.toString(),
-                      city: _profileController.city.toString(),
-                      dob: _profileController.dob.toString(),
-                      email: _profileController.email.toString(),
-                    ));
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.black,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(200.h, 140.h, 3.h, 0),
-                child: Column(
-                  children: [
-                    Text(
-                      _profileController.customerName.toString(),
-                      style: GoogleFonts.ubuntu(
-                        textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Text(
-                      _profileController.phone.toString(),
-                      style: GoogleFonts.ubuntu(
-                        textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Profile Image with decorative border
+                            Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: [Colors.white, Colors.grey.shade200],
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 10,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: CircleAvatar(
+                                radius: 70,
+                                backgroundColor: Colors.white,
+                                backgroundImage: NetworkImage(
+                                  Urls.getImageURL(
+                                    endPoint: _profileController.image
+                                        .toString(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 15.h),
+                            // Name and Phone with better typography
+                            Column(
+                              children: [
+                                KText(
+                                  text: _profileController.customerName
+                                      .toString(),
+                                ),
+                                SizedBox(height: 5.h),
+                                KText(
+                                  text: _profileController.phone.toString(),
+
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      // Edit Button positioned at top right
+                      Positioned(
+                        top: 20.h,
+                        right: 20.h,
+                        child: GestureDetector(
+                          onTap: () async {
+                            await Get.to(
+                              EditProfilePage(
+                                firstName: _profileController.customerName
+                                    .toString(),
+                                lastName: '',
+                                address: _profileController.address.toString(),
+                                city: _profileController.city.toString(),
+                                dob: _profileController.dob.toString(),
+                                email: _profileController.email.toString(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 220.h),
-                child: Column(
-                  children: [
-                    Divider(),
-                    SizedBox(height: 30),
-                    CustomListTile(
-                      icons: Icons.alternate_email,
-                      title: 'email',
-                      content: _profileController.email.toString(),
-                    ),
-                    CustomListTile(
-                      icons: Icons.transgender,
-                      title: 'gender',
-                      content: _profileController.gender.toString(),
-                    ),
-                    CustomListTile(
-                      icons: Icons.date_range_outlined,
-                      title: 'dateOfBirth',
-                      content: _profileController.dob.toString(),
-                    ),
-                  ],
+
+                SizedBox(height: 30.h),
+
+                // Profile Information Card
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20.h),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 15,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      // Section Header
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 20.h,
+                          horizontal: 20.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: primaryColor50,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.person_outline,
+                              color: Colors.blue.shade700,
+                              size: 24,
+                            ),
+                            SizedBox(width: 10.h),
+                            KText(text: 'personal_info'.tr),
+                          ],
+                        ),
+                      ),
+
+                      // Information List
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.h),
+                        child: Column(
+                          children: [
+                            _buildInfoTile(
+                              icon: Icons.email_outlined,
+                              title: 'email',
+                              value: _profileController.email.toString(),
+                              color: Colors.red.shade400,
+                            ),
+                            _buildDivider(),
+                            _buildInfoTile(
+                              icon: Icons.transgender,
+                              title: 'gender',
+                              value: _profileController.gender.toString(),
+                              color: Colors.purple.shade400,
+                            ),
+                            _buildDivider(),
+                            _buildInfoTile(
+                              icon: Icons.calendar_today_outlined,
+                              title: 'dateOfBirth',
+                              value: _profileController.dob.toString(),
+                              color: Colors.green.shade400,
+                            ),
+                            _buildDivider(),
+                            _buildInfoTile(
+                              icon: Icons.location_on_outlined,
+                              title: 'address',
+                              value: _profileController.address.toString(),
+                              color: Colors.orange.shade400,
+                            ),
+                            _buildDivider(),
+                            _buildInfoTile(
+                              icon: Icons.location_city_outlined,
+                              title: 'city',
+                              value: _profileController.city.toString(),
+                              color: Colors.teal.shade400,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+
+                SizedBox(height: 30.h),
+
+                // Additional Actions Card
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20.h),clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 15,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(20)),
+                        leading: Icon(
+                          Icons.settings_outlined,
+                          color: Colors.blue.shade700,
+                        ),
+                        title: KText(
+                         text:  'settings'.tr,
+
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: Colors.grey.shade500,
+                        ),
+                        onTap: () {
+                          // Navigate to settings
+                        },
+                      ),
+                      Divider(height: 0),
+                      ListTile(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(20)),
+                        leading: Icon(
+                          Icons.security_outlined,
+                          color: Colors.blue.shade700,
+                        ),
+                        title: KText(
+                         text:  'privacy'.tr,
+
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: Colors.grey.shade500,
+                        ),
+                        onTap: () {
+                          // Navigate to privacy
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 100.h),
+              ],
+            ),
           );
         }
       }),
+    );
+  }
+
+  Widget _buildInfoTile({
+    required IconData icon,
+    required String title,
+    required String value,
+    required Color color,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 12.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 22),
+          ),
+          SizedBox(width: 15.h),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                KText(
+                 text:  title.tr,
+                  fontWeight: FontWeight.bold,
+                ),
+                SizedBox(height: 4.h),
+                KText(
+                 text:  value,
+                  fontSize: 13.sp,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.h),
+      child: Divider(height: 1, color: Colors.grey.shade200),
     );
   }
 }

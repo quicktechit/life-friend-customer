@@ -14,7 +14,7 @@ class NotificationController extends GetxController {
     super.onInit();
   }
 
-   getNotification() async {
+   Future<void> getNotification() async {
     try {
       isLoading(true);
 

@@ -11,8 +11,8 @@ class Urls {
 
   static String offers = "$baseUrl/customer/offers";
 
-  static String profile({required String userToken}) =>
-      "$baseUrl/customer/profile?token=$userToken";
+  static String profile() =>
+      "$baseUrl/customer/profile";
   ///pdf
   static const pdfGenerate = "$baseUrl/customer/generate-pdf";//done
   static const pdfDownload = "$baseUrl/customer/download-pdf/";//done

@@ -2,33 +2,39 @@ class CategoryModel {
   final String? status;
   final Data? data;
 
-  CategoryModel({
+  const CategoryModel({
     this.status,
     this.data,
   });
 
+  static String? _toStr(dynamic v) => v?.toString();
+
   CategoryModel.fromJson(Map<String, dynamic> json)
-      : status = json['status'] as String?,
-        data = (json['data'] as Map<String,dynamic>?) != null ? Data.fromJson(json['data'] as Map<String,dynamic>) : null;
+      : status = _toStr(json['status']),
+        data = json['data'] != null
+            ? Data.fromJson(json['data'])
+            : null;
 
   Map<String, dynamic> toJson() => {
-    'status' : status,
-    'data' : data?.toJson()
+    'status': status,
+    'data': data?.toJson(),
   };
 }
 
 class Data {
   final int? id;
+
   final String? name;
   final String? nameBn;
   final String? slug;
   final String? image;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
+
   final List<Sizecategories>? sizecategories;
 
-  Data({
+  const Data({
     this.id,
     this.name,
     this.nameBn,
@@ -40,42 +46,49 @@ class Data {
     this.sizecategories,
   });
 
+  static String? _toStr(dynamic v) => v?.toString();
+
   Data.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        name = json['name'] as String?,
-        nameBn = json['name_bn'] as String?,
-        slug = json['slug'] as String?,
-        image = json['image'] as String?,
-        status = json['status'] as int?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?,
-        sizecategories = (json['sizecategories'] as List?)?.map((dynamic e) => Sizecategories.fromJson(e as Map<String,dynamic>)).toList();
+        name = _toStr(json['name']),
+        nameBn = _toStr(json['name_bn']),
+        slug = _toStr(json['slug']),
+        image = _toStr(json['image']),
+        status = _toStr(json['status']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']),
+        sizecategories = (json['sizecategories'] as List?)
+            ?.map((e) => Sizecategories.fromJson(e))
+            .toList();
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'name' : name,
-    'name_bn' : nameBn,
-    'slug' : slug,
-    'image' : image,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt,
-    'sizecategories' : sizecategories?.map((e) => e.toJson()).toList()
+    'id': id,
+    'name': name,
+    'name_bn': nameBn,
+    'slug': slug,
+    'image': image,
+    'status': status,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+    'sizecategories':
+    sizecategories?.map((e) => e.toJson()).toList(),
   };
 }
 
 class Sizecategories {
   final int? id;
-  final int? categoryId;
+
+  final String? categoryId;
   final String? name;
   final String? nameBn;
   final String? slug;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
+
   final List<Vehicles>? vehicles;
 
-  Sizecategories({
+  const Sizecategories({
     this.id,
     this.categoryId,
     this.name,
@@ -87,34 +100,39 @@ class Sizecategories {
     this.vehicles,
   });
 
+  static String? _toStr(dynamic v) => v?.toString();
+
   Sizecategories.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        categoryId = json['category_id'] as int?,
-        name = json['name'] as String?,
-        nameBn = json['name_bn'] as String?,
-        slug = json['slug'] as String?,
-        status = json['status'] as int?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?,
-        vehicles = (json['vehicles'] as List?)?.map((dynamic e) => Vehicles.fromJson(e as Map<String,dynamic>)).toList();
+        categoryId = _toStr(json['category_id']),
+        name = _toStr(json['name']),
+        nameBn = _toStr(json['name_bn']),
+        slug = _toStr(json['slug']),
+        status = _toStr(json['status']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']),
+        vehicles = (json['vehicles'] as List?)
+            ?.map((e) => Vehicles.fromJson(e))
+            .toList();
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'category_id' : categoryId,
-    'name' : name,
-    'name_bn' : nameBn,
-    'slug' : slug,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt,
-    'vehicles' : vehicles?.map((e) => e.toJson()).toList()
+    'id': id,
+    'category_id': categoryId,
+    'name': name,
+    'name_bn': nameBn,
+    'slug': slug,
+    'status': status,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+    'vehicles': vehicles?.map((e) => e.toJson()).toList(),
   };
 }
 
 class Vehicles {
   final int? id;
-  final int? vehicleCategory;
-  final int? sizecategoryId;
+
+  final String? vehicleCategory;
+  final String? sizecategoryId;
   final String? truckType;
   final String? name;
   final String? nameBn;
@@ -122,11 +140,11 @@ class Vehicles {
   final String? capacity;
   final String? image;
   final String? description;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
-  Vehicles({
+  const Vehicles({
     this.id,
     this.vehicleCategory,
     this.sizecategoryId,
@@ -142,34 +160,36 @@ class Vehicles {
     this.updatedAt,
   });
 
+  static String? _toStr(dynamic v) => v?.toString();
+
   Vehicles.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        vehicleCategory = json['vehicle_category'] as int?,
-        sizecategoryId = json['sizecategory_id'] as int?,
-        truckType = json['truck_type'] as String?,
-        name = json['name'] as String?,
-        nameBn = json['name_bn'] as String?,
-        slug = json['slug'] as String?,
-        capacity = json['capacity'] as String?,
-        image = json['image'] as String?,
-        description = json['description'] as String?,
-        status = json['status'] as int?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?;
+        vehicleCategory = _toStr(json['vehicle_category']),
+        sizecategoryId = _toStr(json['sizecategory_id']),
+        truckType = _toStr(json['truck_type']),
+        name = _toStr(json['name']),
+        nameBn = _toStr(json['name_bn']),
+        slug = _toStr(json['slug']),
+        capacity = _toStr(json['capacity']),
+        image = _toStr(json['image']),
+        description = _toStr(json['description']),
+        status = _toStr(json['status']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']);
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'vehicle_category' : vehicleCategory,
-    'sizecategory_id' : sizecategoryId,
-    'truck_type' : truckType,
-    'name' : name,
-    'name_bn' : nameBn,
-    'slug' : slug,
-    'capacity' : capacity,
-    'image' : image,
-    'description' : description,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt
+    'id': id,
+    'vehicle_category': vehicleCategory,
+    'sizecategory_id': sizecategoryId,
+    'truck_type': truckType,
+    'name': name,
+    'name_bn': nameBn,
+    'slug': slug,
+    'capacity': capacity,
+    'image': image,
+    'description': description,
+    'status': status,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
   };
 }

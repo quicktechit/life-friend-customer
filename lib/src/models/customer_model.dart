@@ -30,10 +30,10 @@ class CustomerDatas {
   final String? verify;
   final String? expireAt;
   final dynamic forgotCode;
-  final int? cancelCount;
-  final int? cancelButton;
+  final String? cancelCount;
+  final String? cancelButton;
   final dynamic suspendExpiredAt;
-  final int? status;
+  final String? status;
   final String? deviceToken;
   final String? createdAt;
   final String? updatedAt;
@@ -73,10 +73,10 @@ class CustomerDatas {
         verify = json['verify'] as String?,
         expireAt = json['expire_at'] as String?,
         forgotCode = json['forgot_code'],
-        cancelCount = json['cancel_count'] as int?,
-        cancelButton = json['cancel_button'] as int?,
+        cancelCount = json['cancel_count'].toString(),
+        cancelButton = json['cancel_button'] .toString(),
         suspendExpiredAt = json['suspend_expired_at'],
-        status = json['status'] as int?,
+        status = json['status'].toString(),
         deviceToken = json['device_token'] as String?,
         createdAt = json['created_at'] as String?,
         updatedAt = json['updated_at'] as String?;

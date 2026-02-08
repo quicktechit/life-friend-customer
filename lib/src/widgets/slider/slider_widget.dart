@@ -9,6 +9,8 @@ import 'package:pickup_load_update/src/models/slider_model.dart';
 class SliderWidget extends StatelessWidget {
   final SliderController controller = Get.put(SliderController());
 
+  SliderWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -19,33 +21,39 @@ class SliderWidget extends StatelessWidget {
       } else if (sliderData.isEmpty) {
         return Center(child: Text('No images available'));
       } else {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: CarouselSlider.builder(
-            itemCount: sliderData.length,
-            itemBuilder: (BuildContext context, int index, int realIndex) {
-              final SliderData data = sliderData[index];
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  Urls.getImageURL(endPoint: data.image ?? ''),fit: BoxFit.fill,
-                ),
-              );
-            },
-            options: CarouselOptions(
-              height: 160,
-              viewportFraction: 1,
-              pageSnapping: true,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: Duration(seconds: 4),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              scrollDirection: Axis.horizontal,
-            ),
+        return CarouselSlider.builder(
+          itemCount: sliderData.length,
+          itemBuilder: (BuildContext context, int index, int realIndex) {
+            final SliderData data = sliderData[index];
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                Urls.getImageURL(endPoint: data.image ?? ''),
+                fit: BoxFit.fill,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.grey.shade300,
+                    child: Center(
+                      child: Icon(Icons.image_not_supported),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+          options: CarouselOptions(
+            height: 160,
+            viewportFraction: 1,
+            pageSnapping: true,
+            initialPage: 0,
+            enableInfiniteScroll: true,
+            reverse: false,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 4),
+            autoPlayAnimationDuration: Duration(milliseconds: 800),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enlargeCenterPage: true,
+            scrollDirection: Axis.horizontal,
           ),
         );
       }
