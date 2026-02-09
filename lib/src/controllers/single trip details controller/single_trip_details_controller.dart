@@ -14,27 +14,16 @@ class SingleTripDetailsController extends GetxController {
   var singleTripDetailsModel = SingleTripDetailsModel().obs;
   var singleReturnTripDetailsModel = SingleReturnTripDetailsModelNew().obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  Future<void> singleTripDetails(
-    String tripId,
-    String type,
-  ) async {
+  Future<void> singleTripDetails(String tripId, String type) async {
     try {
       isLoading.value = true;
-print("==========>>>> trip id $tripId");
-      SharedPreferencesManager _prefsManager =
+      print("==========>>>> trip id $tripId");
+      SharedPreferencesManager prefsManager =
           await SharedPreferencesManager.getInstance();
-      String? token = _prefsManager.getToken();
+      String? token = prefsManager.getToken();
 
       print(token);
-      var body = {
-        "trip_id": tripId,
-        "trip_type": type,
-      };
+      var body = {"trip_id": tripId, "trip_type": type};
 
       var response = await http.post(
         Uri.parse(Urls.singleTripDetails),
@@ -47,11 +36,13 @@ print("==========>>>> trip id $tripId");
       print(response.body);
       if (response.statusCode == 200) {
         dynamic responseBody = await BaseClient.handleResponse(response);
-        if(type=="normal"){
-          singleTripDetailsModel.value =
-              SingleTripDetailsModel.fromJson(responseBody);
-        }else{
-          singleReturnTripDetailsModel.value=SingleReturnTripDetailsModelNew.fromJson(responseBody);
+        if (type == "normal") {
+          singleTripDetailsModel.value = SingleTripDetailsModel.fromJson(
+            responseBody,
+          );
+        } else {
+          singleReturnTripDetailsModel.value =
+              SingleReturnTripDetailsModelNew.fromJson(responseBody);
         }
         singleTripDetailsModel.refresh();
         singleReturnTripDetailsModel.refresh();
@@ -84,7 +75,8 @@ print("==========>>>> trip id $tripId");
     double dLon = (lon2 - lon1) * (pi / 180.0);
 
     // Haversine formula
-    double a = pow(sin(dLat / 2), 2) +
+    double a =
+        pow(sin(dLat / 2), 2) +
         cos(lat1 * (pi / 180.0)) *
             cos(lat2 * (pi / 180.0)) *
             pow(sin(dLon / 2), 2);

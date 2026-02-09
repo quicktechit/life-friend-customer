@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -182,7 +184,7 @@ class _HomePageState extends State<HomePage>
                 SliverToBoxAdapter(child: _buildPromotionsSection()),
 
                 // Bottom Spacing
-                SliverToBoxAdapter(child: SizedBox(height: 30.h)),
+                SliverToBoxAdapter(child: SizedBox(height: 50.h)),
               ],
             ),
           ),
@@ -218,6 +220,8 @@ class _HomePageState extends State<HomePage>
     return Obx(() {
       if (_rentalTripSubmitController.liveBidStart.value ||
           _rentalTripSubmitController.liveBidTruckStart.value) {
+        log(_rentalTripSubmitController.liveBidTruckStart.value.toString());
+        log(_rentalTripSubmitController.liveBidStart.value.toString());
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h),
           child: Column(
@@ -740,7 +744,7 @@ class _HomePageState extends State<HomePage>
           BoxShadow(
             color: Color(0xFF8B5CF6).withOpacity(0.4),
             blurRadius: 25,
-            offset: Offset(0, 12),
+            offset: Offset(2, 5),
           ),
         ],
       ),

@@ -58,25 +58,25 @@ class RentalTripSubmitController extends GetxController {
           http.MultipartRequest('POST', Uri.parse(Urls.rentalTripSubmit));
 // Add common fields
       request.fields.addAll({
-        'category_id': '$categoryID',
-        'pickup_location': '$pickUpLocation',
-        'via_location': '$viaLocation',
+        'category_id': categoryID,
+        'pickup_location': pickUpLocation,
+        'via_location': viaLocation,
         "pickup_division": pickupDivision,
         // "dropoff_division": dropOfDivision,
-        'dropoff_location': '$dropLocation',
-        'datetime': '$dateTime',
-        'round_trip': '$roundTrip',
-        'round_datetime': '$roundTripTimeDate',
-        'note': '$note',
+        'dropoff_location': dropLocation,
+        'datetime': dateTime,
+        'round_trip': roundTrip,
+        'round_datetime': roundTripTimeDate,
+        'note': note,
         'map': map,
         'dropoff_map':dropMap,
         'is_hourly':isHour==true?"1":"0" ,
         'hours': '3',
-        'is_airport': '${isAirport == true ? '1' : '0'}',
+        'is_airport': isAirport == true ? '1' : '0',
       });
 
       if (vehicleId.isNotEmpty && vehicleId != '0') {
-        request.fields['vehicle_id'] = '$vehicleId';
+        request.fields['vehicle_id'] = vehicleId;
       }
       debugPrint('Request Fields:: ${request.fields}');
       request.headers.addAll(headers);

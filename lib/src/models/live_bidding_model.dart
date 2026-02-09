@@ -2,56 +2,58 @@ class LiveBiddingModel {
   final String? status;
   final List<TripList>? tripList;
 
-  LiveBiddingModel({
-    this.status,
-    this.tripList,
-  });
+  LiveBiddingModel({this.status, this.tripList});
+
+  static String? _toStr(dynamic value) => value?.toString();
 
   LiveBiddingModel.fromJson(Map<String, dynamic> json)
-      : status = json['status'] as String?,
-        tripList = (json['trip_list'] as List?)?.map((dynamic e) => TripList.fromJson(e as Map<String,dynamic>)).toList();
+      : status = _toStr(json['status']),
+        tripList = (json['trip_list'] as List?)
+            ?.map((e) => TripList.fromJson(e as Map<String, dynamic>))
+            .toList();
 
   Map<String, dynamic> toJson() => {
-    'status' : status,
-    'trip_list' : tripList?.map((e) => e.toJson()).toList()
+    'status': status,
+    'trip_list': tripList?.map((e) => e.toJson()).toList(),
   };
 }
+String? _toStr(dynamic value) => value?.toString();
 
 class TripList {
   final int? id;
-  final int? customerId;
-  final int? categoryId;
-  final int? sizecategoryId;
+  final String? customerId;
+  final String? categoryId;
+  final String? sizecategoryId;
   final String? truckType;
-  final int? vehicleId;
+  final String? vehicleId;
   final String? pickupLocation;
-  final dynamic viaLocation;
-  final dynamic dropoffLocation;
-  final dynamic addressId;
-  final dynamic isHourly;
-  final dynamic hours;
+  final String? viaLocation;
+  final String? dropoffLocation;
+  final String? addressId;
+  final String? isHourly;
+  final String? hours;
   final String? map;
-  final dynamic dropoffMap;
-  final dynamic districtId;
-  final dynamic portId;
+  final String? dropoffMap;
+  final String? districtId;
+  final String? portId;
   final String? datetime;
-  final dynamic roundTrip;
-  final dynamic promoKey;
-  final dynamic roundDatetime;
-  final dynamic note;
+  final String? roundTrip;
+  final String? promoKey;
+  final String? roundDatetime;
+  final String? note;
   final String? trackingId;
-  final int? isAirport;
-  final int? productType;
-  final dynamic productDetails;
-  final int? isLabour;
-  final int? distance;
-  final int? amount;
-  final int? extendedAmount;
-  final int? status;
-  final int? biding;
+  final String? isAirport;
+  final String? productType;
+  final String? productDetails;
+  final String? isLabour;
+  final String? distance;
+  final String? amount;
+  final String? extendedAmount;
+  final String? status;
+  final String? biding;
   final String? bidingExpiredAt;
-  final int? isCancel;
-  final dynamic cancelreasonId;
+  final String? isCancel;
+  final String? cancelreasonId;
   final String? createdAt;
   final String? updatedAt;
   final List<DropoffLocations>? dropoffLocations;
@@ -98,94 +100,100 @@ class TripList {
     this.tripBids,
   });
 
+
   TripList.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        customerId = json['customer_id'] as int?,
-        categoryId = json['category_id'] as int?,
-        sizecategoryId = json['sizecategory_id'] as int?,
-        truckType = json['truck_type'] as String?,
-        vehicleId = json['vehicle_id'] as int?,
-        pickupLocation = json['pickup_location'] as String?,
-        viaLocation = json['via_location'],
-        dropoffLocation = json['dropoff_location'],
-        addressId = json['address_id'],
-        isHourly = json['is_hourly'],
-        hours = json['hours'],
-        map = json['map'] as String?,
-        dropoffMap = json['dropoff_map'],
-        districtId = json['district_id'],
-        portId = json['port_id'],
-        datetime = json['datetime'] as String?,
-        roundTrip = json['round_trip'],
-        promoKey = json['promo_key'],
-        roundDatetime = json['round_datetime'],
-        note = json['note'],
-        trackingId = json['tracking_id'] as String?,
-        isAirport = json['is_airport'] as int?,
-        productType = json['product_type'] as int?,
-        productDetails = json['product_details'],
-        isLabour = json['is_labour'] as int?,
-        distance = json['distance'] as int?,
-        amount = json['amount'] as int?,
-        extendedAmount = json['extended_amount'] as int?,
-        status = json['status'] as int?,
-        biding = json['biding'] as int?,
-        bidingExpiredAt = json['biding_expired_at'] as String?,
-        isCancel = json['is_cancel'] as int?,
-        cancelreasonId = json['cancelreason_id'],
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?,
-        dropoffLocations = (json['dropoff_locations'] as List?)?.map((dynamic e) => DropoffLocations.fromJson(e as Map<String,dynamic>)).toList(),
-        tripBids = (json['trip_bids'] as List?)?.map((dynamic e) => TripBids.fromJson(e as Map<String,dynamic>)).toList();
+        customerId = _toStr(json['customer_id']),
+        categoryId = _toStr(json['category_id']),
+        sizecategoryId = _toStr(json['sizecategory_id']),
+        truckType = _toStr(json['truck_type']),
+        vehicleId = _toStr(json['vehicle_id']),
+        pickupLocation = _toStr(json['pickup_location']),
+        viaLocation = _toStr(json['via_location']),
+        dropoffLocation = _toStr(json['dropoff_location']),
+        addressId = _toStr(json['address_id']),
+        isHourly = _toStr(json['is_hourly']),
+        hours = _toStr(json['hours']),
+        map = _toStr(json['map']),
+        dropoffMap = _toStr(json['dropoff_map']),
+        districtId = _toStr(json['district_id']),
+        portId = _toStr(json['port_id']),
+        datetime = _toStr(json['datetime']),
+        roundTrip = _toStr(json['round_trip']),
+        promoKey = _toStr(json['promo_key']),
+        roundDatetime = _toStr(json['round_datetime']),
+        note = _toStr(json['note']),
+        trackingId = _toStr(json['tracking_id']),
+        isAirport = _toStr(json['is_airport']),
+        productType = _toStr(json['product_type']),
+        productDetails = _toStr(json['product_details']),
+        isLabour = _toStr(json['is_labour']),
+        distance = _toStr(json['distance']),
+        amount = _toStr(json['amount']),
+        extendedAmount = _toStr(json['extended_amount']),
+        status = _toStr(json['status']),
+        biding = _toStr(json['biding']),
+        bidingExpiredAt = _toStr(json['biding_expired_at']),
+        isCancel = _toStr(json['is_cancel']),
+        cancelreasonId = _toStr(json['cancelreason_id']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']),
+        dropoffLocations = (json['dropoff_locations'] as List?)
+            ?.map((e) => DropoffLocations.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        tripBids = (json['trip_bids'] as List?)
+            ?.map((e) => TripBids.fromJson(e as Map<String, dynamic>))
+            .toList();
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'customer_id' : customerId,
-    'category_id' : categoryId,
-    'sizecategory_id' : sizecategoryId,
-    'truck_type' : truckType,
-    'vehicle_id' : vehicleId,
-    'pickup_location' : pickupLocation,
-    'via_location' : viaLocation,
-    'dropoff_location' : dropoffLocation,
-    'address_id' : addressId,
-    'is_hourly' : isHourly,
-    'hours' : hours,
-    'map' : map,
-    'dropoff_map' : dropoffMap,
-    'district_id' : districtId,
-    'port_id' : portId,
-    'datetime' : datetime,
-    'round_trip' : roundTrip,
-    'promo_key' : promoKey,
-    'round_datetime' : roundDatetime,
-    'note' : note,
-    'tracking_id' : trackingId,
-    'is_airport' : isAirport,
-    'product_type' : productType,
-    'product_details' : productDetails,
-    'is_labour' : isLabour,
-    'distance' : distance,
-    'amount' : amount,
-    'extended_amount' : extendedAmount,
-    'status' : status,
-    'biding' : biding,
-    'biding_expired_at' : bidingExpiredAt,
-    'is_cancel' : isCancel,
-    'cancelreason_id' : cancelreasonId,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt,
-    'dropoff_locations' : dropoffLocations?.map((e) => e.toJson()).toList(),
-    'trip_bids' : tripBids?.map((e) => e.toJson()).toList()
+    'id': id,
+    'customer_id': customerId,
+    'category_id': categoryId,
+    'sizecategory_id': sizecategoryId,
+    'truck_type': truckType,
+    'vehicle_id': vehicleId,
+    'pickup_location': pickupLocation,
+    'via_location': viaLocation,
+    'dropoff_location': dropoffLocation,
+    'address_id': addressId,
+    'is_hourly': isHourly,
+    'hours': hours,
+    'map': map,
+    'dropoff_map': dropoffMap,
+    'district_id': districtId,
+    'port_id': portId,
+    'datetime': datetime,
+    'round_trip': roundTrip,
+    'promo_key': promoKey,
+    'round_datetime': roundDatetime,
+    'note': note,
+    'tracking_id': trackingId,
+    'is_airport': isAirport,
+    'product_type': productType,
+    'product_details': productDetails,
+    'is_labour': isLabour,
+    'distance': distance,
+    'amount': amount,
+    'extended_amount': extendedAmount,
+    'status': status,
+    'biding': biding,
+    'biding_expired_at': bidingExpiredAt,
+    'is_cancel': isCancel,
+    'cancelreason_id': cancelreasonId,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+    'dropoff_locations': dropoffLocations?.map((e) => e.toJson()).toList(),
+    'trip_bids': tripBids?.map((e) => e.toJson()).toList(),
   };
 }
 
+// ===== DropoffLocations =====
 class DropoffLocations {
   final int? id;
-  final int? tripId;
+  final String? tripId;
   final String? dropoffLocation;
   final String? dropoffMap;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -199,38 +207,40 @@ class DropoffLocations {
     this.updatedAt,
   });
 
+
   DropoffLocations.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        tripId = json['trip_id'] as int?,
-        dropoffLocation = json['dropoff_location'] as String?,
-        dropoffMap = json['dropoff_map'] as String?,
-        status = json['status'] as int?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?;
+        tripId = _toStr(json['trip_id']),
+        dropoffLocation = _toStr(json['dropoff_location']),
+        dropoffMap = _toStr(json['dropoff_map']),
+        status = _toStr(json['status']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']);
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'trip_id' : tripId,
-    'dropoff_location' : dropoffLocation,
-    'dropoff_map' : dropoffMap,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt
+    'id': id,
+    'trip_id': tripId,
+    'dropoff_location': dropoffLocation,
+    'dropoff_map': dropoffMap,
+    'status': status,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
   };
 }
 
+// ===== TripBids =====
 class TripBids {
   final int? id;
-  final int? tripId;
-  final int? customerId;
-  final int? partnerId;
-  final int? vehicleCategory;
-  final int? vehicleId;
-  final int? carId;
+  final String? tripId;
+  final String? customerId;
+  final String? partnerId;
+  final String? vehicleCategory;
+  final String? vehicleId;
+  final String? carId;
   final String? amount;
-  final int? extraPrice;
-  final int? platformCharge;
-  final int? status;
+  final String? extraPrice;
+  final String? platformCharge;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
   final Getvehicle? getvehicle;
@@ -256,53 +266,61 @@ class TripBids {
     this.getBrand,
   });
 
+
+
   TripBids.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        tripId = json['trip_id'] as int?,
-        customerId = json['customer_id'] as int?,
-        partnerId = json['partner_id'] as int?,
-        vehicleCategory = json['vehicle_category'] as int?,
-        vehicleId = json['vehicle_id'] as int?,
-        carId = json['car_id'] as int?,
-        amount = json['amount'] as String?,
-        extraPrice = json['extra_price'] as int?,
-        platformCharge = json['platform_charge'] as int?,
-        status = json['status'] as int?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?,
-        getvehicle = (json['getvehicle'] as Map<String,dynamic>?) != null ? Getvehicle.fromJson(json['getvehicle'] as Map<String,dynamic>) : null,
-        getpartner = (json['getpartner'] as Map<String,dynamic>?) != null ? Getpartner.fromJson(json['getpartner'] as Map<String,dynamic>) : null,
-        getBrand = (json['get_brand'] as Map<String,dynamic>?) != null ? GetBrand.fromJson(json['get_brand'] as Map<String,dynamic>) : null;
+        tripId = _toStr(json['trip_id']),
+        customerId = _toStr(json['customer_id']),
+        partnerId = _toStr(json['partner_id']),
+        vehicleCategory = _toStr(json['vehicle_category']),
+        vehicleId = _toStr(json['vehicle_id']),
+        carId = _toStr(json['car_id']),
+        amount = _toStr(json['amount']),
+        extraPrice = _toStr(json['extra_price']),
+        platformCharge = _toStr(json['platform_charge']),
+        status = _toStr(json['status']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']),
+        getvehicle = (json['getvehicle'] != null)
+            ? Getvehicle.fromJson(json['getvehicle'] as Map<String, dynamic>)
+            : null,
+        getpartner = (json['getpartner'] != null)
+            ? Getpartner.fromJson(json['getpartner'] as Map<String, dynamic>)
+            : null,
+        getBrand = (json['get_brand'] != null)
+            ? GetBrand.fromJson(json['get_brand'] as Map<String, dynamic>)
+            : null;
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'trip_id' : tripId,
-    'customer_id' : customerId,
-    'partner_id' : partnerId,
-    'vehicle_category' : vehicleCategory,
-    'vehicle_id' : vehicleId,
-    'car_id' : carId,
-    'amount' : amount,
-    'extra_price' : extraPrice,
-    'platform_charge' : platformCharge,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt,
-    'getvehicle' : getvehicle?.toJson(),
-    'getpartner' : getpartner?.toJson(),
-    'get_brand' : getBrand?.toJson()
+    'id': id,
+    'trip_id': tripId,
+    'customer_id': customerId,
+    'partner_id': partnerId,
+    'vehicle_category': vehicleCategory,
+    'vehicle_id': vehicleId,
+    'car_id': carId,
+    'amount': amount,
+    'extra_price': extraPrice,
+    'platform_charge': platformCharge,
+    'status': status,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+    'getvehicle': getvehicle?.toJson(),
+    'getpartner': getpartner?.toJson(),
+    'get_brand': getBrand?.toJson(),
   };
 }
 
 class Getvehicle {
   final int? id;
-  final int? partnerId;
-  final int? vehicleCategory;
-  final int? brand;
-  final int? sizecategoryId;
+  final String? partnerId;
+  final String? vehicleCategory;
+  final String? brand;
+  final String? sizecategoryId;
   final String? truckType;
   final String? metro;
-  final int? metroType;
+  final String? metroType;
   final String? metroNo;
   final String? model;
   final String? modelYear;
@@ -314,10 +332,10 @@ class Getvehicle {
   final String? vehicleBackPic;
   final String? vehiclePlateNo;
   final String? vehicleRegPic;
-  final dynamic vehicleRootPic;
-  final dynamic vehicleFitnessPic;
-  final dynamic vehicleTaxPic;
-  final dynamic vehicleInsurancePic;
+  final String? vehicleRootPic;
+  final String? vehicleFitnessPic;
+  final String? vehicleTaxPic;
+  final String? vehicleInsurancePic;
   final String? vehicleDrivingFront;
   final String? vehicleDrivingBack;
   final String? status;
@@ -355,65 +373,67 @@ class Getvehicle {
     this.updatedAt,
   });
 
+
+
   Getvehicle.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        partnerId = json['partner_id'] as int?,
-        vehicleCategory = json['vehicle_category'] as int?,
-        brand = json['brand'] as int?,
-        sizecategoryId = json['sizecategory_id'] as int?,
-        truckType = json['truck_type'] as String?,
-        metro = json['metro'] as String?,
-        metroType = json['metro_type'] as int?,
-        metroNo = json['metro_no'] as String?,
-        model = json['model'] as String?,
-        modelYear = json['model_year'] as String?,
-        vehicleColor = json['vehicle_color'] as String?,
-        aircondition = json['aircondition'] as String?,
-        brandName = json['brand_name'] as String?,
-        fuelType = json['fuel_type'] as String?,
-        vehicleFrontPic = json['vehicle_front_pic'] as String?,
-        vehicleBackPic = json['vehicle_back_pic'] as String?,
-        vehiclePlateNo = json['vehicle_plate_no'] as String?,
-        vehicleRegPic = json['vehicle_reg_pic'] as String?,
-        vehicleRootPic = json['vehicle_root_pic'],
-        vehicleFitnessPic = json['vehicle_fitness_pic'],
-        vehicleTaxPic = json['vehicle_tax_pic'],
-        vehicleInsurancePic = json['vehicle_insurance_pic'],
-        vehicleDrivingFront = json['vehicle_driving_front'] as String?,
-        vehicleDrivingBack = json['vehicle_driving_back'] as String?,
-        status = json['status'] as String?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?;
+        partnerId = _toStr(json['partner_id']),
+        vehicleCategory = _toStr(json['vehicle_category']),
+        brand = _toStr(json['brand']),
+        sizecategoryId = _toStr(json['sizecategory_id']),
+        truckType = _toStr(json['truck_type']),
+        metro = _toStr(json['metro']),
+        metroType = _toStr(json['metro_type']),
+        metroNo = _toStr(json['metro_no']),
+        model = _toStr(json['model']),
+        modelYear = _toStr(json['model_year']),
+        vehicleColor = _toStr(json['vehicle_color']),
+        aircondition = _toStr(json['aircondition']),
+        brandName = _toStr(json['brand_name']),
+        fuelType = _toStr(json['fuel_type']),
+        vehicleFrontPic = _toStr(json['vehicle_front_pic']),
+        vehicleBackPic = _toStr(json['vehicle_back_pic']),
+        vehiclePlateNo = _toStr(json['vehicle_plate_no']),
+        vehicleRegPic = _toStr(json['vehicle_reg_pic']),
+        vehicleRootPic = _toStr(json['vehicle_root_pic']),
+        vehicleFitnessPic = _toStr(json['vehicle_fitness_pic']),
+        vehicleTaxPic = _toStr(json['vehicle_tax_pic']),
+        vehicleInsurancePic = _toStr(json['vehicle_insurance_pic']),
+        vehicleDrivingFront = _toStr(json['vehicle_driving_front']),
+        vehicleDrivingBack = _toStr(json['vehicle_driving_back']),
+        status = _toStr(json['status']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']);
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'partner_id' : partnerId,
-    'vehicle_category' : vehicleCategory,
-    'brand' : brand,
-    'sizecategory_id' : sizecategoryId,
-    'truck_type' : truckType,
-    'metro' : metro,
-    'metro_type' : metroType,
-    'metro_no' : metroNo,
-    'model' : model,
-    'model_year' : modelYear,
-    'vehicle_color' : vehicleColor,
-    'aircondition' : aircondition,
-    'brand_name' : brandName,
-    'fuel_type' : fuelType,
-    'vehicle_front_pic' : vehicleFrontPic,
-    'vehicle_back_pic' : vehicleBackPic,
-    'vehicle_plate_no' : vehiclePlateNo,
-    'vehicle_reg_pic' : vehicleRegPic,
-    'vehicle_root_pic' : vehicleRootPic,
-    'vehicle_fitness_pic' : vehicleFitnessPic,
-    'vehicle_tax_pic' : vehicleTaxPic,
-    'vehicle_insurance_pic' : vehicleInsurancePic,
-    'vehicle_driving_front' : vehicleDrivingFront,
-    'vehicle_driving_back' : vehicleDrivingBack,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt
+    'id': id,
+    'partner_id': partnerId,
+    'vehicle_category': vehicleCategory,
+    'brand': brand,
+    'sizecategory_id': sizecategoryId,
+    'truck_type': truckType,
+    'metro': metro,
+    'metro_type': metroType,
+    'metro_no': metroNo,
+    'model': model,
+    'model_year': modelYear,
+    'vehicle_color': vehicleColor,
+    'aircondition': aircondition,
+    'brand_name': brandName,
+    'fuel_type': fuelType,
+    'vehicle_front_pic': vehicleFrontPic,
+    'vehicle_back_pic': vehicleBackPic,
+    'vehicle_plate_no': vehiclePlateNo,
+    'vehicle_reg_pic': vehicleRegPic,
+    'vehicle_root_pic': vehicleRootPic,
+    'vehicle_fitness_pic': vehicleFitnessPic,
+    'vehicle_tax_pic': vehicleTaxPic,
+    'vehicle_insurance_pic': vehicleInsurancePic,
+    'vehicle_driving_front': vehicleDrivingFront,
+    'vehicle_driving_back': vehicleDrivingBack,
+    'status': status,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
   };
 }
 
@@ -423,37 +443,37 @@ class Getpartner {
   final String? phone;
   final String? email;
   final String? image;
-  final int? categoryId;
-  final dynamic sizecategoryId;
-  final dynamic vehicleId;
-  final dynamic truckType;
+  final String? categoryId;
+  final String? sizecategoryId;
+  final String? vehicleId;
+  final String? truckType;
   final String? docType;
   final String? docNumber;
-  final dynamic docFront;
-  final dynamic docBack;
+  final String? docFront;
+  final String? docBack;
   final String? drivingLicenseFront;
   final String? drivingLicenseBack;
-  final int? divisionId;
-  final int? districtId;
-  final int? thanaId;
+  final String? divisionId;
+  final String? districtId;
+  final String? thanaId;
   final String? address;
   final String? gender;
-  final dynamic referCode;
+  final String? referCode;
   final String? myreferKey;
   final String? verify;
-  final dynamic forgotCode;
-  final int? credit;
-  final int? debit;
+  final String? forgotCode;
+  final String? credit;
+  final String? debit;
   final String? deviceToken;
-  final int? packageId;
-  final int? packageStatus;
+  final String? packageId;
+  final String? packageStatus;
   final String? enableDate;
   final String? expireDate;
   final String? currentMap;
-  final int? cancelButton;
-  final int? cancelCount;
-  final dynamic suspendExpiredAt;
-  final int? status;
+  final String? cancelButton;
+  final String? cancelCount;
+  final String? suspendExpiredAt;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -498,92 +518,94 @@ class Getpartner {
     this.updatedAt,
   });
 
+
   Getpartner.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        name = json['name'] as String?,
-        phone = json['phone'] as String?,
-        email = json['email'] as String?,
-        image = json['image'] as String?,
-        categoryId = json['category_id'] as int?,
-        sizecategoryId = json['sizecategory_id'],
-        vehicleId = json['vehicle_id'],
-        truckType = json['truck_type'],
-        docType = json['doc_type'] as String?,
-        docNumber = json['doc_number'] as String?,
-        docFront = json['doc_front'],
-        docBack = json['doc_back'],
-        drivingLicenseFront = json['driving_license_front'] as String?,
-        drivingLicenseBack = json['driving_license_back'] as String?,
-        divisionId = json['division_id'] as int?,
-        districtId = json['district_id'] as int?,
-        thanaId = json['thana_id'] as int?,
-        address = json['address'] as String?,
-        gender = json['gender'] as String?,
-        referCode = json['refer_code'],
-        myreferKey = json['myrefer_key'] as String?,
-        verify = json['verify'] as String?,
-        forgotCode = json['forgot_code'],
-        credit = json['credit'] as int?,
-        debit = json['debit'] as int?,
-        deviceToken = json['device_token'] as String?,
-        packageId = json['package_id'] as int?,
-        packageStatus = json['package_status'] as int?,
-        enableDate = json['enable_date'] as String?,
-        expireDate = json['expire_date'] as String?,
-        currentMap = json['current_map'] as String?,
-        cancelButton = json['cancel_button'] as int?,
-        cancelCount = json['cancel_count'] as int?,
-        suspendExpiredAt = json['suspend_expired_at'],
-        status = json['status'] as int?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?;
+        name = _toStr(json['name']),
+        phone = _toStr(json['phone']),
+        email = _toStr(json['email']),
+        image = _toStr(json['image']),
+        categoryId = _toStr(json['category_id']),
+        sizecategoryId = _toStr(json['sizecategory_id']),
+        vehicleId = _toStr(json['vehicle_id']),
+        truckType = _toStr(json['truck_type']),
+        docType = _toStr(json['doc_type']),
+        docNumber = _toStr(json['doc_number']),
+        docFront = _toStr(json['doc_front']),
+        docBack = _toStr(json['doc_back']),
+        drivingLicenseFront = _toStr(json['driving_license_front']),
+        drivingLicenseBack = _toStr(json['driving_license_back']),
+        divisionId = _toStr(json['division_id']),
+        districtId = _toStr(json['district_id']),
+        thanaId = _toStr(json['thana_id']),
+        address = _toStr(json['address']),
+        gender = _toStr(json['gender']),
+        referCode = _toStr(json['refer_code']),
+        myreferKey = _toStr(json['myrefer_key']),
+        verify = _toStr(json['verify']),
+        forgotCode = _toStr(json['forgot_code']),
+        credit = _toStr(json['credit']),
+        debit = _toStr(json['debit']),
+        deviceToken = _toStr(json['device_token']),
+        packageId = _toStr(json['package_id']),
+        packageStatus = _toStr(json['package_status']),
+        enableDate = _toStr(json['enable_date']),
+        expireDate = _toStr(json['expire_date']),
+        currentMap = _toStr(json['current_map']),
+        cancelButton = _toStr(json['cancel_button']),
+        cancelCount = _toStr(json['cancel_count']),
+        suspendExpiredAt = _toStr(json['suspend_expired_at']),
+        status = _toStr(json['status']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']);
 
-  Map<String, dynamic> toJson() => {
-    'id' : id,
-    'name' : name,
-    'phone' : phone,
-    'email' : email,
-    'image' : image,
-    'category_id' : categoryId,
-    'sizecategory_id' : sizecategoryId,
-    'vehicle_id' : vehicleId,
-    'truck_type' : truckType,
-    'doc_type' : docType,
-    'doc_number' : docNumber,
-    'doc_front' : docFront,
-    'doc_back' : docBack,
-    'driving_license_front' : drivingLicenseFront,
-    'driving_license_back' : drivingLicenseBack,
-    'division_id' : divisionId,
-    'district_id' : districtId,
-    'thana_id' : thanaId,
-    'address' : address,
-    'gender' : gender,
-    'refer_code' : referCode,
-    'myrefer_key' : myreferKey,
-    'verify' : verify,
-    'forgot_code' : forgotCode,
-    'credit' : credit,
-    'debit' : debit,
-    'device_token' : deviceToken,
-    'package_id' : packageId,
-    'package_status' : packageStatus,
-    'enable_date' : enableDate,
-    'expire_date' : expireDate,
-    'current_map' : currentMap,
-    'cancel_button' : cancelButton,
-    'cancel_count' : cancelCount,
-    'suspend_expired_at' : suspendExpiredAt,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt
-  };
+  Map<String, dynamic> toJson() =>
+      {
+        'id': id,
+        'name': name,
+        'phone': phone,
+        'email': email,
+        'image': image,
+        'category_id': categoryId,
+        'sizecategory_id': sizecategoryId,
+        'vehicle_id': vehicleId,
+        'truck_type': truckType,
+        'doc_type': docType,
+        'doc_number': docNumber,
+        'doc_front': docFront,
+        'doc_back': docBack,
+        'driving_license_front': drivingLicenseFront,
+        'driving_license_back': drivingLicenseBack,
+        'division_id': divisionId,
+        'district_id': districtId,
+        'thana_id': thanaId,
+        'address': address,
+        'gender': gender,
+        'refer_code': referCode,
+        'myrefer_key': myreferKey,
+        'verify': verify,
+        'forgot_code': forgotCode,
+        'credit': credit,
+        'debit': debit,
+        'device_token': deviceToken,
+        'package_id': packageId,
+        'package_status': packageStatus,
+        'enable_date': enableDate,
+        'expire_date': expireDate,
+        'current_map': currentMap,
+        'cancel_button': cancelButton,
+        'cancel_count': cancelCount,
+        'suspend_expired_at': suspendExpiredAt,
+        'status': status,
+        'created_at': createdAt,
+        'updated_at': updatedAt,
+      };
 }
 
 class GetBrand {
   final int? id;
-  final int? vehicleCategory;
-  final int? sizecategoryId;
+  final String? vehicleCategory;
+  final String? sizecategoryId;
   final String? truckType;
   final String? name;
   final String? nameBn;
@@ -591,7 +613,7 @@ class GetBrand {
   final String? capacity;
   final String? image;
   final String? description;
-  final int? status;
+  final String? status;
   final String? createdAt;
   final String? updatedAt;
 
@@ -611,34 +633,36 @@ class GetBrand {
     this.updatedAt,
   });
 
+  static String? _toStr(dynamic value) => value?.toString();
+
   GetBrand.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int?,
-        vehicleCategory = json['vehicle_category'] as int?,
-        sizecategoryId = json['sizecategory_id'] as int?,
-        truckType = json['truck_type'] as String?,
-        name = json['name'] as String?,
-        nameBn = json['name_bn'] as String?,
-        slug = json['slug'] as String?,
-        capacity = json['capacity'] as String?,
-        image = json['image'] as String?,
-        description = json['description'] as String?,
-        status = json['status'] as int?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?;
+        vehicleCategory = _toStr(json['vehicle_category']),
+        sizecategoryId = _toStr(json['sizecategory_id']),
+        truckType = _toStr(json['truck_type']),
+        name = _toStr(json['name']),
+        nameBn = _toStr(json['name_bn']),
+        slug = _toStr(json['slug']),
+        capacity = _toStr(json['capacity']),
+        image = _toStr(json['image']),
+        description = _toStr(json['description']),
+        status = _toStr(json['status']),
+        createdAt = _toStr(json['created_at']),
+        updatedAt = _toStr(json['updated_at']);
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'vehicle_category' : vehicleCategory,
-    'sizecategory_id' : sizecategoryId,
-    'truck_type' : truckType,
-    'name' : name,
-    'name_bn' : nameBn,
-    'slug' : slug,
-    'capacity' : capacity,
-    'image' : image,
-    'description' : description,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt
+    'id': id,
+    'vehicle_category': vehicleCategory,
+    'sizecategory_id': sizecategoryId,
+    'truck_type': truckType,
+    'name': name,
+    'name_bn': nameBn,
+    'slug': slug,
+    'capacity': capacity,
+    'image': image,
+    'description': description,
+    'status': status,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
   };
 }

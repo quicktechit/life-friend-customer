@@ -33,7 +33,7 @@ class LiveBiddingPageTruck extends StatefulWidget {
   final String createdAt;
   final String id;
 
-  const LiveBiddingPageTruck({Key? key, required this.createdAt, required this.id}) : super(key: key);
+  const LiveBiddingPageTruck({super.key, required this.createdAt, required this.id});
 
   @override
   State<LiveBiddingPageTruck> createState() => _LiveBiddingPageTruckState();
@@ -41,12 +41,12 @@ class LiveBiddingPageTruck extends StatefulWidget {
 
 class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
     with TickerProviderStateMixin {
-  final pric=TextEditingController();
-  var box=GetStorage();
+  final pric = TextEditingController();
+  var box = GetStorage();
   AnimationController? _controller;
   bool determinate = false;
   final CancelController cancelController = Get.put(CancelController());
-  final TruckController truckController=Get.find();
+  final TruckController truckController = Get.find();
   int? selectedCarIndex;
   bool _timerRunning = false;
   DateTime _startTime = DateTime.now();
@@ -83,12 +83,12 @@ class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
     _loadStartTime();
     _startDataRefreshTimer();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final isEmpty = liveBiddingController.filteredLiveBidDataTruck.isEmpty;
-
-      box.write("liveBidTruckStart", !isEmpty);
-      _rentalTripSubmitController.liveBidTruckStart.value = !isEmpty;
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   bool isEmpty = liveBiddingController.filteredLiveBidDataTruck.isEmpty?true:false;
+    //
+    //   box.write("liveBidTruckStart", !isEmpty);
+    //   _rentalTripSubmitController.liveBidTruckStart.value = !isEmpty;
+    // });
   }
 
   void _loadStartTime() async {
@@ -122,21 +122,17 @@ class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
       } else {
         _timer.cancel();
         _timerStreamController.add(Duration.zero);
-
-        // Optional: actions when time ends
-        // box.write("liveBidStart", false);
-        // _rentalTripSubmitController.liveBidStart.value = false;
-        // _callAPIAfterOneHour();
       }
     });
   }
+
   void _startCountdownTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {
         if (_remainingTime > Duration.zero) {
           _remainingTime -= Duration(seconds: 1);
         } else {
-          _rentalTripSubmitController.liveBidTruckStart.value=false;
+          _rentalTripSubmitController.liveBidTruckStart.value = false;
 
           box.write("liveBidTruckStart", false);
 
@@ -147,7 +143,6 @@ class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
       _timerStreamController.add(_remainingTime);
     });
   }
-
 
   void _startDataRefreshTimer() {
     if (!_timerRunning) {
@@ -171,240 +166,832 @@ class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
     final isLoading = liveBiddingController.isLoading;
     final filteredList = liveBiddingController.filteredLiveBidDataTruck;
     return PopScope(
-      canPop: false, // prevent default pop
+      canPop: false,
       onPopInvoked: (didPop) {
         if (!didPop) {
-          // Navigate back to dashboard
-          Get.offAll(()=>DashboardView());
+          Get.offAll(() => DashboardView());
         }
       },
       child: Scaffold(
-
-        backgroundColor: bgColor,
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.black,
-          leading: GestureDetector(
-              onTap: (){
-                Get.offAll(()=>DashboardView());
-              },
-              child: Icon(Icons.arrow_back)),
+          backgroundColor: primaryColor,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              Get.offAll(() => DashboardView());
+            },
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+          ),
           title: Text(
             "liveBidding".tr,
-            style: TextStyle(color: Colors.white, fontSize: 17.h),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          centerTitle: true,
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              margin: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
               child: StreamBuilder<Duration>(
                 stream: _timerStreamController.stream,
                 initialData: _remainingTime,
                 builder: (context, snapshot) {
                   final remainingTime = snapshot.data!;
-                  return Text(
-                    remainingTime > Duration.zero
-                        ? _formatDuration(remainingTime)
-                        : "Time's up",
-                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  return Row(
+                    children: [
+                      Icon(Icons.timer, color: Colors.white, size: 16),
+                      const SizedBox(width: 6),
+                      Text(
+                        remainingTime > Duration.zero
+                            ? _formatDuration(remainingTime)
+                            : "Time's up",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
             ),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                LinearProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                  minHeight: 10,
-                  backgroundColor: primaryColor50,
-                  value: _controller!.value,
-                ),
-                20.heightBox,
-                Obx(() {
-                  final list = filteredList;
+        body: Column(
+          children: [
+            // Animated Progress Bar
+            SizedBox(
+              height: 4,
+              child: LinearProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                backgroundColor: primaryColor.withOpacity(0.2),
+                value: _controller!.value,
+              ),
+            ),
 
-                  if (isLoading.value) {
-                    return loader();
-                  } else if (list.isEmpty) {
-                    // Safe zone outside reactive logic
-                    Future.microtask(() {
-                      box.write("liveBidTruckStart", false);
-                      _rentalTripSubmitController.liveBidTruckStart.value = false;
-                    });
+            // Live Bidding Status Bar
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              decoration: BoxDecoration(
+                color: primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryColor.withOpacity(0.2),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          color: Colors.red,
+                          size: 10,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          "LIVE",
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      "Truck Bidding in progress... Select your preferred trip",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 2,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
 
-                    return EmptyBoxWidget(
-                      title: "noLiveMessage".tr,
-                      truckImage: 'assets/images/pickup-truck-svgrepo-com.png',
-                    );
-                  } else {
-                    Future.microtask(() {
-                      box.write("liveBidTruckStart", true);
-                      _rentalTripSubmitController.liveBidTruckStart.value = true;
-                    });
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Truck Trip List Section
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.1),
+                            width: 1,
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Obx(() {
+                            final list = filteredList;
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: list.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final TripList data = list[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Get.to(() => TripWiseBidList(
-                                data: data.tripBids ?? [],
-                                amount: data.amount.toString(),
-                                id: data.id.toString()));
+                            if (isLoading.value) {
+                              return SizedBox(
+                                height: 300,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        primaryColor),
+                                  ),
+                                ),
+                              );
+                            } else if (list.isEmpty) {
+                              // Safe zone outside reactive logic
+                              // Future.microtask(() {
+                              //   box.write("liveBidTruckStart", false);
+                              //   _rentalTripSubmitController
+                              //       .liveBidTruckStart.value = false;
+                              // });
+
+                              return Container(
+                                padding: const EdgeInsets.all(32),
+                                child: EmptyBoxWidget(
+                                  title: "noLiveMessage".tr,
+                                  truckImage:
+                                  'assets/images/pickup-truck-svgrepo-com.png',
+                                ),
+                              );
+                            } else {
+                              // Future.microtask(() {
+                              //   box.write("liveBidTruckStart", true);
+                              //   _rentalTripSubmitController
+                              //       .liveBidTruckStart.value = true;
+                              // });
+
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: list.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final TripList data = list[index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => TripWiseBidList(
+                                          data: data.tripBids ?? [],
+                                          amount: data.amount.toString(),
+                                          id: data.id.toString()));
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                          color: Colors.grey.withOpacity(0.1),
+                                          width: 1,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.05),
+                                            blurRadius: 10,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            // Tracking ID
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Container(
+                                                  padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 6),
+                                                  decoration: BoxDecoration(
+                                                    color: primaryColor
+                                                        .withOpacity(0.1),
+                                                    borderRadius:
+                                                    BorderRadius.circular(8),
+                                                    border: Border.all(
+                                                      color:
+                                                      primaryColor.withOpacity(0.2),
+                                                    ),
+                                                  ),
+                                                  child: Text(
+                                                    data.trackingId ?? '',
+                                                    style: TextStyle(
+                                                      color: primaryColor,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                // Price Tag
+                                                Container(
+                                                  padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 8),
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        primaryColor,
+                                                        primaryColor.withRed(200),
+                                                      ],
+                                                    ),
+                                                    borderRadius:
+                                                    BorderRadius.circular(20),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: primaryColor
+                                                            .withOpacity(0.3),
+                                                        blurRadius: 10,
+                                                        spreadRadius: 1,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Text(
+                                                    '৳${data.amount?.toString() ?? '0'}',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 16),
+
+                                            // Pickup Location
+                                            Row(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    color: primaryColor
+                                                        .withOpacity(0.1),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.location_on,
+                                                    color: primaryColor,
+                                                    size: 20,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 12),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        'Pickup Location',
+                                                        style: TextStyle(
+                                                          color: Colors.grey[600],
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 4),
+                                                      Text(
+                                                        data.pickupLocation ?? '',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                          FontWeight.w600,
+                                                        ),
+                                                        maxLines: 2,
+                                                        overflow:
+                                                        TextOverflow.ellipsis,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 12),
+
+                                            // Dropoff Location
+                                            Row(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.green
+                                                        .withOpacity(0.1),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.location_on,
+                                                    color: Colors.green,
+                                                    size: 20,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 12),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        'Dropoff Location',
+                                                        style: TextStyle(
+                                                          color: Colors.grey[600],
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 4),
+                                                      Text(
+                                                        data.dropoffLocation ?? '',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                          FontWeight.w600,
+                                                        ),
+                                                        maxLines: 2,
+                                                        overflow:
+                                                        TextOverflow.ellipsis,
+                                                      ),
+                                                      if (data.dropoffLocations !=
+                                                          null &&
+                                                          data.dropoffLocations!
+                                                              .isNotEmpty)
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                          children: [
+                                                            const SizedBox(
+                                                                height: 8),
+                                                            Text(
+                                                              'Additional Dropoffs:',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .grey[600],
+                                                                fontSize: 12,
+                                                              ),
+                                                            ),
+                                                            ...data
+                                                                .dropoffLocations!
+                                                                .map(
+                                                                  (location) =>
+                                                                  Text(
+                                                                    '• $location',
+                                                                    style:
+                                                                    TextStyle(
+                                                                      color: Colors
+                                                                          .grey[
+                                                                      700],
+                                                                      fontSize: 12,
+                                                                    ),
+                                                                  ),
+                                                            )
+                                                                .toList(),
+                                                          ],
+                                                        ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 16),
+
+                                            // View Bids Button
+                                            Container(
+                                              width: double.infinity,
+                                              height: 45,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color:
+                                                  primaryColor.withOpacity(0.3),
+                                                  width: 1,
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.05),
+                                                    blurRadius: 5,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  Get.to(() => TripWiseBidList(
+                                                      data: data.tripBids ?? [],
+                                                      amount:
+                                                      data.amount.toString(),
+                                                      id: data.id.toString()));
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.white,
+                                                  shadowColor: Colors.transparent,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(12),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'View Bids',
+                                                      style: TextStyle(
+                                                        color: primaryColor,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 8),
+                                                    Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      color: primaryColor,
+                                                      size: 14,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          }),
+                        ),
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Cancel Trip Button
+                      Container(
+                        width: double.infinity,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [primaryColor, primaryColor.withRed(200)],
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: primaryColor.withOpacity(0.3),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            cancelTripRequestReason(
+                              context,
+                              widget.id.toString(),
+                            );
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CarLiveBiddingContainerWidget(
-                              pickup: data.pickupLocation ?? '',
-                              dropoff: data.dropoffLocation ?? '',
-                              dropoffs: data.dropoffLocations ?? [],
-                              amount: 'Fare:${data.amount?.toString() ?? '0'}TK         ${data.trackingId}',
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                        );
-                      },
-                    ).h(context.screenHeight / 1.5);
-                  }
-                })
-                // if (selectedCarIndex == null&&truckController.price.value == "Bid")
-                //   SizedBox(height: context.screenHeight*0.17,),
-                //
-                // if (selectedCarIndex == null)
-                //   Obx(
-                //     () => Column(
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         20.heightBox,
-                //         Container(
-                //           width: 150,
-                //           child: primaryButton(
-                //               icon: Icons.arrow_circle_right_outlined,
-                //               buttonName: 'Cancel'.tr,
-                //               onTap: () {
-                //                 cancelTripRequestReason(
-                //                   context,
-                //                   widget.id.toString(),
-                //                 );
-                //               }),
-                //         ),
-                //         if (truckController.price.value != "Bid") 40.heightBox,
-                //         if (truckController.price.value != "Bid")
-                //           KText(text: 'addmoremoney'),
-                //         if (truckController.price.value != "Bid")
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.start,
-                //             children: [
-                //               KText(text: "total"),
-                //               5.widthBox,
-                //               "${truckController.totalPrice}৳"
-                //                   .text
-                //                   .semiBold
-                //                   .lg
-                //                   .make()
-                //             ],
-                //           ).paddingSymmetric(horizontal: 20),
-                //         if (truckController.price.value != "Bid") 10.heightBox,
-                //         if (truckController.price.value != "Bid")
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //             children: [
-                //               Container(
-                //                 width: MediaQuery.of(context).size.width / 2,
-                //                 height: 50,
-                //                 child: TextField(
-                //                   controller: pric,
-                //                   keyboardType: TextInputType.number,
-                //                   decoration: InputDecoration(
-                //                     labelText: 'Enter Amount',
-                //                     border: OutlineInputBorder(
-                //                       borderRadius: BorderRadius.circular(15),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ),
-                //               ElevatedButton(
-                //                 style: ElevatedButton.styleFrom(
-                //                     backgroundColor: primaryColor),
-                //                 onPressed: () {
-                //                   // Close the modal when Submit is clicked
-                //                   truckController
-                //                       .sendExtraMoney(
-                //                           tripId: widget.id,
-                //                           extendedAmount: pric.text)
-                //                       .then((value) => {pric.clear()});
-                //                 },
-                //                 child: "Submit".text.white.make(),
-                //               ),
-                //             ],
-                //           ),
-                //         50.heightBox,
-                //         DividerWidget(title: 'Ongoing Offer'.tr),
-                //         20.heightBox,
-                //         SliderWidget().h(120),
-                //       ],
-                //     ),
-                //   ),
-                //
-                // if (selectedCarIndex != null)
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       SizedBox(
-                //         width: context.screenWidth / 2.2,
-                //         child: primaryButton(
-                //           icon: Icons.arrow_circle_right_outlined,
-                //           buttonName: 'Continue',
-                //           onTap: () async {
-                //             if (selectedCarIndex != null &&
-                //                 selectedCarIndex! <
-                //                     liveBiddingController.liveBidData.length) {
-                //               final TripList selectedBidData =
-                //                   liveBiddingController
-                //                       .liveBidData[selectedCarIndex!];
-                //
-                //               final ReturnBidConfirmController confirmController =
-                //                   ReturnBidConfirmController();
-                //
-                //               await confirmController.bidConfirm(
-                //                 bidId: selectedBidData.id.toString(),
-                //                 tripId: "selectedBidData.tripId.toString()",
-                //               );
-                //
-                //               if (confirmController
-                //                       .bidConfirmModel.value.status ==
-                //                   "success") {
-                //                 _rentalTripSubmitController.liveBidTruckStart.value=false;
-                //                 Get.to(() => LiveBiddingConfirmScreen(
-                //                   rentalBidConfirm: confirmController
-                //                       .bidConfirmModel.value.data!,
-                //                 ));;
-                //               }
-                //             }
-                //           },
-                //         ),
-                //       ),
-                //       SizedBox(
-                //         width: context.screenWidth / 2.2,
-                //         child: primaryButton(
-                //             icon: Icons.arrow_circle_right_outlined,
-                //             buttonName: 'cancel'.tr,
-                //             onTap: () {
-                //               cancelTripRequestReason(
-                //                 context,
-                //                 widget.id.toString(),
-                //               );
-                //             }),
-                //       )
-                //     ],
-                //   ),
-              ],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.cancel_outlined,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                'Cancel Trip'.tr,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Extra Money Section (if applicable)
+                      Obx(
+                            () => truckController.price.value != "Bid"
+                            ? Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 15,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                                border: Border.all(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Add More Money'.tr,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Total".tr,
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        "${truckController.totalPrice}৳",
+                                        style: TextStyle(
+                                          color: primaryColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                            BorderRadius.circular(12),
+                                            border: Border.all(
+                                              color: Colors.grey
+                                                  .withOpacity(0.3),
+                                            ),
+                                          ),
+                                          child: TextField(
+                                            controller: pric,
+                                            keyboardType:
+                                            TextInputType.number,
+                                            decoration: InputDecoration(
+                                              hintText: 'Enter Amount',
+                                              hintStyle: TextStyle(
+                                                  color: Colors.grey[500]),
+                                              border: InputBorder.none,
+                                              contentPadding:
+                                              const EdgeInsets
+                                                  .symmetric(
+                                                horizontal: 16,
+                                                vertical: 14,
+                                              ),
+                                            ),
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                primaryColor,
+                                                primaryColor.withRed(200),
+                                              ],
+                                            ),
+                                            borderRadius:
+                                            BorderRadius.circular(12),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: primaryColor
+                                                    .withOpacity(0.3),
+                                                blurRadius: 10,
+                                              ),
+                                            ],
+                                          ),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              truckController
+                                                  .sendExtraMoney(
+                                                  tripId: widget.id,
+                                                  extendedAmount:
+                                                  pric.text)
+                                                  .then((value) =>
+                                                  pric.clear());
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                              Colors.transparent,
+                                              shadowColor:
+                                              Colors.transparent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                    12),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "Submit".tr,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+                        )
+                            : const SizedBox(),
+                      ),
+
+                      // Offer Slider Section
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.1),
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Ongoing Offer'.tr,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: primaryColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: primaryColor.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: primaryColor,
+                                        size: 14,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'Best Price',
+                                        style: TextStyle(
+                                          color: primaryColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            SliderWidget(),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Adjust your bid to get the best deal',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 80), // Bottom padding
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -414,7 +1001,7 @@ class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
     int hours = duration.inHours;
     int minutes = duration.inMinutes % 60;
     int seconds = duration.inSeconds % 60;
-    return '$hours hrs $minutes min $seconds sec';
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   var isOther = false;
@@ -424,89 +1011,301 @@ class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
       builder: (BuildContext context) {
         return StatefulBuilder(
-          // This allows us to call setState inside the modal
           builder: (context, setModalState) {
             return Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "Cancel trip?",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  // Drag Handle
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Why do you want to cancel?",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount:
-                    liveBiddingController.beforeCancelList.length,
-                    itemBuilder: (context, index) {
-                      var item =
-                      liveBiddingController.beforeCancelList[index];
-                      return ListTile(
-                        leading: Icon(Icons.no_crash),
-                        title: Text(item.title.toString()),
-                        onTap: () {
-                          if (item.id == 14) {
-                            // Update the state to show the "Other" input
-                            setModalState(() {
-                              isOther = true;
-                            });
-                          } else {
-                            cancelController.sendBeforeCancel(
-                                tripId, item.id.toString());
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  if (isOther)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  // Header
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: primaryColor.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: primaryColor.withOpacity(0.1),
+                      ),
+                    ),
+                    child: Column(
                       children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width / 2,
-                          height: 50,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              labelText: 'Enter text',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
+                        Icon(
+                          Icons.cancel_outlined,
+                          color: primaryColor,
+                          size: 48,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          "Cancel Trip?",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Close the modal when Submit is clicked
-                            cancelController.sendBeforeCancel(tripId, '14');
-                          },
-                          child: Text("Submit"),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Please tell us why you want to cancel",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text("Keep my trip"),
                   ),
+
+                  const SizedBox(height: 20),
+
+                  // Reasons List
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.1),
+                      ),
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: liveBiddingController.beforeCancelList.length,
+                      itemBuilder: (context, index) {
+                        var item =
+                        liveBiddingController.beforeCancelList[index];
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            leading: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: primaryColor.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.info_outline,
+                                color: primaryColor,
+                                size: 20,
+                              ),
+                            ),
+                            title: Text(
+                              item.title.toString(),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            trailing: Icon(
+                              Icons.arrow_forward_ios,
+                              color: primaryColor,
+                              size: 16,
+                            ),
+                            onTap: () {
+                              if (item.id == 14) {
+                                setModalState(() {
+                                  isOther = true;
+                                });
+                              } else {
+                                cancelController.sendBeforeCancel(
+                                    tripId, item.id.toString());
+                                Navigator.of(context).pop();
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  // Other Reason Input
+                  if (isOther)
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.1),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Please specify the reason",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          TextField(
+                            style: TextStyle(color: Colors.black),
+                            maxLines: 3,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[100],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintText: "Type your reason here...",
+                              hintStyle: TextStyle(color: Colors.grey[500]),
+                              contentPadding: const EdgeInsets.all(16),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Colors.grey.withOpacity(0.3),
+                                    ),
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      setModalState(() {
+                                        isOther = false;
+                                      });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      shadowColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Back",
+                                      style: TextStyle(
+                                        color: Colors.grey[700],
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        primaryColor,
+                                        primaryColor.withRed(200),
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: primaryColor.withOpacity(0.3),
+                                        blurRadius: 8,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      cancelController.sendBeforeCancel(
+                                          tripId, '14');
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      shadowColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Submit",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  const SizedBox(height: 20),
+
+                  // Keep Trip Button
+                  Container(
+                    width: double.infinity,
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: primaryColor.withOpacity(0.3),
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      child: Text(
+                        "Keep My Trip",
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
                 ],
               ),
             );

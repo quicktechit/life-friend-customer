@@ -29,8 +29,7 @@ class LiveBiddingPage extends StatefulWidget {
   final String createdAt;
   final String type;
 
-  const LiveBiddingPage({Key? key, required this.createdAt, required this.type})
-      : super(key: key);
+  const LiveBiddingPage({super.key, required this.createdAt, required this.type});
 
   @override
   State<LiveBiddingPage> createState() => _LiveBiddingPageState();
@@ -42,7 +41,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   bool determinate = false;
   final CancelController cancelController = Get.put(CancelController());
   int? selectedCarIndex;
-  var box=GetStorage();
+  var box = GetStorage();
   bool _timerRunning = false;
   Duration _remainingTime = const Duration(hours: 1);
 
@@ -55,6 +54,12 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   Get.put(SingleTripDetailsController());
   final RentalTripSubmitController _rentalTripSubmitController =
   Get.put(RentalTripSubmitController());
+
+  // Define color scheme
+  final Color primaryRed =primaryColor; // Deep Red
+  final Color darkRed =primaryColor.withRed(200);
+  final Color lightRed = const Color(0xFFFFEBEE);
+  final Color accentGold = const Color(0xFFFFD700);
 
   @override
   void initState() {
@@ -84,10 +89,8 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
         if (_remainingTime > Duration.zero) {
           _remainingTime -= Duration(seconds: 1);
         } else {
-          _rentalTripSubmitController.liveBidStart.value=false;
-
+          _rentalTripSubmitController.liveBidStart.value = false;
           box.write("liveBidStart", false);
-
           _timer.cancel();
           _timerStreamController.add(Duration.zero);
         }
@@ -117,209 +120,740 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false, // prevent default pop
+      canPop: false,
       onPopInvoked: (didPop) {
         if (!didPop) {
-          // Navigate back to dashboard
-         Get.offAll(()=>DashboardView());
+          Get.offAll(() => DashboardView());
         }
       },
       child: Scaffold(
-        backgroundColor: bgColor,
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.black,
-          leading: GestureDetector(
-              onTap: (){
-                Get.offAll(()=>DashboardView());
-              },
-              child: Icon(Icons.arrow_back)),
+
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              Get.offAll(() => DashboardView());
+            },
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            splashRadius: 20,
+          ),
           title: Text(
             "liveBidding".tr,
-            style: TextStyle(color: Colors.white, fontSize: 17.h),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          centerTitle: true,
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              margin: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryRed.withOpacity(0.3),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
               child: StreamBuilder<Duration>(
                 stream: _timerStreamController.stream,
                 initialData: _remainingTime,
                 builder: (context, snapshot) {
                   final remainingTime = snapshot.data!;
-                  return Text(
-                    remainingTime > Duration.zero
-                        ? _formatDuration(remainingTime)
-                        : "Time's up",
-                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  return Row(
+                    children: [
+                      Icon(Icons.timer, color: Colors.white, size: 16),
+                      const SizedBox(width: 6),
+                      Text(
+                        remainingTime > Duration.zero
+                            ? _formatDuration(remainingTime)
+                            : "Time's up",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                LinearProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                  minHeight: 10,
-                  backgroundColor: primaryColor50,
-                  value: _controller!.value,
+        body: Column(
+          children: [
+            // Animated Progress Bar
+            SizedBox(
+              height: 4,
+              child: LinearProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                backgroundColor: lightRed,
+                value: _controller!.value,
+              ),
+            ),
+
+            // Live Bidding Status Bar
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [primaryRed, primaryRed],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                 ),
-                SizedBox(
-                  height: 320,
-                  child: Obx(() {
-                    if (liveBiddingController.isLoading.value) {
-                      return loader();
-                    } else if (liveBiddingController.filteredLiveBidData.first.tripBids!.isEmpty||liveBiddingController.filteredLiveBidData.first.tripBids==[]) {
-                      return EmptyBoxWidget(
-                        title: "noLiveMessage".tr,
-                        truckImage: widget.type == "Bike"
-                            ? "assets/images/motorcycle.png"
-                            : 'assets/images/empty.png',
-                      );
-                    } else {
-                      return ListView.builder(
-                        itemCount: liveBiddingController.filteredLiveBidData.first.tripBids?.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          bool isSelected = selectedCarIndex == index;
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryRed.withOpacity(0.2),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          color: Colors.red,
+                          size: 10,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          "LIVE",
+                          style: TextStyle(
+                            color: darkRed,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      "Bidding in progress... Select your preferred vehicle",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 2,
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
 
-                          var data =
-                          liveBiddingController.filteredLiveBidData.first.tripBids?[index];
-
-                          return GestureDetector(
-                            onTap: () {
-                              _singleTripC
-                                  .singleTripDetails("${data?.tripId.toString()}",'normal');
-                              setState(() {
-                                selectedCarIndex = index;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: isSelected
-                                    ? Border.all(
-                                  color: Colors.green,
-                                  width: 1.5,
-                                )
-                                    : null,
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CarLiveBiddingContainerWidget2(
-                                  img: Urls.getImageURL(
-                                      endPoint:
-                                      data?.getBrand?.image?.toString() ?? ''),
-                                  carName: data?.getBrand?.name?.toString() ??
-                                      data?.getvehicle?.model ??
-                                      '',
-                                  capacity:
-                                  '${data?.getBrand?.capacity?.toString() ?? ''} Seats Capacity',
-                                  rating: '',
-                                  fare:
-                                  'Fare: ${data?.amount?.toString() ?? '0'} TK',
-                                  carNumber:
-                                  '${data?.getvehicle?.metro?.toString() ?? ''}\n${data?.getvehicle?.metroNo?.toString() ?? ''}',
-                                  onTap: () {
-                                    Get.to(() => CarDetailsPage(
-                                      tripId: data?.tripId?.toString() ?? '',
-                                      bidId: data?.id?.toString() ?? '',
-                                    ));
-                                  },
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    // Vehicle List Section
+                    Container(
+                      decoration: BoxDecoration(
+                        color: lightRed,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 15,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Obx(() {
+                          if (liveBiddingController.isLoading.value) {
+                            return SizedBox(
+                              height: 300,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  valueColor:
+                                  AlwaysStoppedAnimation<Color>(primaryRed),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  }),
-                ),
-                if (selectedCarIndex == null)
-                  Column(
-                    children: [
-                      Container(
-                        width: 150,
-                        color: Colors.white,
-                        child: primaryButton(
-                            icon: Icons.arrow_circle_right_outlined,
-                            buttonName: 'Cancel'.tr,
-                            onTap: () {
-                              cancelTripRequestReason(
-                                context,
-                                box.read("ID").toString(),
-                              );
-                            }),
+                            );
+                          } else if (liveBiddingController
+                              .filteredLiveBidData.first.tripBids!.isEmpty ||
+                              liveBiddingController
+                                  .filteredLiveBidData.first.tripBids == []) {
+                            return EmptyBoxWidget(
+                              title: "noLiveMessage".tr,
+                              truckImage: widget.type == "Bike"
+                                  ? "assets/images/motorcycle.png"
+                                  : 'assets/images/empty.png',
+                            ).p12();
+                          } else {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: liveBiddingController
+                                  .filteredLiveBidData.first.tripBids?.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                bool isSelected = selectedCarIndex == index;
+                                var data = liveBiddingController
+                                    .filteredLiveBidData.first.tripBids?[index];
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    _singleTripC.singleTripDetails(
+                                        "${data?.tripId.toString()}", 'normal');
+                                    setState(() {
+                                      selectedCarIndex = index;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? darkRed.withOpacity(0.1)
+                                          : lightRed,
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? primaryRed
+                                            : Colors.transparent,
+                                        width: 2,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(16),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              // Vehicle Image
+                                              Container(
+                                                width: 80,
+                                                height: 80,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(12),
+                                                  color: Colors.grey[900],
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      Urls.getImageURL(
+                                                        endPoint: data?.getBrand
+                                                            ?.image
+                                                            ?.toString() ??
+                                                            '',
+                                                      ),
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 16),
+
+                                              // Vehicle Details
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          data?.getBrand?.name
+                                                              ?.toString() ??
+                                                              data?.getvehicle
+                                                                  ?.model ??
+                                                              '',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                            FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        if (isSelected)
+                                                          Icon(
+                                                            Icons
+                                                                .check_circle_rounded,
+                                                            color: primaryRed,
+                                                            size: 24,
+                                                          ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      '${data?.getBrand?.capacity?.toString() ?? ''} Seats Capacity',
+                                                      style: TextStyle(
+                                                        color: Colors.grey[400],
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 8),
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          padding:
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 4,
+                                                          ),
+                                                          decoration:
+                                                          BoxDecoration(
+                                                            color: darkRed
+                                                                .withOpacity(
+                                                                0.2),
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                          ),
+                                                          child: Text(
+                                                            '${data?.getvehicle?.metro?.toString() ?? ''} ${data?.getvehicle?.metroNo?.toString() ?? ''}',
+                                                            style: TextStyle(
+                                                              color: primaryRed,
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        // Price Tag
+                                        Positioned(
+                                          right: 16,
+                                          top: 16,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                              vertical: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  primaryRed,
+                                                  darkRed,
+                                                ],
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.circular(20),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color:
+                                                  primaryRed.withOpacity(0.3),
+                                                  blurRadius: 10,
+                                                  spreadRadius: 1,
+                                                ),
+                                              ],
+                                            ),
+                                            child: Text(
+                                              '৳${data?.amount?.toString() ?? '0'}',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // View Details Button
+                                        Positioned(
+                                          right: 16,
+                                          bottom: 16,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => CarDetailsPage(
+                                                tripId: data?.tripId
+                                                    ?.toString() ??
+                                                    '',
+                                                bidId:
+                                                data?.id?.toString() ??
+                                                    '',
+                                              ));
+                                            },
+                                            child: Container(
+                                              padding:
+                                              const EdgeInsets.symmetric(
+                                                horizontal: 12,
+                                                vertical: 6,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white
+                                                    .withOpacity(0.1),
+                                                borderRadius:
+                                                BorderRadius.circular(8),
+                                                border: Border.all(
+                                                  color: Colors.white
+                                                      .withOpacity(0.2),
+                                                ),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Details',
+                                                    style: TextStyle(
+                                                      color: Colors.grey[300],
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    color: Colors.grey[300],
+                                                    size: 12,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        }),
                       ),
-                      20.heightBox,
-                      DividerWidget(title: 'Ongoing Offer'.tr),
-                      SizedBox(height: 20.h),
-                      SliderWidget(),
-                    ],
-                  ),
-                SizedBox(height: 67),
-                if (selectedCarIndex != null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(width: context.screenWidth/2.2,
-                        child:    primaryButton(
+                    ),
 
-                          icon: Icons.arrow_circle_right_outlined,
-                          buttonName: 'Continue',
-                          onTap: () async {
-                            if (selectedCarIndex != null &&
-                                selectedCarIndex! <
-                                    liveBiddingController.filteredLiveBidData.length) {
-                              var selectedBidData =
-                              liveBiddingController.filteredLiveBidData.first.tripBids?[selectedCarIndex!];
+                    const SizedBox(height: 24),
 
-                              final ReturnBidConfirmController confirmController =
-                              ReturnBidConfirmController();
+                    // Action Buttons Section
+                    if (selectedCarIndex == null)
+                      Column(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [primaryRed, darkRed],
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: primaryRed.withOpacity(0.4),
+                                  blurRadius: 15,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                cancelTripRequestReason(
+                                  context,
+                                  box.read("ID").toString(),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.cancel_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    'Cancel Trip'.tr,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
 
-                              await confirmController.bidConfirm(
-                                bidId: selectedBidData?.id.toString(),
-                                tripId: selectedBidData?.tripId.toString(),
-                              );
+                    if (selectedCarIndex != null)
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: lightRed,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Selected Vehicle',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [primaryRed, darkRed],
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: primaryRed.withOpacity(0.3),
+                                          blurRadius: 10,
+                                          spreadRadius: 1,
+                                        ),
+                                      ],
+                                    ),
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        if (selectedCarIndex != null &&
+                                            selectedCarIndex! <
+                                                liveBiddingController
+                                                    .filteredLiveBidData
+                                                    .length) {
+                                          var selectedBidData =
+                                          liveBiddingController
+                                              .filteredLiveBidData
+                                              .first
+                                              .tripBids?[selectedCarIndex!];
 
-                              if (confirmController
-                                  .bidConfirmModel.value.status ==
-                                  "success") {
-                                _rentalTripSubmitController.liveBidStart.value=false;
+                                          final ReturnBidConfirmController
+                                          confirmController =
+                                          ReturnBidConfirmController();
 
+                                          await confirmController.bidConfirm(
+                                            bidId: selectedBidData?.id
+                                                .toString(),
+                                            tripId: selectedBidData?.tripId
+                                                .toString(),
+                                          );
 
-                                Get.to(() => LiveBiddingConfirmScreen(
-                                  rentalBidConfirm: confirmController
-                                      .bidConfirmModel.value.data!,
-                                ));
-                              }
-                            }
-                          },
+                                          if (confirmController
+                                              .bidConfirmModel.value.status ==
+                                              "success") {
+                                            _rentalTripSubmitController
+                                                .liveBidStart.value = false;
+
+                                            Get.to(
+                                                    () => LiveBiddingConfirmScreen(
+                                                  rentalBidConfirm:
+                                                  confirmController
+                                                      .bidConfirmModel
+                                                      .value
+                                                      .data!,
+                                                ));
+                                          }
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.transparent,
+                                        shadowColor: Colors.transparent,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.check_circle,
+                                              color: Colors.white),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            'Confirm',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Container(
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedCarIndex = null;
+                                        });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.transparent,
+                                        shadowColor: Colors.transparent,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.close,
+                                              color: Colors.white),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            'Change',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
 
-                      SizedBox(width: context.screenWidth/2.2,
-                        child: primaryButton(
-                            icon: Icons.arrow_circle_right_outlined,
-                            buttonName: 'Cancel'.tr,
-                            onTap: () {}),
+                    const SizedBox(height: 20),
+
+                    // Offer Slider Section
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: lightRed,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 15,
+                            spreadRadius: 2,
+                          ),
+                        ],
                       ),
-                      // Column(
-                      //   children: [
-                      //
-                      //     20.heightBox,
-                      //     DividerWidget(title: "onGoingOffer".tr),
-                      //     SizedBox(height: 20.h),
-                      //     SliderWidget(),
-                      //   ],
-                      // ),
-                    ],
-                  ),
-              ],
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Ongoing Offer'.tr,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: primaryRed.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: primaryRed.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Best Price',
+                                  style: TextStyle(
+                                    color: primaryRed,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          SliderWidget(),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Adjust your bid to get the best deal',
+                            style: TextStyle(
+                              color: grey,
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 80), // Bottom padding
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -329,7 +863,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
     int hours = duration.inHours;
     int minutes = duration.inMinutes % 60;
     int seconds = duration.inSeconds % 60;
-    return '$hours hrs $minutes min $seconds sec';
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   var isOther = false;
@@ -339,89 +873,248 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
       builder: (BuildContext context) {
         return StatefulBuilder(
-          // This allows us to call setState inside the modal
           builder: (context, setModalState) {
             return Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "Cancel trip?",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Why do you want to cancel?",
-                    style: TextStyle(
-                      fontSize: 16,
+                  // Drag Handle
+                  Container(
+                    width: 40,
+                    height: 5,
+                    decoration: BoxDecoration(
                       color: Colors.grey[600],
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount:
-                    liveBiddingController.beforeCancelList.length,
-                    itemBuilder: (context, index) {
-                      var item =
-                      liveBiddingController.beforeCancelList[index];
-                      return ListTile(
-                        leading: Icon(Icons.no_crash),
-                        title: Text(item.title.toString()),
-                        onTap: () {
-                          if (item.id == 14) {
-                            // Update the state to show the "Other" input
-                            setModalState(() {
-                              isOther = true;
-                            });
-                          } else {
-                            cancelController.sendBeforeCancel(
-                                tripId, item.id.toString());
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  if (isOther)
-                  // Show the text input if "Other" was selected
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  const SizedBox(height: 20),
+
+                  // Header
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: lightRed,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
                       children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width / 2,
-                          height: 50,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              labelText: 'Enter text',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
+                        Icon(
+                          Icons.cancel_outlined,
+                          color: primaryRed,
+                          size: 48,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          "Cancel Trip?",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Close the modal when Submit is clicked
-                            cancelController.sendBeforeCancel(tripId, '14');
-                          },
-                          child: Text("Submit"),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Please tell us why you want to cancel",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text("Keep my trip"),
                   ),
+
+                  const SizedBox(height: 20),
+
+                  // Reasons List
+                  Container(
+                    decoration: BoxDecoration(
+                      color: lightRed,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: liveBiddingController.beforeCancelList.length,
+                      itemBuilder: (context, index) {
+                        var item = liveBiddingController.beforeCancelList[index];
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            leading: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: primaryRed.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.info_outline,
+                                color: primaryRed,
+                                size: 20,
+                              ),
+                            ),
+                            title: Text(
+                              item.title.toString(),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            trailing: Icon(
+                              Icons.arrow_forward_ios,
+                              color: primaryColor,
+                              size: 16,
+                            ),
+                            onTap: () {
+                              if (item.id == 14) {
+                                setModalState(() {
+                                  isOther = true;
+                                });
+                              } else {
+                                cancelController.sendBeforeCancel(
+                                    tripId, item.id.toString());
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  // Other Reason Input
+                  if (isOther)
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: lightRed,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Please specify the reason",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          TextField(
+                            style: TextStyle(color: Colors.white),
+                            maxLines: 3,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[900],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintText: "Type your reason here...",
+                              hintStyle: TextStyle(color: Colors.grey[500]),
+                              contentPadding: const EdgeInsets.all(16),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.grey[800],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                  ),
+                                  child: Text(
+                                    "Back",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    cancelController.sendBeforeCancel(
+                                        tripId, '14');
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryRed,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                  ),
+                                  child: Text(
+                                    "Submit",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  const SizedBox(height: 20),
+
+                  // Keep Trip Button
+                  Container(
+                    width: double.infinity,
+                    height: 55,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: primaryRed.withOpacity(0.3)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      child: Text(
+                        "Keep My Trip",
+                        style: TextStyle(
+                          color: primaryRed,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
                 ],
               ),
             );

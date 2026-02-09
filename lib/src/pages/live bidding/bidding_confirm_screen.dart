@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pickup_load_update/src/components/bottom%20navbar/bottom.dart';
-import 'package:pickup_load_update/src/components/bottom%20navbar/bottom_nav_bar.dart';
 import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
-import 'package:pickup_load_update/src/configs/loader.dart';
-import 'package:pickup_load_update/src/controllers/rental%20trip%20request%20controllers/rental_trip_bid_confirm_controller.dart';
-import 'package:pickup_load_update/src/controllers/single%20trip%20details%20controller/single_trip_details_controller.dart';
+
 import 'package:pickup_load_update/src/models/rental_bid_confirm_model.dart';
-import 'package:pickup_load_update/src/models/single_trip_details_model.dart';
-import 'package:pickup_load_update/src/widgets/Total_fare_widget.dart';
+
 import 'package:pickup_load_update/src/widgets/car_container_widget.dart';
 import 'package:pickup_load_update/src/widgets/custom_button_widget.dart';
 import 'package:pickup_load_update/src/widgets/driver_info_widget.dart';
 import 'package:pickup_load_update/src/widgets/history_time_widget.dart';
 import 'package:pickup_load_update/src/widgets/partner_info_widget.dart';
-import 'package:pickup_load_update/src/widgets/safety_assurance_widget.dart';
+
 import 'package:pickup_load_update/src/widgets/status_widget.dart';
 import 'package:pickup_load_update/src/widgets/text/kText.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,10 +19,10 @@ import 'package:url_launcher/url_launcher.dart';
 class LiveBiddingConfirmScreen extends StatefulWidget {
   final RentalBidConfirm rentalBidConfirm;
 
-  LiveBiddingConfirmScreen({
-    Key? key,
+  const LiveBiddingConfirmScreen({
+    super.key,
     required this.rentalBidConfirm,
-  }) : super(key: key);
+  });
 
   @override
   _LiveBiddingConfirmScreenState createState() =>

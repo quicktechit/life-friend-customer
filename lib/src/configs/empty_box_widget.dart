@@ -21,7 +21,7 @@ class EmptyBoxWidget extends StatelessWidget {
             width: 140,
           ),
           KText(
-            text: title,
+            text: title,maxLines: 2,textAlign: TextAlign.center,
             fontWeight: FontWeight.bold,
           ),
         ],

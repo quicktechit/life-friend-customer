@@ -30,369 +30,542 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
   Get.put(NewAllTripHistoryController());
 
   final int maxWordsToShow = 4;
+
+  // Deep red colors
+  final Color textColor = black54;
+  final Color subtitleColor = grey;
+  final Color borderColor = white;
+
   @override
   void initState() {
     super.initState();
     _controller.getCancelTrip();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Obx(() => _controller.isLoading.value
-        ? Center(
-      child: loader(),
-    )
-        : _controller.allCancelTripHistory.isEmpty
-        ? EmptyBoxWidget(title: 'No Rental trip history available yet!', truckImage: 'assets/images/empty.png',)
-        : ListView.builder(
-      itemCount: _controller.allCancelTripHistory.length,
-      itemBuilder: (context, index) {
-        final SortedTrips item = _controller.allCancelTripHistory[index];
+    return Scaffold(
+ 
+   
+      body: Obx(() => _controller.isLoading.value
+          ? Center(
+        child: loader(),
+      )
+          : _controller.allCancelTripHistory.isEmpty
+          ? Center(
+        child: EmptyBoxWidget(
+          title: 'No cancelled trips available yet!',
+          truckImage: 'assets/images/empty.png',
+          // subtitle: 'All your cancelled trips will appear here',
+        ),
+      )
+          : ListView.separated(
+        padding: EdgeInsets.only(top: 8,left: 10,right: 10,bottom: 90.h),
+        itemCount: _controller.allCancelTripHistory.length,
+        separatorBuilder: (context, index) => SizedBox(height: 16),
+        itemBuilder: (context, index) {
+          final SortedTrips item = _controller.allCancelTripHistory[index];
 
-        String? pickUpCoordinates;
-        String? downCoordinates;
-        double upLat = 0.0, upLng = 0.0, downLat = 0.0, downLng = 0.0;
-        if (item.rentalRelationships != null) {
-          // Safely access pickUpCoordinates
-          pickUpCoordinates = item.rentalRelationships?.trip?.map?.toString();
+          String? pickUpCoordinates;
+          String? downCoordinates;
+          double upLat = 0.0, upLng = 0.0, downLat = 0.0, downLng = 0.0;
 
-          // Check if dropoffLocations is not empty before accessing the last element
-          if (item.rentalRelationships?.trip?.dropoffLocations?.isNotEmpty ?? false) {
-            downCoordinates = item.rentalRelationships?.trip?.dropoffLocations?.last.dropoffMap.toString().replaceAll(',', ' ');
-            log("${item.rentalRelationships?.trip?.dropoffLocations?.last.dropoffMap}");
+          // Your existing coordinate parsing logic
+          if (item.rentalRelationships != null) {
+            pickUpCoordinates = item.rentalRelationships?.trip?.map?.toString();
+
+            if (item.rentalRelationships?.trip?.dropoffLocations?.isNotEmpty ?? false) {
+              downCoordinates = item.rentalRelationships?.trip?.dropoffLocations?.last.dropoffMap.toString().replaceAll(',', ' ');
+            } else {
+              downCoordinates = item.rentalRelationships?.trip?.dropoffMap.toString().replaceAll(',', ' ');
+            }
           } else {
-            downCoordinates = item
-                .rentalRelationships?.trip?.dropoffMap
-                .toString()
-                .replaceAll(',', ' ');  // Or handle this case as needed
-          }
-        } else {
-          // Handle the case where rentalRelationships is null
-          pickUpCoordinates = item.returnRelationships?.customerBidDetails?.map?.toString();
+            pickUpCoordinates = item.returnRelationships?.customerBidDetails?.map?.toString();
 
-          // Check if returnTrip has dropoffLocations before accessing .last
-          if (item.returnRelationships?.returnTrip?.dropoffLocations?.isNotEmpty ?? false) {
-            String? modified = item.returnRelationships?.returnTrip?.dropoffLocations?.last.dropoffMap.toString().replaceAll(',', ' ');
-            downCoordinates = modified;
-          } else {
-            downCoordinates = "No dropoff location available";  // Or handle this case
+            if (item.returnRelationships?.returnTrip?.dropoffLocations?.isNotEmpty ?? false) {
+              String? modified = item.returnRelationships?.returnTrip?.dropoffLocations?.last.dropoffMap.toString().replaceAll(',', ' ');
+              downCoordinates = modified;
+            } else {
+              downCoordinates = "No dropoff location available";
+            }
           }
-        }
 
-        if (pickUpCoordinates != null &&
-            pickUpCoordinates.contains(' ')) {
-          try {
-            List<String> pickUpParts = pickUpCoordinates.split(' ');
-            upLat = double.parse(pickUpParts[0]);
-            upLng = double.parse(pickUpParts[1]);
-          } catch (e) {
-            print(
-                "Error parsing pickup coordinates: $pickUpCoordinates");
+          if (pickUpCoordinates != null && pickUpCoordinates.contains(' ')) {
+            try {
+              List<String> pickUpParts = pickUpCoordinates.split(' ');
+              upLat = double.parse(pickUpParts[0]);
+              upLng = double.parse(pickUpParts[1]);
+            } catch (e) {
+              print("Error parsing pickup coordinates: $pickUpCoordinates");
+            }
           }
-        }
 
-        // Parse drop-off coordinates
-        if (downCoordinates != null &&
-            downCoordinates.contains(' ')) {
-          try {
-            List<String> downUpParts = downCoordinates.split(' ');
-            downLat = double.parse(downUpParts[0]);
-            downLng = double.parse(downUpParts[1]);
-          } catch (e) {
-            print(
-                "Error parsing drop-off coordinates: $downCoordinates");
+          if (downCoordinates != null && downCoordinates.contains(' ')) {
+            try {
+              List<String> downUpParts = downCoordinates.split(' ');
+              downLat = double.parse(downUpParts[0]);
+              downLng = double.parse(downUpParts[1]);
+            } catch (e) {
+              print("Error parsing drop-off coordinates: $downCoordinates");
+            }
           }
-        }
 
-        return InkWell(
-          onTap: () {
-            Get.to(() => SingleHistoryTripDetailsPage(
-              isCancel: true,
-              tripId: item.tripId.toString(), type:item.returnRelationships!=null? 'return':"normal",
-            ));
-          },
-          child: Card(
-            color: white,
-            child: Column(
-              children: [
-                Padding(
-                  padding: paddingH10V10,
-                  child: Column(
-                    children: [
-                      10.heightBox,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          KText(
-                            text: item.rentalRelationships != null
-                                ? "${item.rentalRelationships?.vehicle?.name}"
-                                : "${item.returnRelationships?.returnVehicle?.name}",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: primaryColor,
-                          ).box.p4.roundedSM.make(),
-                        ],
+          return InkWell(
+            onTap: () {
+              // Get.to(() => SingleHistoryTripDetailsPage(
+              //   isCancel: true,
+              //   tripId: item.tripId.toString(),
+              //   type: item.returnRelationships != null ? 'return' : "normal",
+              // ));
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+                border: Border.all(color: borderColor, width: 1),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header with trip ID and status
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: primaryColor.withOpacity(0.05),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
                       ),
-                      Row(
-                        children: [
-                          KText(text: "Trip: "),
-                          KText(
-                            text: item.trackingId.toString(),
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                      border: Border(
+                        bottom: BorderSide(color: borderColor),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: primaryColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: primaryColor.withOpacity(0.3), width: 1),
                           ),
-                          Spacer(),
-                        ],
-                      ),
-                      20.heightBox,
-                      Center(
-                        child: CustomPaint(
-                          painter: DrawDottedHorizontalLine(),
+                          child: Text(
+                            'CANCELLED',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: primaryColor.withRed(200),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
                         ),
-                      ),
-                      Container(
-                        width: Get.width,
-                        child: Padding(
-                          padding: paddingV10,
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.start,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.center,
-                            children: [
-                              Image.network(
-                                Urls.getImageURL(
-                                    endPoint: item
-                                        .rentalRelationships !=
-                                        null
-                                        ? "${item.rentalRelationships?.vehicle?.image}"
-                                        : "${item.returnRelationships?.returnVehicle?.image}"),
-                                height: 70.h,
-                                width: 70.w,
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'Trip ID: ${item.trackingId}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: textColor,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            item.rentalRelationships != null
+                                ? "${item.rentalRelationships?.vehicle?.name?.toUpperCase() ?? 'N/A'}"
+                                : "${item.returnRelationships?.returnVehicle?.name?.toUpperCase() ?? 'N/A'}",
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Vehicle image and route
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8,vertical:12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Vehicle Image
+                        Stack(
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.grey[100],
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    Urls.getImageURL(
+                                      endPoint: item.rentalRelationships != null
+                                          ? "${item.rentalRelationships?.vehicle?.image}"
+                                          : "${item.returnRelationships?.returnVehicle?.image}",
+                                    ),
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              5.widthBox,
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              child: item.rentalRelationships?.vehicle?.image == null &&
+                                  item.returnRelationships?.returnVehicle?.image == null
+                                  ? Center(
+                                child: Icon(
+                                  Icons.directions_car,
+                                  color: primaryColor,
+                                  size: 30,
+                                ),
+                              )
+                                  : null,
+                            ),
+                            // Vehicle type badge
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: primaryColor,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(6),
+                                    bottomRight: Radius.circular(12),
+                                  ),
+                                ),
+                                child: Text(
+                                  item.rentalRelationships != null
+                                      ? "${item.rentalRelationships?.vehicle?.name?.toUpperCase() ?? 'N/A'}"
+                                      : "${item.returnRelationships?.returnVehicle?.name?.toUpperCase() ?? 'N/A'}",
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(width: 8),
+
+                        // Route details
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Pickup location with icon
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.green.withOpacity(0.05),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.green.withOpacity(0.2)),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/pick.png",
-                                          scale: 20.h,
-                                        ),
-                                        SizedBox(
-                                          width: 3.h,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-
-                                                item.rentalRelationships !=
-                                                    null
-                                                    ? "${item.rentalRelationships?.trip?.pickupLocation}"
-                                                    : "${item.returnRelationships?.returnTrip?.location}",
-
-                                            maxLines: 4,
-                                            overflow:
-                                            TextOverflow.ellipsis,
+                                    Icon(Icons.location_on, size: 16, color: Colors.green),
+                                    SizedBox(width: 8),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Pickup Location',
                                             style: TextStyle(
-                                              fontSize: 12.h,
-                                              fontWeight:
-                                              FontWeight.w600,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
+                                              color: subtitleColor,
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    sizeH5,
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                          12.h, 0, 10.h, 0),
-                                      child: Container(
-                                        height: 15,
-                                        width: 1,
-                                        color: grey,
+                                          SizedBox(height: 2),
+                                          Text(
+                                            item.rentalRelationships != null
+                                                ? "${item.rentalRelationships?.trip?.pickupLocation}"
+                                                : "${item.returnRelationships?.returnTrip?.location}",
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w600,
+                                              color: textColor,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    sizeH5,
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/map.png",
-                                          scale: 20.h,
-                                        ),
-                                        SizedBox(
-                                          width: 3.h,
-                                        ),
-                                        if (item.rentalRelationships !=
-                                            null)
-                                          for (var location in item
-                                              .rentalRelationships!
-                                              .trip!
-                                              .dropoffLocations!)
-                                            Text(
-                                              "${location.dropoffLocation}, ",
-                                              maxLines: 4,
-                                              overflow: TextOverflow
-                                                  .ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 12.h,
-                                                fontWeight:
-                                                FontWeight.w600,
-                                              ),
-                                            ),
-
-                                          if (item.rentalRelationships?.trip?.dropoffLocation != null)
-                                            "${item.rentalRelationships?.trip?.dropoffLocation}"
-                                                .text
-                                                .semiBold
-                                                .make()
-                                                .w(context.screenWidth /
-                                                1.8),
-                                        if (item.rentalRelationships ==
-                                            null)
-                                          Expanded(
-                                            child: Text(
-
-                                                  "${item.returnRelationships?.returnTrip?.destination}",
-
-                                              maxLines: 4,
-                                              overflow: TextOverflow
-                                                  .ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 12.h,
-                                                fontWeight:
-                                                FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                      ],
                                     ),
                                   ],
                                 ),
                               ),
-                              // Column(
-                              //    children: [
-                              //      item.vehicle?.image != null ? Padding(
-                              //          padding: EdgeInsets.all(4.0.h),
-                              //          child: Image.network(
-                              //            Urls.getImageURL(
-                              //                endPoint: item
-                              //                    .vehicle!.image
-                              //                    .toString()),
-                              //            scale: 1.5,
-                              //          )):SizedBox(),
-                              //      Text(
-                              //        item.vehicle?.name ?? "N/A",
-                              //        style: TextStyle(
-                              //            fontWeight: FontWeight.bold),
-                              //      )
-                              //    ],
-                              //  ),
+
+                              // Arrow indicator
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                child: Center(
+                                  child: Container(
+                                    width: 30,
+                                    height: 1,
+                                    color: primaryColor.withOpacity(0.3),
+                                  ),
+                                ),
+                              ),
+
+                              // Dropoff locations
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.red.withOpacity(0.05),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.red.withOpacity(0.2)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.location_on, size: 16, color: Colors.red),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'Dropoff Location${(item.rentalRelationships?.trip?.dropoffLocations?.length ?? 0) > 1 ? 's' : ''}',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
+                                            color: subtitleColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4),
+                                    if (item.rentalRelationships != null && item.rentalRelationships!.trip!.dropoffLocations != null)
+                                      ...item.rentalRelationships!.trip!.dropoffLocations!.map((location) => Padding(
+                                        padding: EdgeInsets.only(left: 24, bottom: 2),
+                                        child: Text(
+                                          "• ${location.dropoffLocation}",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: textColor,
+                                          ),
+                                        ),
+                                      )).toList(),
+                                    if (item.rentalRelationships?.trip?.dropoffLocation != null)
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 24),
+                                        child: Text(
+                                          "• ${item.rentalRelationships?.trip?.dropoffLocation}",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: textColor,
+                                          ),
+                                        ),
+                                      ),
+                                    if (item.rentalRelationships == null)
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 24),
+                                        child: Text(
+                                          "${item.returnRelationships?.returnTrip?.destination}",
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: textColor,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Center(
-                  child: CustomPaint(
-                    painter: DrawDottedHorizontalLine(),
-                  ),
-                ),
-                15.heightBox,
-                Padding(
-                  padding: EdgeInsets.fromLTRB(15.0.h, 0, 15.h, 15.h),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          KText(
-                            text: "Trip Time: ",
-                            fontSize: 13,
-                            color: Colors.grey,
-                          ),
-                          KText(
-                            text: item.rentalRelationships != null
-                                ? "${DateFormat("hh:mma dd-MM-yyyy").format(DateFormat("yyyy-MM-dd hh:mm a").parse("${item.rentalRelationships?.trip?.datetime}")).toLowerCase()}"
-                                : "${item.returnRelationships?.returnTrip?.timedate}",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                          Spacer(),
 
-                        ],
+                  // Trip details section
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      border: Border(
+                        top: BorderSide(color: borderColor),
+                        bottom: BorderSide(color: borderColor),
                       ),
-                      5.heightBox,
-                      // Row(
-                      //   children: [
-                      //     KText(
-                      //       text: "Round Trip: ",
-                      //       fontSize: 13,
-                      //       color: Colors.grey,
-                      //     ),
-                      //     KText(
-                      //       text: item.rentalRelationships != null
-                      //           ? item.rentalRelationships?.trip
-                      //           ?.roundTrip ??
-                      //           'NO'
-                      //           : "NO",
-                      //       fontWeight: FontWeight.bold,
-                      //       fontSize: 14,
-                      //     )
-                      //   ],
-                      // )
-                    ],
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.access_time, size: 14, color: subtitleColor),
+                            SizedBox(width: 8),
+                            Text(
+                              'Trip Time:',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: subtitleColor,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              item.rentalRelationships != null
+                                  ? DateFormat("hh:mma dd-MM-yyyy").format(
+                                  DateFormat("yyyy-MM-dd hh:mm a").parse(
+                                      "${item.rentalRelationships?.trip?.datetime}")).toLowerCase()
+                                  : "${item.returnRelationships?.returnTrip?.timedate}",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: textColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        if (item.rentalRelationships != null)
+                          Row(
+                            children: [
+                              Icon(Icons.autorenew, size: 14, color: subtitleColor),
+                              SizedBox(width: 8),
+                              Text(
+                                'Round Trip:',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: subtitleColor,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                item.rentalRelationships?.trip?.roundTrip ?? 'NO',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: textColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Spacer(),
-                      // "See Map"
-                      //     .text
-                      //     .semiBold.black
-                      //     .make()
-                      //     .box
-                      //     .p4.shadowXs .white.gray50
-                      //     .roundedSM
-                      //     .make()
-                      //     .onTap(() {
-                      //   Get.to(
-                      //         () => MapWithDirections(
-                      //       pickUpLat: upLat,
-                      //       pickUpLng: upLng,
-                      //       dropUpLat: downLat,
-                      //       dropUpLng: downLng,
-                      //     ),
-                      //   );
-                      // }),
-                      item.amount == null
-                          ? Container()
-                          : Text(
-                        'Fare: ${item.amount.toString()} ৳',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )
-                          .box
-                          .p4
-                          .color(primaryColor)
-                          .roundedSM
-                          .make()
-                    ],
-                  ).pSymmetric(h: 5),
-                15.heightBox,
-              ],
+
+                  // Footer with actions
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // View Map Button
+                        InkWell(
+                          onTap: () {
+                            if (upLat != 0.0 && upLng != 0.0) {
+                              Get.to(() => MapWithDirections(
+                                pickUpLat: upLat,
+                                pickUpLng: upLng,
+                                dropUpLat: downLat,
+                                dropUpLng: downLng,
+                              ));
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: primaryColor, width: 1.5),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.map, size: 14, color: primaryColor),
+                                SizedBox(width: 6),
+                                Text(
+                                  'View Map',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // Fare amount
+                        if (item.amount != null)
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [primaryColor,  primaryColor.withRed(200),],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: primaryColor.withOpacity(0.3),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Fare:',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white.withOpacity(0.9),
+                                  ),
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  '${item.amount.toString()} ৳',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
-    ));
+          );
+        },
+      ),
+      ),
+    );
   }
-
-
 }
