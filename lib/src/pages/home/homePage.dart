@@ -63,9 +63,16 @@ class _HomePageState extends State<HomePage>
   // Enhanced Quick Services with better icons and descriptions
   final List<ServiceItem> quickServices = [
     ServiceItem(
+      title: 'Ambulance',
+      subtitle: 'Emergency Service',
+      icon: '🚑',
+      gradient: [Color(0xFFEC7063), primaryColor],
+      onTap: 'ambulance',
+    ),
+    ServiceItem(
       title: 'Ride Share',
       subtitle: 'Share & Save',
-      icon: '🚗',
+      icon: '🏍️',
       gradient: [Color(0xE55E78E3), Color(0xE8764BA2)],
       onTap: 'rideShare',
     ),
@@ -76,26 +83,11 @@ class _HomePageState extends State<HomePage>
       gradient: [Color(0xE0F093FB), Color(0xE8F5576C)],
       onTap: 'carRental',
     ),
-    ServiceItem(
-      title: 'Airport',
-      subtitle: 'Pickup/Drop',
-      icon: '✈️',
-      gradient: [Color(0xE74FACFE), Color(0xEA00F2FE)],
-      onTap: 'airport',
-    ),
   ];
 
   // Enhanced Featured Services
   final List<FeatureCard> featuredServices = [
-    FeatureCard(
-      name: "Ambulance Service",
-      tagline: "Emergency 24/7",
-      image: 'assets/new_image/ambulance.jpeg',
-      type: 'ambulance',
-      icon: Icons.medical_services,
-      color: Color(0xFFEF4444),
-      rating: 4.9,
-    ),
+
     FeatureCard(
       name: "Truck Rental",
       tagline: "Heavy Loads",
@@ -115,6 +107,15 @@ class _HomePageState extends State<HomePage>
       rating: 4.8,
     ),
     FeatureCard(
+      name: "Airport Service",
+      tagline: "Pickup & Drop",
+      image: 'assets/new_image/airport_image.jpg', // make sure you have this image
+      type: 'airport',
+      icon: Icons.airplanemode_active,
+      color: Color(0xFFFFA500), // Orange for travel
+      rating: 4.8,
+    ),
+    FeatureCard(
       name: "Luxury Cars",
       tagline: "Premium Experience",
       image: 'assets/images/luxury.jpeg',
@@ -123,7 +124,9 @@ class _HomePageState extends State<HomePage>
       color: Color(0xFF8B5CF6),
       rating: 4.9,
     ),
+
   ];
+
 
   @override
   void initState() {
@@ -441,6 +444,20 @@ class _HomePageState extends State<HomePage>
     return GestureDetector(
       onTap: () async {
         switch (service.onTap) {
+          case 'ambulance':
+            await vehicleController.getVehicles(id: '2');
+            Get.to(
+              () => RentalListPage(tripType: 'Ambulance', ambulance: true),
+            );
+            break;
+          case 'carRental':
+            await vehicleController.getVehicles(id: '2');
+            Get.to(() => RentalListPage(isAirport: false, tripType: 'car'));
+            break;
+          case 'airport':
+            await vehicleController.getVehicles(id: '2');
+            Get.to(() => RentalListPage(isAirport: true, tripType: 'car'));
+            break;
           case 'rideShare':
             Get.to(
               () => RentalPointPage(
@@ -452,14 +469,6 @@ class _HomePageState extends State<HomePage>
                 tripType: '4',
               ),
             );
-            break;
-          case 'carRental':
-            await vehicleController.getVehicles(id: '2');
-            Get.to(() => RentalListPage(isAirport: false, tripType: 'car'));
-            break;
-          case 'airport':
-            await vehicleController.getVehicles(id: '2');
-            Get.to(() => RentalListPage(isAirport: true, tripType: 'car'));
             break;
         }
       },
@@ -562,9 +571,9 @@ class _HomePageState extends State<HomePage>
         } else if (feature.type == 'truckRental') {
           Get.to(() => ReturnTripListFilterPage());
           await returnTripFilter.returnTripFilterList();
-        } else if (feature.type == 'ambulance') {
+        } else if (feature.type == 'airport') {
           await vehicleController.getVehicles(id: '2');
-          Get.to(() => RentalListPage(tripType: 'Ambulance', ambulance: true));
+          Get.to(() => RentalListPage(isAirport: true, tripType: 'car'));
         }
       },
       child: Container(
@@ -620,31 +629,31 @@ class _HomePageState extends State<HomePage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Rating Badge
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.star, size: 12, color: Colors.amber),
-                            SizedBox(width: 4),
-                            KText(
-                              text: feature.rating.toString(),
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF111827),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 12),
+                      // Container(
+                      //   padding: EdgeInsets.symmetric(
+                      //     horizontal: 10,
+                      //     vertical: 4,
+                      //   ),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.white,
+                      //     borderRadius: BorderRadius.circular(12),
+                      //   ),
+                      //   child: Row(
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       Icon(Icons.star, size: 12, color: Colors.amber),
+                      //       SizedBox(width: 4),
+                      //       KText(
+                      //         text: feature.rating.toString(),
+                      //         fontSize: 12.sp,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: Color(0xFF111827),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      //
+                      // SizedBox(height: 12),
 
                       // Service Icon
                       Container(
