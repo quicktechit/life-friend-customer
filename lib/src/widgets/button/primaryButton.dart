@@ -5,9 +5,10 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 
 import '../text/kText.dart';
 
-primaryButton({
+ElevatedButton primaryButton({
   required buttonName,
   final IconData? icon,
+  double? radius,
   required void Function()? onTap,
 }) =>
     ElevatedButton(
@@ -15,7 +16,7 @@ primaryButton({
       style: ButtonStyle(
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(radius??25),
           ),
         ),
         backgroundColor: MaterialStateProperty.all(

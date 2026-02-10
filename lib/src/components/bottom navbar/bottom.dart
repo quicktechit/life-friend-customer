@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/pages/home/homePage.dart';
 import 'package:pickup_load_update/src/pages/profile/profilePage.dart';
+import 'package:sidebarx/sidebarx.dart';
 
 import '../../pages/Trip History/all trip/quick_tech_all_trip_history.dart';
 
@@ -20,6 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:ui';
 
+import '../drawer/sidebarComponent.dart';
+
 /// iOS-Style Dashboard with Glassmorphism Effect
 /// Features: Blurred background, smooth animations, premium feel
 class DashboardView extends StatefulWidget {
@@ -31,6 +34,7 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
+  final _controller = SidebarXController(selectedIndex: 0, extended: true);
   int _selectedIndex = 0;
   late List<AnimationController> _controllers;
   late List<Animation<double>> _animations;
@@ -66,7 +70,10 @@ class _DashboardViewState extends State<DashboardView>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
+
       child: Scaffold(
+        key: scaffoldKey,
+        drawer: Drawer(child: ExampleSidebarX(controller: _controller)),
         extendBody: true,
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,

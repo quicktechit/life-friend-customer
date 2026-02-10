@@ -98,15 +98,13 @@ class _RentalPointPageState extends State<RentalPointPage> {
         ),
         centerTitle: true,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
           child: Column(
             children: [
               // Car Selection (Conditional)
@@ -119,7 +117,8 @@ class _RentalPointPageState extends State<RentalPointPage> {
 
               // Main Card Container
               Card(
-                elevation: 8,color: Colors.white,
+                elevation: 8,
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -154,7 +153,8 @@ class _RentalPointPageState extends State<RentalPointPage> {
 
               // Note Field
               Card(
-                elevation: 4,color: white,
+                elevation: 4,
+                color: white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -165,8 +165,11 @@ class _RentalPointPageState extends State<RentalPointPage> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.note_add_outlined,
-                              color: primaryColor, size: 20),
+                          Icon(
+                            Icons.note_add_outlined,
+                            color: primaryColor,
+                            size: 20,
+                          ),
                           SizedBox(width: 8),
                           Text(
                             'Additional Notes',
@@ -202,20 +205,20 @@ class _RentalPointPageState extends State<RentalPointPage> {
 
     return shouldShowCar
         ? Card(
-      color: Colors.white,
-      elevation: 6,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CarSelectedOption(
-          carImg: widget.carImg,
-          carName: widget.carName,
-          capacity: "${widget.capacity} Seats Capacity",
-        ),
-      ),
-    )
+            color: Colors.white,
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CarSelectedOption(
+                carImg: widget.carImg,
+                carName: widget.carName,
+                capacity: "${widget.capacity} Seats Capacity",
+              ),
+            ),
+          )
         : const SizedBox();
   }
 
@@ -223,10 +226,9 @@ class _RentalPointPageState extends State<RentalPointPage> {
     if (widget.isAirport == false) return const SizedBox();
 
     return Card(
-      elevation: 4,color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      elevation: 4,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -234,8 +236,11 @@ class _RentalPointPageState extends State<RentalPointPage> {
           children: [
             Row(
               children: [
-                Icon(Icons.flight_takeoff_outlined,
-                    color: primaryColor, size: 20),
+                Icon(
+                  Icons.flight_takeoff_outlined,
+                  color: primaryColor,
+                  size: 20,
+                ),
                 SizedBox(width: 8),
                 Text(
                   'pickUpFrom',
@@ -250,7 +255,11 @@ class _RentalPointPageState extends State<RentalPointPage> {
             SizedBox(height: 12),
             Row(
               children: [
-                _buildRadioTile('Airport', 'fromAirport'.tr, Icons.airplanemode_active),
+                _buildRadioTile(
+                  'Airport',
+                  'fromAirport'.tr,
+                  Icons.airplanemode_active,
+                ),
                 _buildRadioTile('Home', 'fromHome'.tr, Icons.home_outlined),
               ],
             ),
@@ -263,8 +272,9 @@ class _RentalPointPageState extends State<RentalPointPage> {
   Widget _buildRadioTile(String value, String title, IconData icon) {
     return Expanded(
       child: Obx(
-            () => Card(
-          elevation: 2,color: Colors.white,
+        () => Card(
+          elevation: 2,
+          color: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
@@ -296,7 +306,8 @@ class _RentalPointPageState extends State<RentalPointPage> {
                   Text(
                     title,
                     style: TextStyle(
-                      fontWeight: airportController.selectedLocation.value == value
+                      fontWeight:
+                          airportController.selectedLocation.value == value
                           ? FontWeight.w600
                           : FontWeight.normal,
                       color: airportController.selectedLocation.value == value
@@ -366,8 +377,8 @@ class _RentalPointPageState extends State<RentalPointPage> {
                   SizedBox(width: 20),
                   // Location Inputs
                   Expanded(child: _buildLocationInputs()),
-                  // Via Location Toggle
 
+                  // Via Location Toggle
                 ],
               ),
             ),
@@ -418,9 +429,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
         shape: BoxShape.circle,
         border: Border.all(color: color.withOpacity(0.3), width: 1.5),
       ),
-      child: Center(
-        child: Icon(icon, color: color, size: 18),
-      ),
+      child: Center(child: Icon(icon, color: color, size: 18)),
     );
   }
 
@@ -450,8 +459,18 @@ class _RentalPointPageState extends State<RentalPointPage> {
             child: AnimatedSwitcher(
               duration: Duration(milliseconds: 300),
               child: showViaLocation
-                  ? Icon(Icons.remove, color: Colors.orange, size: 18, key: Key('remove'))
-                  : Icon(Icons.add, color: Colors.grey[600], size: 18, key: Key('add')),
+                  ? Icon(
+                      Icons.remove,
+                      color: Colors.orange,
+                      size: 18,
+                      key: Key('remove'),
+                    )
+                  : Icon(
+                      Icons.add,
+                      color: Colors.grey[600],
+                      size: 18,
+                      key: Key('add'),
+                    ),
             ),
           ),
         ),
@@ -468,7 +487,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
         border: Border.all(color: Colors.grey[300]!, width: 1.5),
       ),
       child: Obx(
-            () => DropdownButton<String>(
+        () => DropdownButton<String>(
           value: airportController.selectedAirport.value,
           dropdownColor: Colors.white,
           underline: const SizedBox(),
@@ -490,10 +509,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
               value: airport,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Text(
-                  airport,
-                  style: TextStyle(fontSize: 14),
-                ),
+                child: Text(airport, style: TextStyle(fontSize: 14)),
               ),
             );
           }).toList(),
@@ -507,35 +523,38 @@ class _RentalPointPageState extends State<RentalPointPage> {
 
     return shouldShowDateTime
         ? Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.calendar_today_outlined,
-                  color: primaryColor, size: 20),
-              SizedBox(width: 8),
-              Text(
-                'Schedule Trip',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[800],
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today_outlined,
+                      color: primaryColor,
+                      size: 20,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      'Schedule Trip',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey[800],
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          DateAndTime(
-            onDateTimeSelected: (date, time) {
-              selectedDate = date;
-              selectedTime = time;
-            },
-          ),
-        ],
-      ),
-    )
+                SizedBox(height: 16),
+                DateAndTime(
+                  onDateTimeSelected: (date, time) {
+                    selectedDate = date;
+                    selectedTime = time;
+                  },
+                ),
+              ],
+            ),
+          )
         : const SizedBox();
   }
 
@@ -611,10 +630,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                     SizedBox(height: 2),
                     Text(
                       'Enable for return journey',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                   ],
                 ),
@@ -650,7 +666,11 @@ class _RentalPointPageState extends State<RentalPointPage> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.timer_outlined, color: Colors.blue[700], size: 18),
+                    Icon(
+                      Icons.timer_outlined,
+                      color: Colors.blue[700],
+                      size: 18,
+                    ),
                     SizedBox(width: 8),
                     Text(
                       'Return Schedule',
@@ -748,10 +768,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                     ),
                     Text(
                       'Hours',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                   ],
                 ),
@@ -785,9 +802,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: color.withOpacity(0.3), width: 1.5),
         ),
-        child: Center(
-          child: Icon(icon, color: color, size: 24),
-        ),
+        child: Center(child: Icon(icon, color: color, size: 24)),
       ),
     );
   }
@@ -805,47 +820,55 @@ class _RentalPointPageState extends State<RentalPointPage> {
         );
       }
 
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [primaryColor, primaryColor.withOpacity(0.8)],
-          ),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: primaryColor.withOpacity(0.3),
-              blurRadius: 15,
-              spreadRadius: 2,
-              offset: Offset(0, 4),
-            ),
-          ],
-        ),
-        child: InkWell(
+      // return Container(
+      //   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      //   decoration: BoxDecoration(
+      //     gradient: LinearGradient(
+      //       begin: Alignment.topLeft,
+      //       end: Alignment.bottomRight,
+      //       colors: [primaryColor, primaryColor.withOpacity(0.8)],
+      //     ),
+      //     borderRadius: BorderRadius.circular(16),
+      //     boxShadow: [
+      //       BoxShadow(
+      //         color: primaryColor.withOpacity(0.3),
+      //         blurRadius: 15,
+      //         spreadRadius: 2,
+      //         offset: Offset(0, 4),
+      //       ),
+      //     ],
+      //   ),
+      //   child: InkWell(
+      //     onTap: _handleSubmit,
+      //     borderRadius: BorderRadius.circular(12),
+      //     child: Container(
+      //       padding: EdgeInsets.symmetric(vertical: 18),
+      //       child: Row(
+      //         mainAxisAlignment: MainAxisAlignment.center,
+      //         children: [
+      //           Icon(Icons.directions_car_filled_outlined,
+      //               color: Colors.white, size: 24),
+      //           SizedBox(width: 12),
+      //           Text(
+      //             'tripForm'.tr,
+      //             style: TextStyle(
+      //               color: Colors.white,
+      //               fontSize: 18,
+      //               fontWeight: FontWeight.w600,
+      //               letterSpacing: 0.5,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // );
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+        child: primaryButton(
+          buttonName: 'Submit Trip Request',
+          radius: 16.0,
           onTap: _handleSubmit,
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 18),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.directions_car_filled_outlined,
-                    color: Colors.white, size: 24),
-                SizedBox(width: 12),
-                Text(
-                  'tripForm'.tr,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       );
     });
@@ -930,9 +953,14 @@ class _RentalPointPageState extends State<RentalPointPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Pickup Section
-        Row(mainAxisAlignment:MainAxisAlignment.spaceBetween ,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            KText(text: 'pickUpPoint', fontSize: 16, fontWeight: FontWeight.bold),
+            KText(
+              text: 'pickUpPoint',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
             _buildViaLocationToggle(),
           ],
         ),
@@ -964,9 +992,14 @@ class _RentalPointPageState extends State<RentalPointPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Pickup Section
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            KText(text: 'pickUpPoint', fontSize: 16, fontWeight: FontWeight.bold),
+            KText(
+              text: 'pickUpPoint',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
             _buildViaLocationToggle(),
           ],
         ),
@@ -985,8 +1018,6 @@ class _RentalPointPageState extends State<RentalPointPage> {
       ],
     );
   }
-
-
 
   void _handleSubmit() {
     // Validate required fields

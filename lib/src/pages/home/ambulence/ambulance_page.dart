@@ -93,9 +93,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
         ),
         centerTitle: true,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
       ),
       body: SingleChildScrollView(
@@ -105,79 +103,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
             const SizedBox(height: 20),
 
             /// Car info card
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(11),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                        image: NetworkImage(widget.carImg),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.carName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "${widget.capacity} Seats Capacity",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            "Ambulance",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: primaryColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildCarSelectionSection(),
 
             const SizedBox(height: 24),
 
@@ -237,14 +163,17 @@ class _AmbulancePageState extends State<AmbulancePage> {
                           GestureDetector(
                             onTap: () async {
                               pickupLocation = await Get.to(
-                                    () => MapSinglePickerScreen(
-                                  lat: double.tryParse(
-                                    locationController.selectedPickUpLat.value,
-                                  ),
-                                  lng: double.tryParse(
-                                    locationController.selectedPickUpLng.value,
-                                  ),
-                                ),
+                                    () =>
+                                    MapSinglePickerScreen(
+                                      lat: double.tryParse(
+                                        locationController.selectedPickUpLat
+                                            .value,
+                                      ),
+                                      lng: double.tryParse(
+                                        locationController.selectedPickUpLng
+                                            .value,
+                                      ),
+                                    ),
                               );
 
                               if (pickupLocation != null) {
@@ -257,8 +186,10 @@ class _AmbulancePageState extends State<AmbulancePage> {
                                     pickupLocation['lat'].toString();
                                 locationController.selectedPickUpLng.value =
                                     pickupLocation['lng'].toString();
-                                pickLat = locationController.selectedPickUpLat.value;
-                                pickLng = locationController.selectedPickUpLng.value;
+                                pickLat =
+                                    locationController.selectedPickUpLat.value;
+                                pickLng =
+                                    locationController.selectedPickUpLng.value;
                                 locationController.pickUpC.text =
                                     pickupLocation['address'].toString();
                                 locationController.pickUpLocation.value =
@@ -334,14 +265,17 @@ class _AmbulancePageState extends State<AmbulancePage> {
                           GestureDetector(
                             onTap: () async {
                               dropOffLocation = await Get.to(
-                                    () => MapSinglePickerScreen(
-                                  lat: double.tryParse(
-                                    locationController.selectedDropUpLat.value,
-                                  ),
-                                  lng: double.tryParse(
-                                    locationController.selectedDropUpLng.value,
-                                  ),
-                                ),
+                                    () =>
+                                    MapSinglePickerScreen(
+                                      lat: double.tryParse(
+                                        locationController.selectedDropUpLat
+                                            .value,
+                                      ),
+                                      lng: double.tryParse(
+                                        locationController.selectedDropUpLng
+                                            .value,
+                                      ),
+                                    ),
                               );
 
                               if (dropOffLocation != null) {
@@ -517,8 +451,6 @@ class _AmbulancePageState extends State<AmbulancePage> {
                           ],
                         ),
                       ),
-
-
                     ],
                   ),
                 ],
@@ -573,15 +505,14 @@ class _AmbulancePageState extends State<AmbulancePage> {
                   ),
                   const SizedBox(height: 16),
 
-
                   YesNoRadioRow(
-                    title: "Is PickUp Locations Hospital/Diagnostic Center/Clinic?",
+                    title:
+                    "Is PickUp Locations Hospital/Diagnostic Center/Clinic?",
                     value: true,
                     onChanged: (val) {
                       setState(() {});
                     },
                   ),
-
 
                   YesNoRadioRow(
                     title: "Vehicle Type?",
@@ -593,9 +524,9 @@ class _AmbulancePageState extends State<AmbulancePage> {
                     },
                   ),
 
-
                   YesNoRadioRow(
-                    title: "How many oxygen cylinders will be needed (1 cylinder is always there)?",
+                    title:
+                    "How many oxygen cylinders will be needed (1 cylinder is always there)?",
                     option1: "2",
                     value: true,
                     onChanged: (val) {
@@ -603,24 +534,23 @@ class _AmbulancePageState extends State<AmbulancePage> {
                     },
                   ),
 
-
                   YesNoRadioRow(
-                    title: "Fees will be charged for the removal of the deceased/dead body (not included in the bid price)",
+                    title:
+                    "Fees will be charged for the removal of the deceased/dead body (not included in the bid price)",
                     value: true,
                     onChanged: (val) {
                       setState(() {});
                     },
                   ),
 
-
                   YesNoRadioRow(
-                    title: "Will the patient need a wheelchair to get up and down (there are always four)?",
+                    title:
+                    "Will the patient need a wheelchair to get up and down (there are always four)?",
                     value: true,
                     onChanged: (val) {
                       setState(() {});
                     },
                   ),
-
 
                   YesNoRadioRow(
                     title: "Do you need a doctor in the ICU or ambulance?",
@@ -650,45 +580,11 @@ class _AmbulancePageState extends State<AmbulancePage> {
                   ),
                 ],
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primaryColor,
-                        ),
-                        child: const Icon(
-                          Icons.access_time,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Schedule Trip',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-
-                  /// Date and Time Picker
-                  DateAndTime(
-                    onDateTimeSelected: (date, time) {
-                      selectedDate = date;
-                      selectedTime = time;
-                    },
-                  ),
-                ],
+              child: DateAndTime(
+                onDateTimeSelected: (date, time) {
+                  selectedDate = date;
+                  selectedTime = time;
+                },
               ),
             ),
 
@@ -720,7 +616,6 @@ class _AmbulancePageState extends State<AmbulancePage> {
                       color: Colors.grey[800],
                     ),
                   ),
-                  const SizedBox(height: 12),
                   NoteTextFiled(controller: noteController),
                 ],
               ),
@@ -729,177 +624,99 @@ class _AmbulancePageState extends State<AmbulancePage> {
             const SizedBox(height: 24),
 
             /// Submit Button
-            Container(
+            // Container(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: Colors.black.withOpacity(0.05),
+            //         blurRadius: 10,
+            //         offset: const Offset(0, -4),
+            //       ),
+            //     ],
+            //   ),
+            //   child: Obx(
+            //     () => _controller.isLoading.value
+            //         ? Center(
+            //             child: Container(
+            //               width: 40,
+            //               height: 40,
+            //               padding: const EdgeInsets.all(8),
+            //               child: CircularProgressIndicator(
+            //                 color: primaryColor,
+            //                 strokeWidth: 3,
+            //               ),
+            //             ),
+            //           )
+            //         : SizedBox(
+            //             width: double.infinity,
+            //             child: ElevatedButton(
+            //               onPressed: _submitTripRequest,
+            //               style: ElevatedButton.styleFrom(
+            //                 backgroundColor: primaryColor,
+            //                 foregroundColor: Colors.white,
+            //                 padding: const EdgeInsets.symmetric(vertical: 16),
+            //                 shape: RoundedRectangleBorder(
+            //                   borderRadius: BorderRadius.circular(12),
+            //                 ),
+            //                 elevation: 0,
+            //                 shadowColor: Colors.transparent,
+            //               ),
+            //               child: Text(
+            //                 'Submit Trip Request',
+            //                 style: TextStyle(
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w600,
+            //                   color: Colors.white,
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //
+            //   ),
+            // ),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, -4),
-                  ),
-                ],
-              ),
-              child: Obx(
-                    () => _controller.isLoading.value
-                    ? Center(
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    padding: const EdgeInsets.all(8),
-                    child: CircularProgressIndicator(
-                      color: primaryColor,
-                      strokeWidth: 3,
-                    ),
-                  ),
-                )
-                    : SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _submitTripRequest,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 0,
-                      shadowColor: Colors.transparent,
-                    ),
-                    child: Text(
-                      'Submit Trip Request',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              child: primaryButton(buttonName: 'Submit Trip Request',radius: 16.0, onTap:
+              _submitTripRequest),
             ),
 
             const SizedBox(height: 20),
-          ],
-        ),
-      ),
+          ]
+          ,
+        )
+        ,
+      )
+      ,
     );
   }
-  Widget _buildLocationField({
-    required String title,
-    required String hint,
-    required TextEditingController controller,
-    required VoidCallback onTap,
-    bool isOptional = false,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[700],
-              ),
-            ),
-            if (isOptional)
-              Text(
-                ' (Optional)',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[500],
-                ),
-              ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey[300]!),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    controller.text.isNotEmpty
-                        ? controller.text
-                        : hint,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: controller.text.isNotEmpty
-                          ? Colors.black87
-                          : Colors.grey[500],
-                      fontWeight: controller.text.isNotEmpty
-                          ? FontWeight.w500
-                          : FontWeight.normal,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Icon(
-                  Icons.location_on,
-                  color: primaryColor,
-                  size: 20,
-                ),
-              ],
-            ),
+
+  Widget _buildCarSelectionSection() {
+    final shouldShowCar = !['4', '6', 'truck'].contains(widget.tripType);
+
+    return shouldShowCar
+        ? Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(11),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
-        ),
-      ],
-    );
-  }
-
-  /// Location picker method
-  Future<void> _pickLocation({required bool isPickup}) async {
-    var location = await Get.to(
-          () => MapSinglePickerScreen(
-        lat: double.tryParse(
-          isPickup
-              ? locationController.selectedPickUpLat.value
-              : locationController.selectedDropUpLat.value,
-        ),
-        lng: double.tryParse(
-          isPickup
-              ? locationController.selectedPickUpLng.value
-              : locationController.selectedDropUpLng.value,
-        ),
+        ],
       ),
-    );
-
-    if (location != null) {
-      if (isPickup) {
-        locationController.selectedPickUpLat.value = location['lat'].toString();
-        locationController.selectedPickUpLng.value = location['lng'].toString();
-        locationController.pickUpC.text = location['address'].toString();
-        locationController.pickUpLocation.value = location['address'].toString();
-      } else {
-        locationController.selectedDropUpLat.value = location['lat'].toString();
-        locationController.selectedDropUpLng.value = location['lng'].toString();
-        locationController.dropC.text = location['address'].toString();
-        locationController.dropLocation.value = location['address'].toString();
-      }
-
-      // Show success snackbar
-      Get.snackbar(
-        'Success',
-        'Location selected successfully',
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: const EdgeInsets.all(16),
-      );
-    }
+      child: CarSelectedOption(
+        carImg: widget.carImg,
+        carName: widget.carName,
+        capacity: "${widget.capacity} Seats Capacity",
+      ),
+    )
+        : const SizedBox();
   }
 
   /// Submit trip request method
@@ -911,7 +728,9 @@ class _AmbulancePageState extends State<AmbulancePage> {
     String period = selectedTime.period == DayPeriod.am ? 'AM' : 'PM';
 
     String journeyTimeAndDate =
-        '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')} ${hour}:${minute} $period';
+        '${selectedDate.year}-${selectedDate.month.toString().padLeft(
+        2, '0')}-${selectedDate.day.toString().padLeft(
+        2, '0')} ${hour}:${minute} $period';
 
     if (locationController.pickUpLocation.isEmpty ||
         locationController.dropLocation.isEmpty) {
@@ -931,37 +750,44 @@ class _AmbulancePageState extends State<AmbulancePage> {
       viaLocation: locationController.viaLocation.toString(),
       dropLocation: locationController.dropLocation.toString(),
       dateTime: journeyTimeAndDate,
-      map: '${locationController.selectedPickUpLat.value},${locationController.selectedPickUpLng.value}',
+      map:
+      '${locationController.selectedPickUpLat.value},${locationController
+          .selectedPickUpLng.value}',
       roundTrip: roundTripValue.toString(),
       roundTripTimeDate: '',
       vehicleId: widget.carId,
-      dropMap: '${locationController.selectedDropUpLat.value},${locationController.selectedDropUpLng.value}',
+      dropMap:
+      '${locationController.selectedDropUpLat.value},${locationController
+          .selectedDropUpLng.value}',
     );
 
     Get.to(
-          () => TripDetailsPage(
-        carImg: widget.carImg,
-        carName: widget.carName,
-        capacity: widget.capacity,
-        carId: widget.carId,
-        pickUpPoint: locationController.pickUpLocation.toString(),
-        dropPoint: locationController.dropLocation.toString(),
-        viaPoint: locationController.viaLocation.toString(),
-        note: noteController.text,
-        tripDetailsJourney: journeyTimeAndDate,
-        roundTrip: roundTripValue.toString(),
-        map: '${locationController.selectedPickUpLat.value},${locationController.selectedPickUpLng.value}',
-        roundTripDetailsJourney: '',
-        pickupDivision: locationController.pickupDivision.value,
-        isAirport: false,
-        dropOffMap: '${locationController.selectedDropUpLat.value},${locationController.selectedDropUpLng.value}',
-        categoryID: widget.tripType,
-      ),
+          () =>
+          TripDetailsPage(
+            carImg: widget.carImg,
+            carName: widget.carName,
+            capacity: widget.capacity,
+            carId: widget.carId,
+            pickUpPoint: locationController.pickUpLocation.toString(),
+            dropPoint: locationController.dropLocation.toString(),
+            viaPoint: locationController.viaLocation.toString(),
+            note: noteController.text,
+            tripDetailsJourney: journeyTimeAndDate,
+            roundTrip: roundTripValue.toString(),
+            map:
+            '${locationController.selectedPickUpLat.value},${locationController
+                .selectedPickUpLng.value}',
+            roundTripDetailsJourney: '',
+            pickupDivision: locationController.pickupDivision.value,
+            isAirport: false,
+            dropOffMap:
+            '${locationController.selectedDropUpLat.value},${locationController
+                .selectedDropUpLng.value}',
+            categoryID: widget.tripType,
+          ),
     );
   }
-
 }
-
 
 class YesNoRadioRow extends StatelessWidget {
   final String title;
@@ -986,12 +812,17 @@ class YesNoRadioRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           /// Title
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme
+                .of(
+              context,
+            )
+                .textTheme
+                .bodyLarge
+                ?.copyWith(fontWeight: FontWeight.w500),
           ),
 
           const SizedBox(height: 12),
@@ -1000,11 +831,15 @@ class YesNoRadioRow extends StatelessWidget {
           Container(
             height: 40,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceVariant,
+              color: Theme
+                  .of(context)
+                  .colorScheme
+                  .surfaceVariant,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
               children: [
+
                 /// Yes Option
                 Expanded(
                   child: _buildSegmentedOption(
@@ -1028,7 +863,7 @@ class YesNoRadioRow extends StatelessWidget {
             ),
           ),
           sizeH20,
-          Divider(color: titleColor.withAlpha(100),height: 2,thickness: 1.3,),
+          Divider(color: titleColor.withAlpha(100), height: 2, thickness: 1.3),
         ],
       ),
     );
@@ -1046,7 +881,7 @@ class YesNoRadioRow extends StatelessWidget {
     return GestureDetector(
       onTap: () => onChanged(optionValue),
       child: AnimatedContainer(
-        duration:  Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 200),
         decoration: BoxDecoration(
           color: isSelected ? primaryColor : Colors.transparent,
           borderRadius: isFirst

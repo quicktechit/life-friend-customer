@@ -12,7 +12,6 @@ import '../../../widgets/pick_up_location_widget.dart';
 import '../../map_page/MapSinglePickerScreen.dart';
 import 'custome_drop_down_widget.dart';
 
-
 class SelectLocation extends StatefulWidget {
   const SelectLocation({super.key});
 
@@ -39,6 +38,7 @@ class _SelectLocationState extends State<SelectLocation> {
   }
 
   void _initializeControllers() {
+    truckController.locationNames.clear();
     truckController.getTruckCategory();
     truckController.productType();
     truckController.dropLatLngList.clear();
@@ -65,11 +65,16 @@ class _SelectLocationState extends State<SelectLocation> {
   void _printDropLocations() {
     truckController.locationNames.clear();
     truckController.multipleDropoffMap.clear();
-
+    print("dropControllers length: ${dropControllers.length}");
     for (int i = 0; i < dropControllers.length; i++) {
       String locationName = dropControllers[i].text;
       truckController.locationNames.add(locationName);
+      print(truckController.hashCode);
+      print("text value: '${dropControllers[i].text}'");
 
+
+
+      print(truckController.locationNames);
       if (i < truckController.dropLatLngList.length) {
         final latLng = truckController.dropLatLngList[i];
         String latLngString = '${latLng['lat']},${latLng['lng']}';
@@ -285,7 +290,8 @@ class _SelectLocationState extends State<SelectLocation> {
         children: [
           // Location Selection Cards
           Card(
-            margin: EdgeInsets.all(8),color: white,
+            margin: EdgeInsets.all(8),
+            color: white,
             elevation: 4,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
@@ -578,7 +584,7 @@ class _SelectLocationState extends State<SelectLocation> {
                 height: 56,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [primaryColor,primaryColor],
+                    colors: [primaryColor, primaryColor],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                   ),
@@ -601,8 +607,10 @@ class _SelectLocationState extends State<SelectLocation> {
                       }
 
                       _printDropLocations();
-
-                      if (truckController.locationNames.isEmpty) {
+                      bool hasDrop = dropControllers.any(
+                            (c) => c.text.trim().isNotEmpty,
+                      );
+                      if (!hasDrop) {
                         VxToast.show(context, msg: 'Drop off Location Needed');
                         return;
                       }
@@ -639,10 +647,6 @@ class _SelectLocationState extends State<SelectLocation> {
     );
   }
 }
-
-
-
-
 
 // ViaLocation Widget (Optional - if you have it in your original code)
 class ViaLocation extends StatelessWidget {

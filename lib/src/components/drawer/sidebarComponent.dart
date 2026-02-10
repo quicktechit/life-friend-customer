@@ -18,7 +18,7 @@ import 'package:pickup_load_update/src/widgets/text/kText.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class ExampleSidebarX extends StatefulWidget {
-  ExampleSidebarX({
+  const ExampleSidebarX({
     Key? key,
     required SidebarXController controller,
   })  : _controller = controller,
@@ -42,6 +42,7 @@ class _ExampleSidebarXState extends State<ExampleSidebarX> {
   Widget build(BuildContext context) {
     return SidebarX(
       headerDivider: Divider(),
+
       controller: widget._controller,
       theme: SidebarXTheme(
         width: 12,

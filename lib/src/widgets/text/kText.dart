@@ -41,7 +41,7 @@ class KText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text.tr,
-      style: GoogleFonts.sourceCodePro(
+      style: GoogleFonts.robotoSlab(
         decoration: decoration,
         fontSize: fontSize ?? 16,
         fontWeight: fontWeight ?? FontWeight.normal,

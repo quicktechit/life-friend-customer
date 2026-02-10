@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/appUtils.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../auth/AuthStartVerifyPage.dart';
 
@@ -100,7 +101,9 @@ class _OnboardPageState extends State<OnboardPage> {
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
-                    ),
+                    ).onTap((){
+                      _goToHomeScreen();
+                    }),
                 ],
               ),
             ),

@@ -9,7 +9,9 @@ import 'package:pickup_load_update/src/controllers/car%20category%20controller/c
 import 'package:pickup_load_update/src/controllers/vehicles%20categoris/quick_tech_vehicles_controller.dart';
 import 'package:pickup_load_update/src/pages/home/ambulence/ambulance_page.dart';
 import 'package:pickup_load_update/src/pages/home/rental/rentalPointPage.dart';
+import 'package:pickup_load_update/src/widgets/button/primaryButton.dart';
 import 'package:pickup_load_update/src/widgets/card/customCardWidget.dart';
+import 'package:pickup_load_update/src/widgets/custom_button_widget.dart';
 import 'package:pickup_load_update/src/widgets/text/kText.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -464,7 +466,7 @@ class RentalListPage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: isEnabled ? primaryColor : Colors.grey[400],
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 18),
+                padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -489,6 +491,7 @@ class RentalListPage extends StatelessWidget {
               ),
             ),
           ),
+
         ],
       ),
     );

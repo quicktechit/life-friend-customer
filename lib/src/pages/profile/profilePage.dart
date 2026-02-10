@@ -22,7 +22,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: KText(
-          text:"profile".tr,
+          text:"profile".tr,color: Colors.white,fontWeight: FontWeight.bold,fontSize: 17,
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -175,7 +175,7 @@ class ProfilePage extends StatelessWidget {
                               size: 24,
                             ),
                             SizedBox(width: 10.h),
-                            KText(text: 'personal_info'.tr),
+                            KText(text: 'personal_info'.tr,fontWeight: FontWeight.bold,),
                           ],
                         ),
                       ),
@@ -252,7 +252,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                         title: KText(
                          text:  'settings'.tr,
-
+                          fontWeight: FontWeight.bold,
                         ),
                         trailing: Icon(
                           Icons.chevron_right,
@@ -270,7 +270,7 @@ class ProfilePage extends StatelessWidget {
                           color: Colors.blue.shade700,
                         ),
                         title: KText(
-                         text:  'privacy'.tr,
+                         text:  'privacy'.tr,fontWeight: FontWeight.bold,
 
                         ),
                         trailing: Icon(

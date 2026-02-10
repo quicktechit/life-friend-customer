@@ -2,16 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
-import 'package:pickup_load_update/src/configs/appUtils.dart';
-import 'package:pickup_load_update/src/widgets/text/kText.dart';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import 'package:get/get.dart';
 
 class DateAndTime extends StatefulWidget {
   final Function(DateTime, TimeOfDay) onDateTimeSelected;
@@ -130,112 +122,54 @@ class _DateAndTimeState extends State<DateAndTime> {
   }
 
   Future<void> _selectTime() async {
-    final DateTime now = DateTime.now();
-    DateTime initialDateTime;
+    final now = DateTime.now();
+
+    TimeOfDay initialTime;
 
     if (isToday && widget.enableTimeConstraint) {
-      // Set initial time to 3 hours from now
-      initialDateTime = now.add(const Duration(hours: 3));
-    } else {
-      // Use currently selected time
-      initialDateTime = DateTime(
-        selectedDate.year,
-        selectedDate.month,
-        selectedDate.day,
-        selectedTime.hour,
-        selectedTime.minute,
+      final threeHoursLater = now.add(const Duration(hours: 3));
+      initialTime = TimeOfDay(
+        hour: threeHoursLater.hour,
+        minute: threeHoursLater.minute,
       );
+    } else {
+      initialTime = selectedTime;
     }
 
-    showModalBottomSheet(
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 320,
-          child: Column(
-            children: [
-              // ... (same header code as above)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade200),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'selectTime'.tr,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(
-                            'cancel'.tr,
-                            style: TextStyle(color: Colors.grey.shade600),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            widget.onDateTimeSelected(selectedDate, selectedTime);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: Text('submit'.tr,style:  TextStyle(color: Colors.white),),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: CupertinoTheme(
-                  data: CupertinoThemeData(
-                    textTheme: CupertinoTextThemeData(
-                      dateTimePickerTextStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color,
-                      ),
-                    ),
-                  ),
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.time,
-                    initialDateTime: initialDateTime,
-                    // Remove minuteInterval to avoid the divisible by 5 issue
-                    // minuteInterval: 5,
-                    use24hFormat: false,
-                    onDateTimeChanged: (DateTime newDateTime) {
-                      setState(() {
-                        selectedTime = TimeOfDay(
-                          hour: newDateTime.hour,
-                          minute: newDateTime.minute,
-                        );
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ],
+      initialTime: initialTime,
+      useRootNavigator: true,
+      helpText: "Select Time",
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: Colors.white,
+              hourMinuteTextColor: primaryColor,
+              hourMinuteColor: primaryColor.withAlpha(30),
+              dialHandColor: primaryColor,
+              dialBackgroundColor: primaryColor.withAlpha(10),
+              entryModeIconColor: primaryColor,dayPeriodColor: primaryColor.withAlpha(100),
+            ),
+            colorScheme: ColorScheme.light(
+              primary: primaryColor,
+            ),
           ),
+          child: child!,
         );
       },
     );
+
+    if (picked != null) {
+      setState(() {
+        selectedTime = picked;
+      });
+
+      widget.onDateTimeSelected(selectedDate, selectedTime);
+    }
   }
+
 
   String _getFormattedTime() {
     if (selectedTime == TimeOfDay.now()) {

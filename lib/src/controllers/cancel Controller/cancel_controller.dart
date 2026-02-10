@@ -16,7 +16,8 @@ class CancelController extends GetxController{
   final ProfileController profileController=Get.put(ProfileController());
   RentalTripSubmitController rentalTripSubmitController = Get.find();
   var box=GetStorage();
-  Future<void> sendBeforeCancel(String tripId, String cancelReasonId) async {
+  Future<void> sendBeforeCancel(String tripId, String cancelReasonId,
+      {String type = 'n'}) async {
     SharedPreferencesManager _prefsManager =
     await SharedPreferencesManager.getInstance();
     String? token = _prefsManager.getToken();
@@ -52,11 +53,19 @@ class CancelController extends GetxController{
         print('Request successful: ${response.body}');
         Get.snackbar('Success', 'Trip Request cancel',
             colorText: white, backgroundColor: Colors.black);
+        if(type=='n'){
           box.write("liveBidStart", false);
           rentalTripSubmitController.liveBidStart.value = false;
+        }else{
+          log("truck_cancel");
+            box.write("liveBidTruckStart", false);
+            rentalTripSubmitController
+                .liveBidTruckStart.value = false;
+        }
 
 
-        Get.offAll(DashboardView());
+
+        Get.offAll(()=>DashboardView());
       } else {
         print('Request failed with status: ${response.statusCode}');
         print('Error: ${response.body}');

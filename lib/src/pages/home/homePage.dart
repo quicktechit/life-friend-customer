@@ -43,13 +43,13 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // Controllers and dependencies...
   final vehicleController = Get.put(QuickTechVehiclesController());
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _controller = SidebarXController(selectedIndex: 0, extended: true);
+
+
   final TruckController truckController = Get.put(TruckController());
   var box = GetStorage();
   final RentalTripSubmitController _rentalTripSubmitController = Get.put(
@@ -87,7 +87,6 @@ class _HomePageState extends State<HomePage>
 
   // Enhanced Featured Services
   final List<FeatureCard> featuredServices = [
-
     FeatureCard(
       name: "Truck Rental",
       tagline: "Heavy Loads",
@@ -109,10 +108,12 @@ class _HomePageState extends State<HomePage>
     FeatureCard(
       name: "Airport Service",
       tagline: "Pickup & Drop",
-      image: 'assets/new_image/airport_image.jpg', // make sure you have this image
+      image: 'assets/new_image/airport_image.jpg',
+      // make sure you have this image
       type: 'airport',
       icon: Icons.airplanemode_active,
-      color: Color(0xFFFFA500), // Orange for travel
+      color: Color(0xFFFFA500),
+      // Orange for travel
       rating: 4.8,
     ),
     FeatureCard(
@@ -124,9 +125,7 @@ class _HomePageState extends State<HomePage>
       color: Color(0xFF8B5CF6),
       rating: 4.9,
     ),
-
   ];
-
 
   @override
   void initState() {
@@ -150,10 +149,9 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: Color(0xFFF8FAFF),
-      drawer: Drawer(child: ExampleSidebarX(controller: _controller)),
-      appBar: CustomCommonAppBar(title: 'homeTitle', scaffoldKey: _scaffoldKey),
+
+      appBar: CustomCommonAppBar(title: 'homeTitle', scaffoldKey: scaffoldKey),
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: RefreshIndicator(
@@ -567,9 +565,9 @@ class _HomePageState extends State<HomePage>
     return GestureDetector(
       onTap: () async {
         if (feature.type == 'returnTruck') {
-          Get.to(() => SelectLocation());
-        } else if (feature.type == 'truckRental') {
           Get.to(() => ReturnTripListFilterPage());
+        } else if (feature.type == 'truckRental') {
+          Get.to(() => SelectLocation());
           await returnTripFilter.returnTripFilterList();
         } else if (feature.type == 'airport') {
           await vehicleController.getVehicles(id: '2');
