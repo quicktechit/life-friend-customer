@@ -3,7 +3,7 @@ class Urls {
   static const domain = "https://pickuploadbd.com";
   static const baseUrl = "$domain/api/v1";
 
-  static String getImageURL({required String endPoint}) => '$domain/public/$endPoint/';
+  static String getImageURL({required String endPoint}) => '$domain/public/$endPoint';
 
   static String registration = "$baseUrl/customer/register";
   static String otpSubmit = "$baseUrl/customer/login";

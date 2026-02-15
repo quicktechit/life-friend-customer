@@ -13,9 +13,10 @@ class EmptyBoxWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            truckImage
+            // truckImage
                 // == false
-                // ? "assets/images/empty.png"
+                // ?
+          "assets/images/empty.png"
                 // : "assets/images/pickup-truck-svgrepo-com.png",
             ,
             width: 140,

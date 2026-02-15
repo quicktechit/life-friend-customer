@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
@@ -25,6 +27,7 @@ class SliderWidget extends StatelessWidget {
           itemCount: sliderData.length,
           itemBuilder: (BuildContext context, int index, int realIndex) {
             final SliderData data = sliderData[index];
+            // log(Urls.getImageURL(endPoint: data.image ?? ''));
             return ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.network(

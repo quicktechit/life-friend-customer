@@ -31,7 +31,7 @@ class DivisionList {
   final int? id;
   final String? name;
   final String? nameBn;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -40,7 +40,7 @@ class DivisionList {
       id: json["id"],
       name: json["name"],
       nameBn: json["name_bn"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );
