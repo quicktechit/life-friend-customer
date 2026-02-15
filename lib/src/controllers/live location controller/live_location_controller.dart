@@ -42,6 +42,10 @@ class LocationController extends GetxController {
 
 
   Future<void> fetchPickSuggestions(String input) async {
+    if (input.length < 15) {
+      suggestionsPickUp.clear();
+      return;
+    }
     isLoading(true);
     final String baseUrl =
         "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";
@@ -68,6 +72,10 @@ class LocationController extends GetxController {
   }
 
   Future<void> fetchDropSuggestions(String input) async {
+    if (input.length < 15) {
+      suggestionsPickUp.clear();
+      return;
+    }
     isLoadingDrop(true);
     final String baseUrl =
         "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";

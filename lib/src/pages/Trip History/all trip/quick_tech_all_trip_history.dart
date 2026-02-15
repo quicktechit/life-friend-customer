@@ -14,29 +14,37 @@ class QuickTechAllTripScreen extends StatelessWidget {
     return DefaultTabController(
       length: 4, // Number of tabs
       child: Scaffold(
-        appBar: AppBar(centerTitle: true,
-          title:  Text('tripHistory'.tr,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.white),),
-          bottom:  TabBar(
-            labelStyle: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'tripHistory'.tr,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          bottom: TabBar(
+            labelStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             labelColor: Colors.white,
             isScrollable: true,
-            tabAlignment:TabAlignment.start,
+            tabAlignment: TabAlignment.start,
             unselectedLabelColor: Colors.black,
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: 'confirm'.tr,),
-              Tab(text: 'ongoing'.tr,),
+              Tab(text: 'ongoing'.tr),
+              Tab(text: 'confirm'.tr),
               Tab(text: 'complete'.tr),
               Tab(text: 'cancel'.tr),
             ],
           ),
         ),
-        body:  TabBarView(
+        body: TabBarView(
           children: [
-            AllConfirmTripHistory(),
             OngoingTripHistory(),
+            AllConfirmTripHistory(),
             CompleteTripHistory(),
-           CancelTripHistory(),
+            CancelTripHistory(),
           ],
         ),
       ),

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //Sizebox height
-final sizeH5 = SizedBox(height: 5);
-final sizeH10 = SizedBox(height: 10);
-final sizeH20 = SizedBox(height: 20);
-final sizeH30 = SizedBox(height: 30);
-final sizeH40 = SizedBox(height: 40);
+final sizeH5 = SizedBox(height: 5.h);
+final sizeH10 = SizedBox(height: 10.h);
+final sizeH20 = SizedBox(height: 20.h);
+final sizeH30 = SizedBox(height: 30.h);
+final sizeH40 = SizedBox(height: 40.h);
 //sizeBox width
-final sizeW5 = SizedBox(width: 5);
-final sizeW10 = SizedBox(width: 10);
-final sizeW20 = SizedBox(width: 20);
-final sizeW30 = SizedBox(width: 30);
-final sizeW40 = SizedBox(width: 40);
+final sizeW5 = SizedBox(width: 5.w);
+final sizeW10 = SizedBox(width: 10.w);
+final sizeW20 = SizedBox(width: 20.w);
+final sizeW30 = SizedBox(width: 30.w);
+final sizeW40 = SizedBox(width: 40.w);
 //Padding
 
 final paddingH20V20 = EdgeInsets.symmetric(horizontal: 20, vertical: 20);

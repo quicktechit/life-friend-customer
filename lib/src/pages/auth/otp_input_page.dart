@@ -11,11 +11,12 @@ import 'package:pickup_load_update/src/controllers/auth%20controllers/registrati
 import 'package:pickup_load_update/src/widgets/button/primaryButton.dart';
 import 'package:pickup_load_update/src/widgets/text/kText.dart';
 import 'package:pinput/pinput.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class OtpInputPage extends StatefulWidget {
   final String customerPhone;
 
-  const OtpInputPage({Key? key, required this.customerPhone}) : super(key: key);
+  const OtpInputPage({super.key, required this.customerPhone});
 
   @override
   State<OtpInputPage> createState() => _OtpInputPageState();
@@ -65,10 +66,10 @@ class _OtpInputPageState extends State<OtpInputPage> {
         child: Padding(
           padding: EdgeInsets.all(15.0.h),
           child: Obx(() {
-            return Column(
+            return Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 60.h),
-                Image.asset('assets/images/otp.png', width: 500),
+                // Image.asset('assets/images/otp.png', width: 500),
                 Text(
                   "Enter Verify Code",
                   style: GoogleFonts.ubuntu(
@@ -90,7 +91,7 @@ class _OtpInputPageState extends State<OtpInputPage> {
                 ),
                 SizedBox(height: 20.h),
                 OtpForm(controller: otpController),
-                SizedBox(height: 20.h),
+                SizedBox(height: 100.h),
                 Container(
                   color: bgColor,
                   child: _controller.isLoading.value
@@ -124,8 +125,8 @@ class _OtpInputPageState extends State<OtpInputPage> {
                 ),
                 SizedBox(height: 10.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     KText(
                       text: 'Resend Code',
@@ -136,40 +137,56 @@ class _OtpInputPageState extends State<OtpInputPage> {
                     sizeW5,
                     _start == 0
                         ? GestureDetector(
-                            onTap: () {
-                              RegistrationController().registerMethod(
-                                customerPhone: widget.customerPhone,
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: KText(
-                                text: 'Click to Resend',
-                                color: primaryColor,
-                              ),
-                            ),
-                          )
+                      onTap: () {
+                        RegistrationController().registerMethod(
+                          customerPhone: widget.customerPhone,
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: KText(
+                          text: 'Click to Resend',
+                          color: primaryColor,fontSize: 13,
+                        ),
+                      ),
+                    )
                         : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              KText(
-                                text: '$_start',
-                                fontSize: 16,
-                                color: primaryColor,
-                                textAlign: TextAlign.center,
-                              ),
-                              sizeW5,
-                              KText(
-                                text: 'sec',
-                                fontSize: 16,
-                                color: primaryColor,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        KText(
+                          text: '$_start',
+                          fontSize: 16,
+                          color: primaryColor,
+                          textAlign: TextAlign.center,
+                        ),
+                        sizeW5,
+                        KText(
+                          text: 'sec',
+                          fontSize: 16,
+                          color: primaryColor,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ],
-                ),
+                ),   SizedBox(height: 5.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    KText(
+                      text: 'Change Phone Number',
+                      fontSize: 14,
+                      color: Colors.blueAccent,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    Spacer(),
+                  ],
+                ).onTap((){
+                  Get.back();
+                }),
+
               ],
             );
           }),
@@ -185,10 +202,7 @@ class OtpForm extends StatefulWidget {
   const OtpForm({super.key, required this.controller});
 
   @override
-  _OtpFormState createState() => _OtpFormState();
-
-  @override
-  String toStringShort() => 'Rounded Filled';
+  State<OtpForm> createState() => _OtpFormState();
 }
 
 class _OtpFormState extends State<OtpForm> {
@@ -196,7 +210,7 @@ class _OtpFormState extends State<OtpForm> {
 
   @override
   void dispose() {
-    widget.controller.dispose();
+    // widget.controller.dispose();
     focusNode.dispose();
     super.dispose();
   }
@@ -208,37 +222,36 @@ class _OtpFormState extends State<OtpForm> {
     final length = 4;
     const errorColor = Color.fromRGBO(255, 234, 238, 1);
     const fillColor = Color.fromARGB(255, 240, 240, 240);
+
+    // Calculate dynamic width
+    final screenWidth = MediaQuery.of(context).size.width;
+    final pinWidth = (screenWidth - 60) / length;
+    // 60 = approx horizontal padding (15+15) + small spacing
+
     final defaultPinTheme = PinTheme(
-      width: 50,
+      width: pinWidth,
+      margin: EdgeInsets.symmetric(horizontal: 9),
       height: 60,
       textStyle: GoogleFonts.poppins(
         fontSize: 22,
-        color: Color.fromRGBO(30, 60, 87, 1),
+        color: const Color.fromRGBO(30, 60, 87, 1),
       ),
       decoration: BoxDecoration(
         color: fillColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.transparent),
+        border: Border.all(color: Colors.grey),
       ),
     );
 
     return SizedBox(
-      height: 68,
+      width: double.infinity,
       child: Pinput(
         length: length,
         controller: widget.controller,
         focusNode: focusNode,
-        defaultPinTheme: defaultPinTheme.copyWith(
-          decoration: defaultPinTheme.decoration!.copyWith(
-            border: Border.all(color: Colors.grey),
-          ),
-        ),
-        onCompleted: (pin) {
-          setState(() => showError = pin != '5555');
-        },
+        defaultPinTheme: defaultPinTheme,
         focusedPinTheme: defaultPinTheme.copyWith(
-          height: 68,
-          width: 65,
+          height: 65,
           decoration: defaultPinTheme.decoration!.copyWith(
             border: Border.all(color: Colors.black),
           ),
@@ -249,6 +262,9 @@ class _OtpFormState extends State<OtpForm> {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
+        onCompleted: (pin) {
+          setState(() => showError = pin != '5555');
+        },
       ),
     );
   }

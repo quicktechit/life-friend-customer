@@ -84,6 +84,10 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.top], // only status bar shown
+  );
 
   /// Get FCM Token
   String? token = await FirebaseMessaging.instance.getToken();

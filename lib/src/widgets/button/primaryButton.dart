@@ -5,7 +5,7 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 
 import '../text/kText.dart';
 
-ElevatedButton primaryButton({
+Widget primaryButton({
   required buttonName,
   final IconData? icon,
   double? radius,

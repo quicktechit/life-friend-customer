@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pickup_load_update/src/widgets/text/kText.dart';
 
-primaryBorderButton({
+Widget primaryBorderButton({
   required buttonName,
   final IconData? icon,
   required void Function()? onTap,

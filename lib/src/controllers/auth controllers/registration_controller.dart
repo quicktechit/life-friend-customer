@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/base_client.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../pages/auth/otp_input_page.dart';
 import 'otp_submit_controllers.dart';
@@ -40,7 +41,7 @@ class RegistrationController extends GetxController {
           if (responseBody['status'] == 'success') {
             if(customerPhone!='01641634899'){
 
-              Get.offAll(() => OtpInputPage(
+              Get.to(() => OtpInputPage(
                   customerPhone:customerPhone ));
             }else{
               Get.put(OTPController()).oTPMethod(phone:customerPhone , otp: responseBody['otp'].toString());
@@ -53,6 +54,7 @@ class RegistrationController extends GetxController {
             Get.snackbar('Success OTP: ${otp.value}', 'OTP Send Successfully',
                 duration: Duration(seconds: 10),
                 colorText: white, backgroundColor: Colors.black);
+            VxToast.show(Get.context!, msg: 'OTP Send Successfully');
           } else {
             throw 'Registration Failed: ${responseBody['message']}';
           }

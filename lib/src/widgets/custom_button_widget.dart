@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class CustomCommonButton extends StatefulWidget {
   final IconData icons;
@@ -18,7 +19,7 @@ class _CustomCommonButtonState extends State<CustomCommonButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: context.screenWidth,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

@@ -37,14 +37,14 @@ class FilterReturnTrip {
   });
 
   final int? id;
-  final int? pickupDivision;
-  final int? dropoffDivision;
+  final String? pickupDivision;
+  final String? dropoffDivision;
   final String? location;
   final String? destination;
   final String? amount;
   final String? timedate;
-  final int? partnerId;
-  final int? vehicleId;
+  final String? partnerId;
+  final String? vehicleId;
   final dynamic biding;
   final dynamic status;
   final DateTime? createdAt;
@@ -54,14 +54,14 @@ class FilterReturnTrip {
   factory FilterReturnTrip.fromJson(Map<String, dynamic> json) {
     return FilterReturnTrip(
       id: json["id"],
-      pickupDivision: json["pickup_division"],
-      dropoffDivision: json["dropoff_division"],
+      pickupDivision: json["pickup_division"].toString(),
+      dropoffDivision: json["dropoff_division"].toString(),
       location: json["location"],
       destination: json["destination"],
       amount: json["amount"],
       timedate: json["timedate"],
-      partnerId: json["partner_id"],
-      vehicleId: json["vehicle_id"],
+      partnerId: json["partner_id"].toString(),
+      vehicleId: json["vehicle_id"].toString(),
       biding: json["biding"],
       status: json["status"],
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
@@ -88,26 +88,26 @@ class Getvehicle {
   });
 
   final int? id;
-  final int? vehicleCategory;
+  final String? vehicleCategory;
   final String? name;
   final String? nameBn;
   final String? slug;
   final String? capacity;
   final String? image;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   factory Getvehicle.fromJson(Map<String, dynamic> json) {
     return Getvehicle(
       id: json["id"],
-      vehicleCategory: json["vehicle_category"],
+      vehicleCategory: json["vehicle_category"].toString(),
       name: json["name"],
       nameBn: json["name_bn"],
       slug: json["slug"],
       capacity: json["capacity"],
       image: json["image"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );

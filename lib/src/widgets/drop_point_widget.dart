@@ -162,18 +162,10 @@ class DropWidgetState extends State<DropWidget> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: 36,
-                                height: 36,
-                                decoration: BoxDecoration(
-                                  color: Colors.red[50],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Icon(
-                                  Icons.flag_outlined,
-                                  color: Colors.red[600],
-                                  size: 20,
-                                ),
+                              Icon(
+                                Icons.location_on_outlined,
+                                color: primaryColor.withOpacity(0.7),
+                                size: 20,
                               ),
                               SizedBox(width: 12),
                               Expanded(
@@ -202,11 +194,7 @@ class DropWidgetState extends State<DropWidget> {
                                   ],
                                 ),
                               ),
-                              Icon(
-                                Icons.arrow_forward,
-                                color: Colors.red[400],
-                                size: 24,
-                              ),
+
                             ],
                           ),
                         ),
