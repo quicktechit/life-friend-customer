@@ -123,10 +123,10 @@ class _CustomCommonAppBarState extends State<CustomCommonAppBar>
             borderRadius: BorderRadius.circular(12),
             onTap: () => Navigator.maybePop(context),
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white.withAlpha(80),
-              ),
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(12),
+              //   color: Colors.white.withAlpha(80),
+              // ),
               child: const Icon(
                 Icons.arrow_back_ios_new_rounded,
                 size: 20,
@@ -146,14 +146,14 @@ class _CustomCommonAppBarState extends State<CustomCommonAppBar>
           borderRadius: BorderRadius.circular(12),
           onTap: () => widget.scaffoldKey?.currentState?.openDrawer(),
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.white.withOpacity(0.2),
-              border: Border.all(
-                color: Colors.white.withOpacity(0.3),
-                width: 1,
-              ),
-            ),
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(12),
+            //   color: Colors.white.withOpacity(0.2),
+            //   border: Border.all(
+            //     color: Colors.white.withOpacity(0.3),
+            //     width: 1,
+            //   ),
+            // ),
             padding: const EdgeInsets.all(8),
             child: Image.asset(
               "assets/images/app.png",
@@ -189,20 +189,20 @@ class _CustomCommonAppBarState extends State<CustomCommonAppBar>
               context: context,
               backgroundColor: Colors.transparent,
               builder: (context) => Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(28),
-                    topRight: Radius.circular(28),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(100),
-                      blurRadius: 20,
-                      offset: const Offset(0, -5),
-                    ),
-                  ],
-                ),
+                // decoration: BoxDecoration(
+                //   color: Theme.of(context).scaffoldBackgroundColor,
+                //   borderRadius: const BorderRadius.only(
+                //     topLeft: Radius.circular(28),
+                //     topRight: Radius.circular(28),
+                //   ),
+                //   boxShadow: [
+                //     BoxShadow(
+                //       color: Colors.black.withAlpha(100),
+                //       blurRadius: 20,
+                //       offset: const Offset(0, -5),
+                //     ),
+                //   ],
+                // ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -269,14 +269,14 @@ class _CustomCommonAppBarState extends State<CustomCommonAppBar>
               onTap: () => Get.to(() => const NotificationsPage()),
               child: Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white.withAlpha(50),
-                  border: Border.all(
-                    color: Colors.white.withAlpha(70),
-                    width: 1,
-                  ),
-                ),
+                // decoration: BoxDecoration(
+                //   borderRadius: BorderRadius.circular(12),
+                //   color: Colors.white.withAlpha(50),
+                //   border: Border.all(
+                //     color: Colors.white.withAlpha(70),
+                //     width: 1,
+                //   ),
+                // ),
                 child: Image.asset(
                   "assets/images/notification.png",
                   width: 22,

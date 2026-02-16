@@ -18,7 +18,7 @@ class CustomTextFieldWithIcon extends StatelessWidget {
   final void Function(String)? onChanged; // Added onChanged option
 
   const CustomTextFieldWithIcon({
-    key,
+    super.key,
     required this.label,
     required this.icon,
     required this.controller,
@@ -62,7 +62,8 @@ class CustomTextFieldWithIcon extends StatelessWidget {
             keyboardType: keyboardType,
             maxLines: maxLines,
             controller: controller,
-            onChanged: onChanged, // Added onChanged option
+            onChanged: onChanged,
+            // Added onChanged option
             validator: validator,
             decoration: InputDecoration(
               prefixIcon: Icon(icon, color: Colors.black),

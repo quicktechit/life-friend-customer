@@ -292,31 +292,43 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                               height: 300,
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  valueColor:
-                                  AlwaysStoppedAnimation<Color>(primaryRed),
+                                  valueColor: AlwaysStoppedAnimation<Color>(primaryRed),
                                 ),
                               ),
                             );
-                          } else if (liveBiddingController
-                              .filteredLiveBidData.first.tripBids!.isEmpty ||
-                              liveBiddingController
-                                  .filteredLiveBidData.first.tripBids == []) {
+                          }
+
+                          // ✅ FIRST CHECK THE MAIN LIST
+                          if (liveBiddingController.filteredLiveBidData.isEmpty) {
                             return EmptyBoxWidget(
                               title: "noLiveMessage".tr,
                               truckImage: widget.type == "Bike"
                                   ? "assets/images/motorcycle.png"
                                   : 'assets/images/empty.png',
                             ).p12();
-                          } else {
+                          }
+
+                          // ✅ SAFE ACCESS
+                          final tripBids = liveBiddingController
+                              .filteredLiveBidData.first.tripBids ??
+                              [];
+
+                          if (tripBids.isEmpty) {
+                            return EmptyBoxWidget(
+                              title: "noLiveMessage".tr,
+                              truckImage: widget.type == "Bike"
+                                  ? "assets/images/motorcycle.png"
+                                  : 'assets/images/empty.png',
+                            ).p12();
+                          }
                             return ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: liveBiddingController
                                   .filteredLiveBidData.first.tripBids?.length,
                               itemBuilder: (BuildContext context, int index) {
-                                bool isSelected = selectedCarIndex == index;
-                                var data = liveBiddingController
-                                    .filteredLiveBidData.first.tripBids?[index];
+                                final data = tripBids[index];
+                                final isSelected = selectedCarIndex == index;
 
                                 return GestureDetector(
                                   onTap: () {
@@ -553,7 +565,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                 );
                               },
                             );
-                          }
+
                         }),
                       ),
                     ),

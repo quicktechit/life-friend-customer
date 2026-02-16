@@ -19,10 +19,9 @@ import 'package:sidebarx/sidebarx.dart';
 
 class ExampleSidebarX extends StatefulWidget {
   const ExampleSidebarX({
-    Key? key,
+    super.key,
     required SidebarXController controller,
-  })  : _controller = controller,
-        super(key: key);
+  })  : _controller = controller;
 
   final SidebarXController _controller;
 

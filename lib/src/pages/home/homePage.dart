@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage>
             readOnly: true,
             // Set to true if navigating to a dedicated search page
             onTap: () {
-              Get.to(() => SearchWidgets());
+              Get.to(() => SearchWidgets(tripType: 'car',));
             },
             decoration: InputDecoration(
               hintText: 'Search Whare To Go...?',
@@ -479,7 +479,10 @@ class _HomePageState extends State<HomePage>
           await returnTripFilter.returnTripFilterList();
         } else if (feature.type == 'airport') {
           await vehicleController.getVehicles(id: '2');
-          Get.to(() => RentalListPage(isAirport: true, tripType: 'car'));
+
+          Get.to(() => SearchWidgets(tripType: 'car'));
+        }else{
+          Get.to(() => SearchWidgets(tripType: 'car'));
         }
       },
       child: Container(

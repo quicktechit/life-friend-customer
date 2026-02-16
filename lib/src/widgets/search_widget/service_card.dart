@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pickup_load_update/src/widgets/search_widget/search_widgets.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../configs/app_list.dart';
 import '../../controllers/return trip controller/return_filter_controller.dart';
@@ -11,7 +12,11 @@ import '../../pages/home/return trip/return_trip_list_filter.dart';
 import '../../pages/home/truck/select_location.dart';
 import '../text/kText.dart';
 
-Widget buildQuickServiceCard(BuildContext context,ServiceItem service, double width) {
+Widget buildQuickServiceCard(
+  BuildContext context,
+  ServiceItem service,
+  double width,
+) {
   final vehicleController = Get.put(QuickTechVehiclesController());
   final ReturnTripFilter returnTripFilter = Get.put(ReturnTripFilter());
   return GestureDetector(
@@ -26,21 +31,22 @@ Widget buildQuickServiceCard(BuildContext context,ServiceItem service, double wi
           return;
         case 'ambulance':
           await vehicleController.getVehicles(id: '2');
-          Get.to(
-                () => RentalListPage(tripType: 'Ambulance', ambulance: true),
-          );
+
+          Get.to(() => SearchWidgets(tripType: 'Ambulance'));
           break;
         case 'carRental':
           await vehicleController.getVehicles(id: '2');
-          Get.to(() => RentalListPage(isAirport: false, tripType: 'car'));
+
+          Get.to(() => SearchWidgets(tripType: 'car'));
           break;
         case 'airport':
           await vehicleController.getVehicles(id: '2');
-          Get.to(() => RentalListPage(isAirport: true, tripType: 'car'));
+
+          Get.to(() => SearchWidgets(tripType: 'car'));
           break;
         case 'rideShare':
           Get.to(
-                () => RentalPointPage(
+            () => RentalPointPage(
               isAirport: false,
               carImg: '',
               carName: 'bike',

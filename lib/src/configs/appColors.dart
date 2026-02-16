@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-final primaryColor = Color.fromRGBO(206, 1,44, 1);
+const primaryColor = Color.fromRGBO(206, 1,44, 1);
 final titleColor = Color.fromRGBO(250, 92, 92, 1.0);
 final primaryColor50 = HexColor('#ffe6e5');
 final secondaryColor = Color(0xFF1262b);

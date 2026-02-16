@@ -32,7 +32,7 @@ class Translation extends Translations {
           'selectTime': 'Select Time',
           'roundTrip': 'Round Trip',
           'addANote': 'Add Note',
-          'homeTitle': 'Life Friend',
+          'homeTitle': 'Riderr',
           'chooseRide': "Choose Your Ride",
           'RETURNDATETIME': 'RETURN DATE & TIME',
           'enterTime1hourFromNow': '''ENTER TIME
@@ -338,7 +338,7 @@ class Translation extends Translations {
           'medium': 'মাঝারি',
           'big': 'বড়',
           'trailer': 'ট্রেইলার',
-          'homeTitle': 'লাইফ ফ্রেন্ড',
+          'homeTitle': 'রাইডার',
           'chooseRide': 'আপনার যাত্রা নির্বাচন করুন',
           'selectTruck': 'ট্রাক সিলেক্ট করুন',
         },

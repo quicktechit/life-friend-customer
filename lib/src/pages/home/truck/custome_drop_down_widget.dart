@@ -73,45 +73,45 @@ class _CustomDropWidget extends State<CustomDropWidget> {
               filled: true,
             ),
           ),
-          sizeH10,
-          if (isActive && locationController.isLoading.value)
-            Center(
-              child: SpinKitDoubleBounce(
-                color: primaryColor,
-                size: 50.0,
-              ),
-            )
-          else if (isActive && locationController.suggestionsDrop.isNotEmpty)
-            SizedBox(
-              height: 130.h,
-              child: ListView.builder(
-                itemCount: locationController.suggestionsDrop.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      locationController.suggestionsDrop[index].description,
-                    ),
-                    onTap: () async {
-                      final selected = locationController.suggestionsDrop[index];
-
-                      debugPrint('Getting Location ::: $selected');
-
-                      await locationController.getDropDetailsAddress(selected);
-                      widget.controller.text = locationController.dropUpBnLocation.value;
-
-                      await locationController.selectMultipleDropAddress(selected);
-
-                      widget.onLocationSelected(
-                        locationController.selectedDropUpLat.value,
-                        locationController.selectedDropUpLng.value,
-                      );
-
-                      locationController.suggestionsDrop.clear();
-                    },
-                  );
-                },
-              ),
-            )
+          // sizeH10,
+          // if (isActive && locationController.isLoading.value)
+          //   Center(
+          //     child: SpinKitDoubleBounce(
+          //       color: primaryColor,
+          //       size: 50.0,
+          //     ),
+          //   )
+          // else if (isActive && locationController.suggestionsDrop.isNotEmpty)
+          //   SizedBox(
+          //     height: 130.h,
+          //     child: ListView.builder(
+          //       itemCount: locationController.suggestionsDrop.length,
+          //       itemBuilder: (context, index) {
+          //         return ListTile(
+          //           title: Text(
+          //             locationController.suggestionsDrop[index].description,
+          //           ),
+          //           onTap: () async {
+          //             final selected = locationController.suggestionsDrop[index];
+          //
+          //             debugPrint('Getting Location ::: $selected');
+          //
+          //             await locationController.getDropDetailsAddress(selected);
+          //             widget.controller.text = locationController.dropUpBnLocation.value;
+          //
+          //             await locationController.selectMultipleDropAddress(selected);
+          //
+          //             widget.onLocationSelected(
+          //               locationController.selectedDropUpLat.value,
+          //               locationController.selectedDropUpLng.value,
+          //             );
+          //
+          //             locationController.suggestionsDrop.clear();
+          //           },
+          //         );
+          //       },
+          //     ),
+          //   )
         ],
       );
     });

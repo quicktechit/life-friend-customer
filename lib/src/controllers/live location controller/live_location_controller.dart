@@ -76,7 +76,7 @@ class LocationController extends GetxController {
       suggestionsPickUp.clear();
       return;
     }
-    isLoadingDrop(true);
+    isLoading(true);
     final String baseUrl =
         "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";
 
@@ -90,18 +90,22 @@ class LocationController extends GetxController {
         suggestionsDrop.addAll(predictions
             .map<Suggestion>((e) => Suggestion.fromJson(e))
             .toList());
-        isLoadingDrop(false);
+        isLoading(false);
       } else {
-        isLoadingDrop(false);
+        isLoading(false);
         throw Exception('Failed to load suggestions: ${jsonData['status']}');
       }
     } else {
-      isLoadingDrop(false);
+      isLoading(false);
       throw Exception('Failed to load suggestions');
     }
   }
 
   Future<void> fetchViaSuggestions(String input) async {
+    if (input.length < 15) {
+      suggestionsPickUp.clear();
+      return;
+    }
     isLoading(true);
     final String baseUrl =
         "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";

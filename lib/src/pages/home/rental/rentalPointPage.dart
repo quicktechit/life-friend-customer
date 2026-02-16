@@ -108,12 +108,12 @@ class _RentalPointPageState extends State<RentalPointPage> {
           child: Column(
             children: [
               // Car Selection (Conditional)
-              _buildCarSelectionSection(),
+              // _buildCarSelectionSection(),
 
-              SizedBox(height: 16.h),
+              // SizedBox(height: 16.h),
 
               // Airport Selection (Conditional)
-              _buildAirportSelectionSection(),
+              // _buildAirportSelectionSection(),
 
               // Main Card Container
               Card(
@@ -135,7 +135,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                   child: Column(
                     children: [
                       // Location Tracking Section
-                      _buildLocationSection(),
+                      // _buildLocationSection(),
 
                       Divider(height: 1, color: Colors.grey[200]),
 
@@ -1044,7 +1044,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
         map: formData.pickupCoordinates,
         roundTripDetailsJourney: formData.returnDateTime,
         pickupDivision: locationController.pickupDivision.value,
-        isAirport: widget.isAirport == true,
+        isAmbulance: false,
         dropOffMap: formData.dropoffCoordinates,
         categoryID: widget.tripType,
       ),
@@ -1079,20 +1079,28 @@ class _RentalPointPageState extends State<RentalPointPage> {
     final isFromAirport = airportController.selectedLocation.value == 'Airport';
 
     return FormData(
-      pickupLocation: isAirportTrip && isFromAirport
-          ? airportController.selectedAirport.value
-          : locationController.pickUpLocation.toString(),
-      dropLocation: isAirportTrip && !isFromAirport
-          ? airportController.selectedAirport.value
-          : locationController.dropLocation.toString(),
+      pickupLocation:
+      // isAirportTrip && isFromAirport
+      //     ? airportController.selectedAirport.value
+      //     :
+      locationController.pickUpLocation.toString(),
+      dropLocation:
+      // isAirportTrip && !isFromAirport
+      //     ? airportController.selectedAirport.value
+      //     :
+      locationController.dropLocation.toString(),
       journeyDateTime: journeyDateTime,
       returnDateTime: returnDateTime,
-      pickupCoordinates: isAirportTrip && isFromAirport
-          ? airportController.selectedCoordinates.value.toString()
-          : '${locationController.selectedPickUpLat.value},${locationController.selectedPickUpLng.value}',
-      dropoffCoordinates: isAirportTrip && !isFromAirport
-          ? airportController.selectedCoordinates.value.toString()
-          : '${locationController.selectedDropUpLat.value},${locationController.selectedDropUpLng.value}',
+      pickupCoordinates:
+      // isAirportTrip && isFromAirport
+      //     ? airportController.selectedCoordinates.value.toString()
+      //     :
+      '${locationController.selectedPickUpLat.value},${locationController.selectedPickUpLng.value}',
+      dropoffCoordinates:
+      // isAirportTrip && !isFromAirport
+      //     ? airportController.selectedCoordinates.value.toString()
+      //     :
+      '${locationController.selectedDropUpLat.value},${locationController.selectedDropUpLng.value}',
     );
   }
 
