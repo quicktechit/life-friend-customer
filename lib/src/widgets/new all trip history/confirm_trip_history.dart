@@ -23,7 +23,7 @@ import '../../pages/map_page/map_page_view.dart';
 
 
 class AllConfirmTripHistory extends StatefulWidget {
-  AllConfirmTripHistory({super.key});
+  const AllConfirmTripHistory({super.key});
 
   @override
   State<AllConfirmTripHistory> createState() => _AllConfirmTripHistoryState();
@@ -139,7 +139,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withAlpha(20),
                     blurRadius: 8,
                     offset: Offset(0, 2),
                   ),
@@ -153,7 +153,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                     decoration: BoxDecoration(
-                      color: confirmColor.withOpacity(0.08),
+                      color: confirmColor.withAlpha(10),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16),
@@ -167,9 +167,9 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: confirmColor.withOpacity(0.15),
+                            color: confirmColor.withAlpha(505),
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: confirmColor.withOpacity(0.4), width: 1),
+                            border: Border.all(color: confirmColor.withAlpha(40), width: 1),
                           ),
                           child: Row(
                             children: [
@@ -202,9 +202,9 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                              color: Color(0xFF2196F3).withOpacity(0.1),
+                              color: Color(0xFF2196F3).withAlpha(50),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Color(0xFF2196F3).withOpacity(0.3)),
+                              border: Border.all(color: Color(0xFF2196F3).withAlpha(70)),
                             ),
                             child: Row(
                               children: [
@@ -299,9 +299,9 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                               Container(
                                 padding: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.05),
+                                  color: Colors.green.withAlpha(20),
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.green.withOpacity(0.2)),
+                                  border: Border.all(color: Colors.green.withAlpha(70)),
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,7 +347,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                   child: Container(
                                     width: 30,
                                     height: 1,
-                                    color: primaryColor.withOpacity(0.3),
+                                    color: primaryColor.withAlpha(70),
                                   ),
                                 ),
                               ),
@@ -356,9 +356,9 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                               Container(
                                 padding: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.red.withOpacity(0.05),
+                                  color: Colors.red.withAlpha(20),
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.red.withOpacity(0.2)),
+                                  border: Border.all(color: Colors.red.withAlpha(70)),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -483,9 +483,9 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              color: Color(0xFFFF9800).withOpacity(0.1),
+                              color: Color(0xFFFF9800).withAlpha(50),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Color(0xFFFF9800).withOpacity(0.3)),
+                              border: Border.all(color: Color(0xFFFF9800).withAlpha(70)),
                             ),
                             child: Row(
                               children: [
@@ -603,7 +603,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                             decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.1),
+                              color: Colors.red.withAlpha(50),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: Colors.red, width: 1.5),
                             ),
@@ -637,7 +637,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: primaryColor.withOpacity(0.3),
+                                  color: primaryColor.withAlpha(70),
                                   blurRadius: 4,
                                   offset: Offset(0, 2),
                                 ),
@@ -650,7 +650,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white.withOpacity(0.9),
+                                    color: Colors.white.withAlpha(200),
                                   ),
                                 ),
                                 SizedBox(width: 4),
