@@ -1,26 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/pages/home/homePage.dart';
 import 'package:pickup_load_update/src/pages/profile/profilePage.dart';
 import 'package:sidebarx/sidebarx.dart';
-
 import '../../pages/Trip History/all trip/quick_tech_all_trip_history.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // assuming you're using getx for .tr
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../pages/notification page/notification_page.dart';
-
-/// Material Design 3 Dashboard with Navigation Rail Style Bottom Bar
-/// Features: Modern MD3 design, smooth animations, accessibility
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'dart:ui';
-
 import '../drawer/sidebarComponent.dart';
 
 /// iOS-Style Dashboard with Glassmorphism Effect

@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -10,21 +9,10 @@ import 'package:pickup_load_update/firebase_options.dart';
 import 'package:pickup_load_update/src/controllers/language/langController.dart';
 import 'package:pickup_load_update/src/pages/Trip%20History/trip_history_page.dart';
 import 'package:pickup_load_update/src/service/hiveService.dart';
-import 'package:pickup_load_update/src/service/hiveService.dart';
+
 import 'src/app.dart';
 import 'package:vibration/vibration.dart';
 
-import 'dart:typed_data';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:vibration/vibration.dart';
-
-import 'firebase_options.dart';
 
 // ✅ ONLY ONE GLOBAL INSTANCE (VERY IMPORTANT)
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

@@ -18,14 +18,9 @@ import '../../../models/suggestion_model.dart';
 import '../../../widgets/button/primaryButton.dart';
 import '../../../widgets/car selected option/car_selected_option_widget.dart';
 import '../../../widgets/date and time widget/date_time_widget.dart';
-import '../../../widgets/date and time widget/return_date_and_time_widget.dart';
-import '../../../widgets/drop_point_widget.dart';
 import '../../../widgets/note_controller.dart';
-import '../../../widgets/pick_up_location_widget.dart';
-import '../../../widgets/text/kText.dart';
-import '../../../widgets/via_location_widget.dart';
 import '../../../widgets/yes_no_ambulance_button.dart';
-import '../../map_page/MapSinglePickerScreen.dart';
+
 import '../../map_page/controller/LocationPickerController.dart';
 import '../rental/tripDetailsPage.dart';
 
