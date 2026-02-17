@@ -156,7 +156,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: primaryRed.withOpacity(0.3),
+                    color: primaryRed.withAlpha(80),
                     blurRadius: 10,
                     spreadRadius: 1,
                   ),
@@ -211,7 +211,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: primaryRed.withOpacity(0.2),
+                    color: primaryRed.withAlpha(60),
                     blurRadius: 10,
                     spreadRadius: 2,
                   ),
@@ -278,7 +278,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withAlpha(60),
                             blurRadius: 15,
                             spreadRadius: 2,
                           ),
@@ -333,7 +333,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                 return GestureDetector(
                                   onTap: () {
                                     _singleTripC.singleTripDetails(
-                                        "${data?.tripId.toString()}", 'normal');
+                                        data.tripId.toString(), 'normal');
                                     setState(() {
                                       selectedCarIndex = index;
                                     });
@@ -342,7 +342,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                     margin: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                       color: isSelected
-                                          ? darkRed.withOpacity(0.1)
+                                          ? darkRed.withAlpha(50)
                                           : lightRed,
                                       borderRadius: BorderRadius.circular(16),
                                       border: Border.all(
@@ -353,7 +353,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
+                                          color: Colors.black.withAlpha(50),
                                           blurRadius: 10,
                                           offset: const Offset(0, 4),
                                         ),
@@ -378,7 +378,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                   image: DecorationImage(
                                                     image: NetworkImage(
                                                       Urls.getImageURL(
-                                                        endPoint: data?.getBrand
+                                                        endPoint: data.getBrand
                                                             ?.image
                                                             ?.toString() ??
                                                             '',
@@ -402,13 +402,13 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                           .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          data?.getBrand?.name
+                                                          data.getBrand?.name
                                                               ?.toString() ??
-                                                              data?.getvehicle
+                                                              data.getvehicle
                                                                   ?.model ??
                                                               '',
                                                           style: TextStyle(
-                                                            color: Colors.white,
+                                                            color: Colors.black,
                                                             fontSize: 18,
                                                             fontWeight:
                                                             FontWeight.bold,
@@ -425,7 +425,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                     ),
                                                     const SizedBox(height: 4),
                                                     Text(
-                                                      '${data?.getBrand?.capacity?.toString() ?? ''} Seats Capacity',
+                                                      '${data.getBrand?.capacity?.toString() ?? ''} Seats Capacity',
                                                       style: TextStyle(
                                                         color: Colors.grey[400],
                                                         fontSize: 14,
@@ -444,14 +444,14 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                           decoration:
                                                           BoxDecoration(
                                                             color: darkRed
-                                                                .withOpacity(
-                                                                0.2),
+                                                                .withAlpha(
+                                                                60),
                                                             borderRadius:
                                                             BorderRadius
                                                                 .circular(8),
                                                           ),
                                                           child: Text(
-                                                            '${data?.getvehicle?.metro?.toString() ?? ''} ${data?.getvehicle?.metroNo?.toString() ?? ''}',
+                                                            '${data.getvehicle?.metro?.toString() ?? ''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
                                                             style: TextStyle(
                                                               color: primaryRed,
                                                               fontSize: 12,
@@ -491,14 +491,14 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                               boxShadow: [
                                                 BoxShadow(
                                                   color:
-                                                  primaryRed.withOpacity(0.3),
+                                                  primaryRed.withAlpha(80),
                                                   blurRadius: 10,
                                                   spreadRadius: 1,
                                                 ),
                                               ],
                                             ),
                                             child: Text(
-                                              '৳${data?.amount?.toString() ?? '0'}',
+                                              '৳${data.amount?.toString() ?? '0'}',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 18,
@@ -515,11 +515,11 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                           child: GestureDetector(
                                             onTap: () {
                                               Get.to(() => CarDetailsPage(
-                                                tripId: data?.tripId
+                                                tripId: data.tripId
                                                     ?.toString() ??
                                                     '',
                                                 bidId:
-                                                data?.id?.toString() ??
+                                                data.id?.toString() ??
                                                     '',
                                               ));
                                             },
@@ -530,13 +530,12 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                 vertical: 6,
                                               ),
                                               decoration: BoxDecoration(
-                                                color: Colors.white
-                                                    .withOpacity(0.1),
+                                                color: Colors.grey.shade300,
                                                 borderRadius:
                                                 BorderRadius.circular(8),
                                                 border: Border.all(
                                                   color: Colors.white
-                                                      .withOpacity(0.2),
+                                                      .withAlpha(60),
                                                 ),
                                               ),
                                               child: Row(
@@ -544,14 +543,14 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                   Text(
                                                     'Details',
                                                     style: TextStyle(
-                                                      color: Colors.grey[300],
+                                                      color: Colors.black,
                                                       fontSize: 12,
                                                     ),
                                                   ),
                                                   const SizedBox(width: 4),
                                                   Icon(
                                                     Icons.arrow_forward_ios,
-                                                    color: Colors.grey[300],
+                                                    color: Colors.black,
                                                     size: 12,
                                                   ),
                                                 ],
@@ -578,7 +577,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         children: [
                           Container(
                             width: double.infinity,
-                            height: 60,
+                            height: 45,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [primaryRed, darkRed],
@@ -586,7 +585,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                               borderRadius: BorderRadius.circular(15),
                               boxShadow: [
                                 BoxShadow(
-                                  color: primaryRed.withOpacity(0.4),
+                                  color: primaryRed.withAlpha(90),
                                   blurRadius: 15,
                                   spreadRadius: 2,
                                 ),
@@ -639,7 +638,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withAlpha(50),
                               blurRadius: 15,
                               spreadRadius: 2,
                             ),
@@ -668,7 +667,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                       borderRadius: BorderRadius.circular(12),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: primaryRed.withOpacity(0.3),
+                                          color: primaryRed.withAlpha(80),
                                           blurRadius: 10,
                                           spreadRadius: 1,
                                         ),
@@ -751,7 +750,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color: Colors.grey.withOpacity(0.3),
+                                        color: Colors.grey.withAlpha(80),
                                         width: 2,
                                       ),
                                     ),
@@ -774,12 +773,12 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                         MainAxisAlignment.center,
                                         children: [
                                           Icon(Icons.close,
-                                              color: Colors.white),
+                                              color: Colors.black),
                                           const SizedBox(width: 8),
                                           Text(
                                             'Change',
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -805,7 +804,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withAlpha(50),
                             blurRadius: 15,
                             spreadRadius: 2,
                           ),
@@ -828,10 +827,10 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: primaryRed.withOpacity(0.2),
+                                  color: primaryRed.withAlpha(60),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
-                                    color: primaryRed.withOpacity(0.3),
+                                    color: primaryRed.withAlpha(80),
                                   ),
                                 ),
                                 child: Text(
@@ -910,7 +909,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
 
                   // Header
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: lightRed,
                       borderRadius: BorderRadius.circular(15),
@@ -968,7 +967,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                             leading: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: primaryRed.withOpacity(0.1),
+                                color: primaryRed.withAlpha(50),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -1103,7 +1102,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                     width: double.infinity,
                     height: 55,
                     decoration: BoxDecoration(
-                      border: Border.all(color: primaryRed.withOpacity(0.3)),
+                      border: Border.all(color: primaryRed.withAlpha(80)),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: ElevatedButton(

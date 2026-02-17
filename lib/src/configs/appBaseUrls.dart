@@ -8,6 +8,7 @@ class Urls {
   static String registration = "$baseUrl/customer/register";
   static String otpSubmit = "$baseUrl/customer/login";
   static String sliders = "$baseUrl/customer/sliders";
+  static String carDetails = "$baseUrl/customer/bid-details";
 
   static String offers = "$baseUrl/customer/offers";
 

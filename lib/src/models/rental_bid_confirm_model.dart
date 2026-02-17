@@ -86,9 +86,9 @@ class Partner {
   final String? myreferKey;
   final String? verify;
   final String? forgotCode;
-  final int? credit;
-  final int? debit;
-  final int? status;
+  final String? credit;
+  final String? debit;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -110,9 +110,9 @@ class Partner {
       myreferKey: json["myrefer_key"],
       verify: json["verify"],
       forgotCode: json["forgot_code"],
-      credit: json["credit"],
-      debit: json["debit"],
-      status: json["status"],
+      credit: json["credit"].toString(),
+      debit: json["debit"].toString(),
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );
@@ -138,33 +138,33 @@ class TripConfirm {
   });
 
   final String? bidId;
-  final int? tripId;
-  final int? vehicleId;
-  final int? assignedVehicleId;
-  final int? customerId;
-  final int? partnerId;
+  final String? tripId;
+  final String? vehicleId;
+  final String? assignedVehicleId;
+  final String? customerId;
+  final String? partnerId;
   final String? amount;
-  final int? otp;
+  final String? otp;
   final String? trackingId;
-  final int? status;
-  final int? tripStarted;
+  final String? status;
+  final String? tripStarted;
   final DateTime? updatedAt;
   final DateTime? createdAt;
   final int? id;
 
   factory TripConfirm.fromJson(Map<String, dynamic> json) {
     return TripConfirm(
-      bidId: json["bid_id"],
-      tripId: json["trip_id"],
-      vehicleId: json["vehicle_id"],
-      assignedVehicleId: json["assigned_vehicle_id"],
-      customerId: json["customer_id"],
-      partnerId: json["partner_id"],
+      bidId: json["bid_id"].toString(),
+      tripId: json["trip_id".toString()],
+      vehicleId: json["vehicle_id"].toString(),
+      assignedVehicleId: json["assigned_vehicle_id"].toString(),
+      customerId: json["customer_id"].toString(),
+      partnerId: json["partner_id"].toString(),
       amount: json["amount"],
-      otp: json["otp"],
+      otp: json["otp"].toString(),
       trackingId: json["tracking_id"],
-      status: json["status"],
-      tripStarted: json["trip_started"],
+      status: json["status"].toString(),
+      tripStarted: json["trip_started"].toString(),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       id: json["id"],
@@ -199,8 +199,8 @@ class TripRequest {
   });
 
   final int? id;
-  final int? customerId;
-  final int? vehicleId;
+  final String? customerId;
+  final String? vehicleId;
   final String? pickupLocation;
   final dynamic viaLocation;
   final String? dropoffLocation;
@@ -210,13 +210,13 @@ class TripRequest {
   final dynamic districtId;
   final dynamic portId;
   final String? datetime;
-  final int? roundTrip;
+  final String? roundTrip;
   final dynamic promoKey;
   final String? roundDatetime;
   final dynamic note;
   final String? trackingId;
-  final int? status;
-  final int? biding;
+  final String? status;
+  final String? biding;
   final DateTime? bidingExpiredAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -224,8 +224,8 @@ class TripRequest {
   factory TripRequest.fromJson(Map<String, dynamic> json) {
     return TripRequest(
       id: json["id"],
-      customerId: json["customer_id"],
-      vehicleId: json["vehicle_id"],
+      customerId: json["customer_id"].toString(),
+      vehicleId: json["vehicle_id"].toString(),
       pickupLocation: json["pickup_location"],
       viaLocation: json["via_location"],
       dropoffLocation: json["dropoff_location"],
@@ -235,13 +235,13 @@ class TripRequest {
       districtId: json["district_id"],
       portId: json["port_id"],
       datetime: json["datetime"],
-      roundTrip: json["round_trip"],
+      roundTrip: json["round_trip"].toString(),
       promoKey: json["promo_key"],
       roundDatetime: json["round_datetime"],
       note: json["note"],
       trackingId: json["tracking_id"],
-      status: json["status"],
-      biding: json["biding"],
+      status: json["status"].toString(),
+      biding: json["biding"].toString(),
       bidingExpiredAt: DateTime.tryParse(json["biding_expired_at"] ?? ""),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
@@ -264,26 +264,26 @@ class Vehicle {
   });
 
   final int? id;
-  final int? vehicleCategory;
+  final String? vehicleCategory;
   final String? name;
   final String? nameBn;
   final String? slug;
   final String? capacity;
   final String? image;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
       id: json["id"],
-      vehicleCategory: json["vehicle_category"],
+      vehicleCategory: json["vehicle_category"].toString(),
       name: json["name"],
       nameBn: json["name_bn"],
       slug: json["slug"],
       capacity: json["capacity"],
       image: json["image"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );

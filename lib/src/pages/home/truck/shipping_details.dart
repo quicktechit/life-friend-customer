@@ -665,7 +665,7 @@ class _ShippingDetailsState extends State<ShippingDetails> {
                                              "Bid"
                                              ? "0"
                                              : truckController.totalPriceNew!=''?truckController.totalPriceNew:truckController.totalPrice,
-                                         pickupDivision: "${locationController.pickupDivision.value}",
+                                         pickupDivision: locationController.pickupDivision.value,
                                          // dropOfDivision: "${divisionController.selectedDropDivision.value?.id}",
                                          tripService:
                                          truckController.checkedIds,

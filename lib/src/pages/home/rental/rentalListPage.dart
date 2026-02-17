@@ -94,10 +94,7 @@ class RentalListPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'loadingVehicles'.tr,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
               ],
             ),
@@ -107,11 +104,7 @@ class RentalListPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.car_rental,
-                  size: 80,
-                  color: Colors.grey[300],
-                ),
+                Icon(Icons.car_rental, size: 80, color: Colors.grey[300]),
                 const SizedBox(height: 16),
                 Text(
                   'noVehiclesAvailable'.tr,
@@ -124,10 +117,7 @@ class RentalListPage extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   'pleaseCheckBackLater'.tr,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[500],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[500]),
                 ),
               ],
             ),
@@ -139,9 +129,7 @@ class RentalListPage extends StatelessWidget {
               _buildHeader(context),
 
               // Vehicles list
-              Expanded(
-                child: _buildVehicleList(vehicles),
-              ),
+              Expanded(child: _buildVehicleList(vehicles)),
 
               // Next button
               Obx(() => _buildNextButton(context)),
@@ -170,11 +158,7 @@ class RentalListPage extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.directions_car,
-                color: primaryColor,
-                size: 24,
-              ),
+              Icon(Icons.directions_car, color: primaryColor, size: 24),
               const SizedBox(width: 8),
               Text(
                 'selectVehicle'.tr,
@@ -189,10 +173,7 @@ class RentalListPage extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'tapToSelectVehicle'.tr,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -219,7 +200,9 @@ class RentalListPage extends StatelessWidget {
                 duration: const Duration(milliseconds: 300),
                 margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
-                  color: isSelected ? primaryColor.withOpacity(0.05) : Colors.white,
+                  color: isSelected
+                      ? primaryColor.withOpacity(0.05)
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
                     color: isSelected ? primaryColor : Colors.grey[200]!,
@@ -235,13 +218,15 @@ class RentalListPage extends StatelessWidget {
                   ],
                 ),
                 child: Column(
-                  crossAxisAlignment: .start,mainAxisAlignment: .start,
+                  crossAxisAlignment: .start,
+                  mainAxisAlignment: .start,
                   children: [
                     // Main content
                     Padding(
                       padding: const EdgeInsets.all(8),
                       child: Row(
-                        crossAxisAlignment: .start,mainAxisAlignment: .start,
+                        crossAxisAlignment: .start,
+                        mainAxisAlignment: .start,
                         children: [
                           // Vehicle Image
                           Container(
@@ -253,11 +238,16 @@ class RentalListPage extends StatelessWidget {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: isSelected
-                                    ? [primaryColor.withOpacity(0.2), primaryColor.withOpacity(0.05)]
+                                    ? [
+                                        primaryColor.withOpacity(0.2),
+                                        primaryColor.withOpacity(0.05),
+                                      ]
                                     : [Colors.grey[50]!, Colors.white],
                               ),
                               border: Border.all(
-                                color: isSelected ? primaryColor.withOpacity(0.3) : Colors.grey[200]!,
+                                color: isSelected
+                                    ? primaryColor.withOpacity(0.3)
+                                    : Colors.grey[200]!,
                                 width: 1,
                               ),
                             ),
@@ -281,7 +271,9 @@ class RentalListPage extends StatelessWidget {
                                         _getVehicleIcon(vehicle.name ?? ''),
                                         style: TextStyle(
                                           fontSize: 40,
-                                          color: isSelected ? primaryColor : Colors.grey[400],
+                                          color: isSelected
+                                              ? primaryColor
+                                              : Colors.grey[400],
                                         ),
                                       ),
                                     ),
@@ -303,14 +295,17 @@ class RentalListPage extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
-                                    color: isSelected ? primaryColor : Colors.grey[900],
+                                    color: isSelected
+                                        ? primaryColor
+                                        : Colors.grey[900],
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
 
                                 // Bengali name if available
-                                if (vehicle.nameBn != null && vehicle.nameBn!.isNotEmpty)
+                                if (vehicle.nameBn != null &&
+                                    vehicle.nameBn!.isNotEmpty)
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text(
@@ -333,7 +328,9 @@ class RentalListPage extends StatelessWidget {
                                       Icon(
                                         Icons.people,
                                         size: 16,
-                                        color: isSelected ? primaryColor : Colors.grey[500],
+                                        color: isSelected
+                                            ? primaryColor
+                                            : Colors.grey[500],
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
@@ -345,14 +342,23 @@ class RentalListPage extends StatelessWidget {
                                         ),
                                       ),
                                       // Status badge if needed
-                                      if (vehicle.status != null && vehicle.status == '1')
+                                      if (vehicle.status != null &&
+                                          vehicle.status == '1')
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
+                                          padding: const EdgeInsets.only(
+                                            left: 10,
+                                          ),
                                           child: Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 2,
+                                            ),
                                             decoration: BoxDecoration(
-                                              color: Colors.green.withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(12),
+                                              color: Colors.green.withOpacity(
+                                                0.1,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
                                             ),
                                             child: Text(
                                               'Available',
@@ -366,8 +372,6 @@ class RentalListPage extends StatelessWidget {
                                         ),
                                     ],
                                   ),
-
-
                               ],
                             ),
                           ),
@@ -376,13 +380,19 @@ class RentalListPage extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: isSelected ? primaryColor : Colors.grey[100],
+                              color: isSelected
+                                  ? primaryColor
+                                  : Colors.grey[100],
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
-                              isSelected ? Icons.check : Icons.arrow_forward_ios,
+                              isSelected
+                                  ? Icons.check
+                                  : Icons.arrow_forward_ios,
                               size: 16,
-                              color: isSelected ? Colors.white : Colors.grey[600],
+                              color: isSelected
+                                  ? Colors.white
+                                  : Colors.grey[600],
                             ),
                           ),
                         ],
@@ -413,14 +423,18 @@ class RentalListPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
-                                color: isSelected ? primaryColor : Colors.grey[600],
+                                color: isSelected
+                                    ? primaryColor
+                                    : Colors.grey[600],
                               ),
                             ),
                             const SizedBox(width: 6),
                             Icon(
                               Icons.keyboard_arrow_down,
                               size: 18,
-                              color: isSelected ? primaryColor : Colors.grey[500],
+                              color: isSelected
+                                  ? primaryColor
+                                  : Colors.grey[500],
                             ),
                           ],
                         ),
@@ -436,7 +450,7 @@ class RentalListPage extends StatelessWidget {
     );
   }
 
-// Method to show vehicle details
+  // Method to show vehicle details
   void _showVehicleDetails(BuildContext context, dynamic vehicle) {
     showModalBottomSheet(
       context: context,
@@ -569,7 +583,8 @@ class RentalListPage extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              if (vehicle.nameBn != null && vehicle.nameBn!.isNotEmpty)
+                              if (vehicle.nameBn != null &&
+                                  vehicle.nameBn!.isNotEmpty)
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4),
                                   child: Text(
@@ -585,7 +600,10 @@ class RentalListPage extends StatelessWidget {
                         ),
                         if (vehicle.status == '1')
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.green.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
@@ -693,7 +711,7 @@ class RentalListPage extends StatelessWidget {
     );
   }
 
-// Helper method for detail items
+  // Helper method for detail items
   Widget _buildDetailItem({
     required IconData icon,
     required String label,
@@ -713,11 +731,7 @@ class RentalListPage extends StatelessWidget {
               color: primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              size: 18,
-              color: primaryColor,
-            ),
+            child: Icon(icon, size: 18, color: primaryColor),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -726,10 +740,7 @@ class RentalListPage extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 11, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -749,7 +760,7 @@ class RentalListPage extends StatelessWidget {
     );
   }
 
-// Helper method to format date
+  // Helper method to format date
   String _formatDate(String? dateString) {
     if (dateString == null) return 'N/A';
     try {
@@ -760,7 +771,6 @@ class RentalListPage extends StatelessWidget {
     }
   }
 
-
   Widget _buildNextButton(BuildContext context) {
     final isEnabled = selectedItem.value != null;
     final selected = selectedItem.value;
@@ -769,12 +779,7 @@ class RentalListPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: Colors.grey[200]!,
-            width: 1,
-          ),
-        ),
+        border: Border(top: BorderSide(color: Colors.grey[200]!, width: 1)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -805,9 +810,7 @@ class RentalListPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                     child: Image.network(
-                      Urls.getImageURL(
-                        endPoint: selected.image.toString(),
-                      ),
+                      Urls.getImageURL(endPoint: selected.image.toString()),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -878,7 +881,6 @@ class RentalListPage extends StatelessWidget {
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -887,19 +889,25 @@ class RentalListPage extends StatelessWidget {
   void _handleNext(BuildContext context) {
     if (ambulance == true) {
       Get.to(
-            () => AmbulancePage(
+        () => AmbulancePage(
           carImg: Urls.getImageURL(
             endPoint: selectedItem.value!.image.toString(),
           ),
           carName: selectedItem.value!.name.toString(),
           capacity: selectedItem.value!.capacity.toString(),
           carId: selectedItem.value!.id.toString(),
-          tripType: tripType,
+          tripType: tripType == 'car'
+              ? '2'
+              : tripType == 'truck'
+              ? '1'
+              : tripType == 'bike'
+              ? '4'
+              : '2',
         ),
       );
     } else {
       Get.to(
-            () => RentalPointPage(
+        () => RentalPointPage(
           isAirport: isAirport,
           carImg: Urls.getImageURL(
             endPoint: selectedItem.value!.image.toString(),

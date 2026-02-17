@@ -1095,7 +1095,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
       // isAirportTrip && isFromAirport
       //     ? airportController.selectedCoordinates.value.toString()
       //     :
-      '${locationController.selectedPickUpLat.value},${locationController.selectedPickUpLng.value}',
+      '${locationController.selectedPickUpLat.value} ${locationController.selectedPickUpLng.value}',
       dropoffCoordinates:
       // isAirportTrip && !isFromAirport
       //     ? airportController.selectedCoordinates.value.toString()

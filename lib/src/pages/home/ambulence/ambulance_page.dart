@@ -778,7 +778,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
             tripDetailsJourney: journeyTimeAndDate,
             roundTrip: roundTripValue.toString(),
             map:
-            '${locationController.selectedPickUpLat.value},${locationController
+            '${locationController.selectedPickUpLat.value} ${locationController
                 .selectedPickUpLng.value}',
             roundTripDetailsJourney: '',
             pickupDivision: locationController.pickupDivision.value,

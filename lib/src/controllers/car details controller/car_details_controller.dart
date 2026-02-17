@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/local_storage.dart';
 import 'package:pickup_load_update/src/models/car_details_model.dart';
 
@@ -22,14 +23,13 @@ class CarDetailsController extends GetxController {
     try {
       isLoading.value = true;
 
-      SharedPreferencesManager _prefsManager =
+      SharedPreferencesManager prefsManager =
           await SharedPreferencesManager.getInstance();
-      String? token = _prefsManager.getToken();
+      String? token = prefsManager.getToken();
 
       var request = http.Request(
         'POST',
-        Uri.parse(
-            "https://carbook.cutiaidcorporation.com/api/v1/customer/bid-details"),
+        Uri.parse(Urls.carDetails),
       );
       request.headers['Content-Type'] = 'application/json';
       request.headers['Authorization'] = 'Bearer $token';

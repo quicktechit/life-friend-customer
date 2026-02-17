@@ -28,9 +28,9 @@ class ReturnBidConfirmController extends GetxController {
     try {
       isLoading.value = true;
 
-      SharedPreferencesManager _prefsManager =
+      SharedPreferencesManager prefsManager =
           await SharedPreferencesManager.getInstance();
-      String? token = _prefsManager.getToken();
+      String? token = prefsManager.getToken();
 
       var request = http.MultipartRequest(
         'POST',

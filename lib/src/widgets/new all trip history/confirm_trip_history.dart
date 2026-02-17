@@ -508,7 +508,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
 
                   // Footer with action buttons
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -525,7 +525,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                             }
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                             decoration: BoxDecoration(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(20),
@@ -601,7 +601,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                             }
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                             decoration: BoxDecoration(
                               color: Colors.red.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
@@ -627,7 +627,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                         // Fare amount
                         if (item.amount != null)
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [primaryColor, primaryDark],

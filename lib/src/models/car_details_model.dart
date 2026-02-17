@@ -65,13 +65,13 @@ class Biddata {
   });
 
   final int? id;
-  final int? tripId;
-  final int? customerId;
-  final int? partnerId;
-  final int? vehicleId;
-  final int? carId;
+  final String? tripId;
+  final String? customerId;
+  final String? partnerId;
+  final String? vehicleId;
+  final String? carId;
   final String? amount;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final Get? getvehicle;
@@ -82,13 +82,13 @@ class Biddata {
   factory Biddata.fromJson(Map<String, dynamic> json) {
     return Biddata(
       id: json["id"],
-      tripId: json["trip_id"],
-      customerId: json["customer_id"],
-      partnerId: json["partner_id"],
-      vehicleId: json["vehicle_id"],
-      carId: json["car_id"],
-      amount: json["amount"],
-      status: json["status"],
+      tripId: json["trip_id"].toString(),
+      customerId: json["customer_id"].toString(),
+      partnerId: json["partner_id"].toString(),
+      vehicleId: json["vehicle_id"].toString(),
+      carId: json["car_id"].toString(),
+      amount: json["amount"].toString(),
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
       getvehicle:
@@ -119,26 +119,26 @@ class GetBrand {
   });
 
   final int? id;
-  final int? vehicleCategory;
+  final String? vehicleCategory;
   final String? name;
   final String? nameBn;
   final String? slug;
   final String? capacity;
   final String? image;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   factory GetBrand.fromJson(Map<String, dynamic> json) {
     return GetBrand(
       id: json["id"],
-      vehicleCategory: json["vehicle_category"],
+      vehicleCategory: json["vehicle_category"].toString(),
       name: json["name"],
       nameBn: json["name_bn"],
       slug: json["slug"],
       capacity: json["capacity"],
       image: json["image"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );
@@ -176,11 +176,11 @@ class Get {
   });
 
   final int? id;
-  final int? partnerId;
-  final int? vehicleCategory;
-  final int? brand;
+  final String? partnerId;
+  final String? vehicleCategory;
+  final String? brand;
   final String? metro;
-  final int? metroType;
+  final String? metroType;
   final String? metroNo;
   final String? model;
   final String? modelYear;
@@ -205,11 +205,11 @@ class Get {
   factory Get.fromJson(Map<String, dynamic> json) {
     return Get(
       id: json["id"],
-      partnerId: json["partner_id"],
-      vehicleCategory: json["vehicle_category"],
+      partnerId: json["partner_id"].toString(),
+      vehicleCategory: json["vehicle_category"].toString(),
       brand: json["brand"],
       metro: json["metro"],
-      metroType: json["metro_type"],
+      metroType: json["metro_type"].toString(),
       metroNo: json["metro_no"],
       model: json["model"],
       modelYear: json["model_year"],
@@ -275,9 +275,9 @@ class Getpartner {
   final String? myreferKey;
   final String? verify;
   final String? forgotCode;
-  final int? credit;
-  final int? debit;
-  final int? status;
+  final String? credit;
+  final String? debit;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -299,9 +299,9 @@ class Getpartner {
       myreferKey: json["myrefer_key"],
       verify: json["verify"],
       forgotCode: json["forgot_code"],
-      credit: json["credit"],
-      debit: json["debit"],
-      status: json["status"],
+      credit: json["credit"].toString(),
+      debit: json["debit"].toString(),
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );
@@ -319,7 +319,7 @@ class Metrotype {
 
   final int? id;
   final String? metroSubName;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -327,7 +327,7 @@ class Metrotype {
     return Metrotype(
       id: json["id"],
       metroSubName: json["metro_sub_name"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );
@@ -350,13 +350,13 @@ class Review {
   });
 
   final int? id;
-  final int? tripId;
-  final int? returnTrip;
-  final int? partnerId;
-  final int? customerId;
-  final int? starReviews;
+  final String? tripId;
+  final String? returnTrip;
+  final String? partnerId;
+  final String? customerId;
+  final String? starReviews;
   final String? comment;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final GetCustomer? getCustomer;
@@ -364,13 +364,13 @@ class Review {
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
       id: json["id"],
-      tripId: json["trip_id"],
-      returnTrip: json["return_trip"],
-      partnerId: json["partner_id"],
-      customerId: json["customer_id"],
-      starReviews: json["star_reviews"],
+      tripId: json["trip_id"].toString(),
+      returnTrip: json["return_trip"].toString(),
+      partnerId: json["partner_id"].toString(),
+      customerId: json["customer_id"].toString(),
+      starReviews: json["star_reviews"].toString(),
       comment: json["comment"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
       getCustomer: json["get_customer"] == null
@@ -411,7 +411,7 @@ class GetCustomer {
   final String? verify;
   final DateTime? expireAt;
   final dynamic forgotCode;
-  final int? status;
+  final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -429,7 +429,7 @@ class GetCustomer {
       verify: json["verify"],
       expireAt: DateTime.tryParse(json["expire_at"] ?? ""),
       forgotCode: json["forgot_code"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );

@@ -36,8 +36,8 @@ class TruckListPage extends StatefulWidget {
   final String pickupDivision;
   final String dropOfDivision;
 
-  TruckListPage(
-      {required this.isAirport,
+  const TruckListPage(
+      {super.key, required this.isAirport,
       this.isTrac,
       required this.tripType,
       required this.carImg,
@@ -116,6 +116,9 @@ class _TruckListPageState extends State<TruckListPage> {
                                 selectedItem.value = item;
                               },
                               elevation: 1,
+                              color: selectedItem.value == item
+                                  ? primaryColor
+                                  : Colors.white,
                               child: Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Column(
@@ -162,9 +165,6 @@ class _TruckListPageState extends State<TruckListPage> {
                                   ],
                                 ),
                               ),
-                              color: selectedItem.value == item
-                                  ? primaryColor
-                                  : Colors.white,
                             ),
                           );
                         },

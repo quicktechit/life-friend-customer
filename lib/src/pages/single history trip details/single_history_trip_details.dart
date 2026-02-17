@@ -560,12 +560,15 @@ class _SingleHistoryTripDetailsPageState
 
   Widget _buildTripDetailsSection(bool isNormalTrip) {
     final roundTripText = isNormalTrip
-        ? (_normalTripHistory?.roundTrip == 1 ? "Yes" : "No")
+        ? (_normalTripHistory?.roundTrip == '1' ? "Yes" : "No")
         : "No";
 
     final amount = isNormalTrip
         ? _normalTripHistory?.amount?.toString()
         : _returnTripHistory?.amount;
+    final otp = isNormalTrip
+        ? _normalTripHistory?.otp?.toString()
+        : "N/A";
 
     return Container(
       decoration: BoxDecoration(
@@ -603,6 +606,10 @@ class _SingleHistoryTripDetailsPageState
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
+                _buildDetailRow(
+                  'Otp',otp.toString(),
+                ),
+                const SizedBox(height: 12),
                 _buildDetailRow(
                   'Round Trip',
                   roundTripText,
