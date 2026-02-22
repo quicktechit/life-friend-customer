@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
+import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/controllers/pdf_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pickup_load_update/src/models/single_trip_details_model.dart' as normal_model;
+import '../../configs/appUtils.dart';
 import '../../controllers/single trip details controller/single_trip_details_controller.dart';
 import '../../models/single_return_trip_model.dart' as return_model;
+import '../../widgets/medical_question.dart';
 
 const Color primaryRed = Color(0xFFC62828); // Deep Red
 const Color primaryRedLight = Color(0xFFEF5350);
@@ -848,6 +851,8 @@ class _SingleHistoryTripDetailsPageState
 
                 // Trip Details Summary
                 _buildTripDetailsSection(true),
+                sizeH10,
+                _buildMedicalServicesCard(),
 
                 // PDF Download Button (if trip is complete)
                 if (widget.isComplete == true) _buildPdfButton(),
@@ -937,7 +942,8 @@ class _SingleHistoryTripDetailsPageState
 
                 // Trip Details Summary
                 _buildTripDetailsSection(false),
-
+                sizeH10,
+                _buildMedicalServicesCard(),
                 // PDF Download Button (if trip is complete)
                 if (widget.isComplete == true) _buildPdfButton(),
 
@@ -1017,5 +1023,72 @@ class _SingleHistoryTripDetailsPageState
     }
 
     return 0.0;
+  }
+
+  Widget _buildMedicalServicesCard() {
+    // Only show if category is medical (adjust the condition as needed)
+    // if (widget.tripRequest.categoryId != 3) {
+    //   return SizedBox.shrink();
+    // }
+
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          sizeH10,
+          Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.blue.withAlpha(50),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  Icons.medical_services_outlined,
+                  color: primaryColor,
+                  size: 20,
+                ),
+              ),
+              SizedBox(width: 12),
+              Text(
+                'মেডিকেল সার্ভিস ডিটেইলস',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: primaryColor,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Divider(color: Colors.grey.shade200),
+          SizedBox(height: 16),
+
+          // Medical Services List
+          ...medicalServices.map((service) {
+            return buildMedicalServiceItem(
+              icon: service['icon'] as IconData,
+              iconColor: service['color'] as Color,
+              title: service['title'] as String,
+              answer: service['answer'] as String,
+            );
+          }).toList(),
+        ],
+      ),
+    );
   }
 }
