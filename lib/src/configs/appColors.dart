@@ -58,3 +58,88 @@ final List<Map<String, dynamic>> medicalServices = [
     'color': Colors.teal,
   },
 ];
+
+
+
+// Complete district → division map for all 64 districts of Bangladesh
+const Map<String, String> districtToDivision = {
+  // Dhaka Division
+  'Dhaka': 'Dhaka',
+  'Faridpur': 'Dhaka',
+  'Gazipur': 'Dhaka',
+  'Gopalganj': 'Dhaka',
+  'Kishoreganj': 'Dhaka',
+  'Madaripur': 'Dhaka',
+  'Manikganj': 'Dhaka',
+  'Munshiganj': 'Dhaka',
+  'Narsingdi': 'Dhaka',
+  'Narayanganj': 'Dhaka',
+  'Rajbari': 'Dhaka',
+  'Shariatpur': 'Dhaka',
+  'Tangail': 'Dhaka',
+
+  // Chattogram Division
+  'Chattogram': 'Chattogram',
+  'Cox\'s Bazar': 'Chattogram',
+  'Bandarban': 'Chattogram',
+  'Khagrachhari': 'Chattogram',
+  'Rangamati': 'Chattogram',
+  'Comilla': 'Chattogram',
+  'Feni': 'Chattogram',
+  'Brahmanbaria': 'Chattogram',
+  'Chandpur': 'Chattogram',
+  'Lakshmipur': 'Chattogram',
+  'Noakhali': 'Chattogram',
+
+  // Khulna Division
+  'Khulna': 'Khulna',
+  'Bagerhat': 'Khulna',
+  'Chuadanga': 'Khulna',
+  'Jessore': 'Khulna',
+  'Jhenaidah': 'Khulna',
+  'Kushtia': 'Khulna',
+  'Magura': 'Khulna',
+  'Meherpur': 'Khulna',
+  'Narail': 'Khulna',
+  'Satkhira': 'Khulna',
+
+  // Rajshahi Division
+  'Bogura': 'Rajshahi',
+  'Joypurhat': 'Rajshahi',
+  'Naogaon': 'Rajshahi',
+  'Natore': 'Rajshahi',
+  'Chapai Nawabganj': 'Rajshahi',
+  'Pabna': 'Rajshahi',
+  'Rajshahi': 'Rajshahi',
+  'Sirajganj': 'Rajshahi',
+
+  // Rangpur Division
+  'Rangpur': 'Rangpur',
+  'Dinajpur': 'Rangpur',
+  'Kurigram': 'Rangpur',
+  'Lalmonirhat': 'Rangpur',
+  'Nilphamari': 'Rangpur',
+  'Panchagarh': 'Rangpur',
+  'Thakurgaon': 'Rangpur',
+  'Gaibandha': 'Rangpur',
+
+  // Sylhet Division
+  'Sylhet': 'Sylhet',
+  'Habiganj': 'Sylhet',
+  'Moulvibazar': 'Sylhet',
+  'Sunamganj': 'Sylhet',
+
+  // Barishal Division
+  'Barishal': 'Barishal',
+  'Barguna': 'Barishal',
+  'Bhola': 'Barishal',
+  'Jhalokathi': 'Barishal',
+  'Patuakhali': 'Barishal',
+  'Pirojpur': 'Barishal',
+
+  // Mymensingh Division
+  'Mymensingh': 'Mymensingh',
+  'Jamalpur': 'Mymensingh',
+  'Netrokona': 'Mymensingh',
+  'Sherpur': 'Mymensingh',
+};

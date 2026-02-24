@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pickup_load_update/src/models/BariKoiMapModel.dart';
 import 'package:pickup_load_update/src/pages/home/truck/select_truck_screen.dart';
 import 'package:pickup_load_update/src/pages/map_page/MapMultiPickerScreen.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -114,12 +115,12 @@ class _SelectLocationState extends State<SelectLocation> {
           .toString();
 
       if (pickupLocation['place_id'] != null) {
-        locationController.selectPikUpAddress(
-          Suggestion(
-            placeId: pickupLocation['place_id'],
-            description: pickupLocation['address'],
-          ),
-        );
+        // locationController.selectPikUpAddress(
+        //   Places(
+        //     placeId: pickupLocation['place_id'],
+        //     description: pickupLocation['address'],
+        //   ),
+        // );
       }
     }
   }
@@ -309,7 +310,8 @@ class _SelectLocationState extends State<SelectLocation> {
                               label: "Pickup",
                               color: primaryColor,
                               backgroundColor: primaryColor50,
-                              onTap: _handlePickupLocationSelection,
+                              onTap: (){}
+                              // onTap: _handlePickupLocationSelection,
                             ),
                             _buildLocationIndicator(),
                             _buildLocationIcon(
@@ -317,7 +319,8 @@ class _SelectLocationState extends State<SelectLocation> {
                               label: "Drop Off",
                               color: Colors.green.shade700,
                               backgroundColor: Colors.green.shade50,
-                              onTap: _handleDropLocationSelection,
+                                onTap: (){}
+                              // onTap: _handleDropLocationSelection,
                             ),
                           ],
                         ),
@@ -628,14 +631,14 @@ class _SelectLocationState extends State<SelectLocation> {
                         physics: BouncingScrollPhysics(),
                         padding: EdgeInsets.all(5),
                         itemBuilder: (context, index) {
-                          final suggestion =
+                          Places suggestion =
                           locationController.suggestionsPickUp[index];
                           return Material(
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
                                 locationController.pickUpC.text =
-                                    suggestion.description;
+                                    suggestion.address??'';
                                 locationController.selectPikUpAddress(
                                   suggestion,
                                 );
@@ -672,7 +675,7 @@ class _SelectLocationState extends State<SelectLocation> {
                                     SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
-                                        suggestion.description,
+                                        suggestion.address??'',
                                         style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.black87,
@@ -716,7 +719,7 @@ class _SelectLocationState extends State<SelectLocation> {
                           physics: BouncingScrollPhysics(),
                           padding: EdgeInsets.all(5),
                           itemBuilder: (context, index) {
-                            final suggestion =
+                           Places suggestion =
                             locationController.suggestionsDrop[index];
                             return Material(
                               color: Colors.transparent,
@@ -724,7 +727,7 @@ class _SelectLocationState extends State<SelectLocation> {
                                 onTap: () {
                                   debugPrint('Testing ::: ');
                                   locationController.dropC.text =
-                                      suggestion.description;
+                                      suggestion.address??'';
                                   locationController.selectDropAddress(
                                     suggestion,
                                   );
@@ -775,7 +778,7 @@ class _SelectLocationState extends State<SelectLocation> {
                                             ),
                                             SizedBox(height: 4),
                                             Text(
-                                              suggestion.description,
+                                              suggestion.address??'',
                                               style: TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.black87,

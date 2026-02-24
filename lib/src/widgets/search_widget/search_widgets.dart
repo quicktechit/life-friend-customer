@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pickup_load_update/src/models/BariKoiMapModel.dart';
 import 'package:pickup_load_update/src/widgets/button/primaryButton.dart';
 import 'package:pickup_load_update/src/widgets/search_widget/service_category.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -113,52 +114,52 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                           children: [
                             // Pickup icon with timeline
                             GestureDetector(
-                              onTap: () async {
-                                pickupLocation = await Get.to(
-                                  () => MapSinglePickerScreen(
-                                    lat: double.tryParse(
-                                      locationController
-                                          .selectedPickUpLat
-                                          .value,
-                                    ),
-                                    lng: double.tryParse(
-                                      locationController
-                                          .selectedPickUpLng
-                                          .value,
-                                    ),
-                                  ),
-                                );
-
-                                if (pickupLocation != null) {
-                                  Get.snackbar(
-                                    "Single Location",
-                                    "${pickupLocation['address']}\n(${pickupLocation['lat']}, ${pickupLocation['lng']})",
-                                  );
-
-                                  locationController.selectedPickUpLat.value =
-                                      pickupLocation['lat'].toString();
-                                  locationController.selectedPickUpLng.value =
-                                      pickupLocation['lng'].toString();
-                                  pickLat = locationController
-                                      .selectedPickUpLat
-                                      .value;
-                                  pickLng = locationController
-                                      .selectedPickUpLng
-                                      .value;
-                                  locationController.pickUpC.text =
-                                      pickupLocation['address'].toString();
-                                  locationController.pickUpLocation.value =
-                                      pickupLocation['address'].toString();
-                                  if (pickupLocation['place_id'] != null) {
-                                    locationController.selectPikUpAddress(
-                                      Suggestion(
-                                        placeId: pickupLocation['place_id'],
-                                        description: pickupLocation['address'],
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
+                              // onTap: () async {
+                              //   pickupLocation = await Get.to(
+                              //     () => MapSinglePickerScreen(
+                              //       lat: double.tryParse(
+                              //         locationController
+                              //             .selectedPickUpLat
+                              //             .value,
+                              //       ),
+                              //       lng: double.tryParse(
+                              //         locationController
+                              //             .selectedPickUpLng
+                              //             .value,
+                              //       ),
+                              //     ),
+                              //   );
+                              //
+                              //   if (pickupLocation != null) {
+                              //     Get.snackbar(
+                              //       "Single Location",
+                              //       "${pickupLocation['address']}\n(${pickupLocation['lat']}, ${pickupLocation['lng']})",
+                              //     );
+                              //
+                              //     locationController.selectedPickUpLat.value =
+                              //         pickupLocation['lat'].toString();
+                              //     locationController.selectedPickUpLng.value =
+                              //         pickupLocation['lng'].toString();
+                              //     pickLat = locationController
+                              //         .selectedPickUpLat
+                              //         .value;
+                              //     pickLng = locationController
+                              //         .selectedPickUpLng
+                              //         .value;
+                              //     locationController.pickUpC.text =
+                              //         pickupLocation['address'].toString();
+                              //     locationController.pickUpLocation.value =
+                              //         pickupLocation['address'].toString();
+                              //     if (pickupLocation['place_id'] != null) {
+                              //       // locationController.selectPikUpAddress(
+                              //       //   Suggestion(
+                              //       //     placeId: pickupLocation['place_id'],
+                              //       //     description: pickupLocation['address'],
+                              //       //   ),
+                              //       // );
+                              //     }
+                              //   }
+                              // },
                               child: Container(
                                 width: 35,
                                 height: 35,
@@ -218,39 +219,39 @@ class _SearchWidgetsState extends State<SearchWidgets> {
 
                             // Dropoff icon
                             GestureDetector(
-                              onTap: () async {
-                                dropOffLocation = await Get.to(
-                                  () => MapSinglePickerScreen(
-                                    lat: double.tryParse(
-                                      locationController
-                                          .selectedDropUpLat
-                                          .value,
-                                    ),
-                                    lng: double.tryParse(
-                                      locationController
-                                          .selectedDropUpLng
-                                          .value,
-                                    ),
-                                  ),
-                                );
-
-                                if (dropOffLocation != null) {
-                                  Get.snackbar(
-                                    "Single Location",
-                                    "${dropOffLocation['address']}\n(${dropOffLocation['lat']}, ${dropOffLocation['lng']})",
-                                  );
-                                  dropLat = dropOffLocation['lat'];
-                                  dropLng = dropOffLocation['lng'];
-                                  locationController.selectedDropUpLat.value =
-                                      dropOffLocation['lat'];
-                                  locationController.selectedDropUpLng.value =
-                                      dropOffLocation['lng'];
-                                  locationController.dropC.text =
-                                      dropOffLocation['address'];
-                                  locationController.dropLocation.value =
-                                      dropOffLocation['address'];
-                                }
-                              },
+                              // onTap: () async {
+                              //   dropOffLocation = await Get.to(
+                              //     () => MapSinglePickerScreen(
+                              //       lat: double.tryParse(
+                              //         locationController
+                              //             .selectedDropUpLat
+                              //             .value,
+                              //       ),
+                              //       lng: double.tryParse(
+                              //         locationController
+                              //             .selectedDropUpLng
+                              //             .value,
+                              //       ),
+                              //     ),
+                              //   );
+                              //
+                              //   if (dropOffLocation != null) {
+                              //     Get.snackbar(
+                              //       "Single Location",
+                              //       "${dropOffLocation['address']}\n(${dropOffLocation['lat']}, ${dropOffLocation['lng']})",
+                              //     );
+                              //     dropLat = dropOffLocation['lat'];
+                              //     dropLng = dropOffLocation['lng'];
+                              //     locationController.selectedDropUpLat.value =
+                              //         dropOffLocation['lat'];
+                              //     locationController.selectedDropUpLng.value =
+                              //         dropOffLocation['lng'];
+                              //     locationController.dropC.text =
+                              //         dropOffLocation['address'];
+                              //     locationController.dropLocation.value =
+                              //         dropOffLocation['address'];
+                              //   }
+                              // },
                               child: Container(
                                 width: 35,
                                 height: 35,
@@ -459,14 +460,14 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                         physics: BouncingScrollPhysics(),
                         padding: EdgeInsets.all(5),
                         itemBuilder: (context, index) {
-                          final suggestion =
+                          Places suggestion =
                               locationController.suggestionsPickUp[index];
                           return Material(
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
                                 locationController.pickUpC.text =
-                                    suggestion.description;
+                                    suggestion.address??'';
                                 locationController.selectPikUpAddress(
                                   suggestion,
                                 );
@@ -503,7 +504,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                                     SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
-                                        suggestion.description,
+                                        suggestion.address??'',
                                         style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.black87,
@@ -546,7 +547,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                         physics: BouncingScrollPhysics(),
                         padding: EdgeInsets.all(5),
                         itemBuilder: (context, index) {
-                          final suggestion =
+                          Places suggestion =
                               locationController.suggestionsDrop[index];
                           return Material(
                             color: Colors.transparent,
@@ -554,7 +555,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                               onTap: () {
                                 debugPrint('Testing ::: ');
                                 locationController.dropC.text =
-                                    suggestion.description;
+                                    suggestion.address??"";
                                 locationController.selectDropAddress(
                                   suggestion,
                                 );
@@ -604,7 +605,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                                           ),
                                           SizedBox(height: 4),
                                           Text(
-                                            suggestion.description,
+                                            suggestion.address??'',
                                             style: TextStyle(
                                               fontSize: 15,
                                               color: Colors.black87,
@@ -649,14 +650,14 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                         physics: BouncingScrollPhysics(),
                         padding: EdgeInsets.all(5),
                         itemBuilder: (context, index) {
-                          final suggestion =
+                          Places suggestion =
                               locationController.suggestionsVia[index];
                           return Material(
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
                                 locationController.viaTextC.text =
-                                    suggestion.description;
+                                    suggestion.address??'';
                                 locationController.selectViaAddress(suggestion);
                                 locationController.suggestionsVia.clear();
                               },
@@ -712,7 +713,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                                           ),
                                           SizedBox(height: 4),
                                           Text(
-                                            suggestion.description,
+                                            suggestion.address??'',
                                             style: TextStyle(
                                               fontSize: 15,
                                               color: Colors.black87,

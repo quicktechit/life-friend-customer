@@ -9,15 +9,18 @@ import 'dart:convert';
 import 'package:pickup_load_update/src/models/suggestion_model.dart';
 import 'package:pickup_load_update/src/widgets/division_box_widget.dart';
 
+import '../../configs/appColors.dart';
+import '../../models/BariKoiMapModel.dart';
 import '../../models/division_model.dart';
 
 class LocationController extends GetxController {
-  final Rx<TextEditingController?> activeController = Rx<TextEditingController?>(null);
-  final DivisionController divisionContainer=Get.put(DivisionController());
+  final Rx<TextEditingController?> activeController =
+      Rx<TextEditingController?>(null);
+  final DivisionController divisionContainer = Get.put(DivisionController());
   var isLoading = false.obs;
   var isLoadingDrop = false.obs;
-  final TextEditingController viaTextC=TextEditingController();
-  final TextEditingController pickUpC=TextEditingController();
+  final TextEditingController viaTextC = TextEditingController();
+  final TextEditingController pickUpC = TextEditingController();
   final TextEditingController dropC = TextEditingController();
   var pickUpLocation = ''.obs;
   var dropLocation = ''.obs;
@@ -26,20 +29,20 @@ class LocationController extends GetxController {
   var reachTime = ''.obs;
   var pickupDivision = ''.obs;
   var dropOffDivision = ''.obs;
-  var selectedPickUpDistrict  = ''.obs;
-  var selectedDropOffDistrict  = ''.obs;
+  var selectedPickUpDistrict = ''.obs;
+  var selectedDropOffDistrict = ''.obs;
   var selectedPickUpLat = ''.obs;
   var selectedPickUpLng = ''.obs;
   var selectedDropUpLat = ''.obs;
   var selectedDropUpLng = ''.obs;
-  RxList suggestionsPickUp = <Suggestion>[].obs;
-  RxList suggestionsDrop = <Suggestion>[].obs;
-  RxList suggestionsVia = <Suggestion>[].obs;
+  RxList suggestionsPickUp = <Places>[].obs;
+  RxList suggestionsDrop = <Places>[].obs;
+  RxList suggestionsVia = <Places>[].obs;
+
   // var dropMultipleLatitudes = <RxString>[].obs;
   // var dropMultipleLongitudes = <RxString>[].obs;
 
-  var apiKey="AIzaSyC1LrGdAl5vX5Jp9muuou2iAo52Yu49pFc";
-
+  var apiKey = "bkoi_029d49cbee063aac30a15bf669de3027eae2c84ca9f06666b7cebfb7b24c9bc3";
 
   Future<void> fetchPickSuggestions(String input) async {
     if (input.length < 15) {
@@ -48,23 +51,25 @@ class LocationController extends GetxController {
     }
     isLoading(true);
     final String baseUrl =
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";
+        "https://barikoi.xyz/v2/api/search/autocomplete/place?q=$input&api_key=$apiKey";
+    // "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";
 
     final response = await http.get(Uri.parse(baseUrl));
 
     if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      if (jsonData['status'] == 'OK') {
-        final predictions = jsonData['predictions'];
-        suggestionsPickUp.clear();
-        suggestionsPickUp.addAll(predictions
-            .map<Suggestion>((e) => Suggestion.fromJson(e))
-            .toList());
-        isLoading(false);
-      } else {
-        isLoading(false);
-        throw Exception('Failed to load suggestions: ${jsonData['status']}');
-      }
+      final jsonData = BariKoiMapModel.fromJson(json.decode(response.body));
+      // if (jsonData['status'] == 'OK') {
+
+      suggestionsPickUp.clear();
+      suggestionsPickUp.addAll(jsonData.places ?? []);
+      // suggestionsPickUp.addAll(predictions
+      //     .map<Suggestion>((e) => Suggestion.fromJson(e))
+      //     .toList());
+      isLoading(false);
+      // } else {
+      //   isLoading(false);
+      //   throw Exception('Failed to load suggestions: ${jsonData['status']}');
+      // }
     } else {
       isLoading(false);
       throw Exception('Failed to load suggestions');
@@ -78,23 +83,25 @@ class LocationController extends GetxController {
     }
     isLoading(true);
     final String baseUrl =
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";
+        "https://barikoi.xyz/v2/api/search/autocomplete/place?q=$input&api_key=$apiKey";
+    // "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";
 
     final response = await http.get(Uri.parse(baseUrl));
 
     if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      if (jsonData['status'] == 'OK') {
-        final predictions = jsonData['predictions'];
-        suggestionsDrop.clear();
-        suggestionsDrop.addAll(predictions
-            .map<Suggestion>((e) => Suggestion.fromJson(e))
-            .toList());
-        isLoading(false);
-      } else {
-        isLoading(false);
-        throw Exception('Failed to load suggestions: ${jsonData['status']}');
-      }
+      final jsonData = BariKoiMapModel.fromJson(json.decode(response.body));
+      // if (jsonData['status'] == 'OK') {
+
+      suggestionsDrop.clear();
+      suggestionsDrop.addAll(jsonData.places ?? []);
+      // suggestionsDrop.addAll(predictions
+      //     .map<Suggestion>((e) => Suggestion.fromJson(e))
+      //     .toList());
+      isLoading(false);
+      // } else {
+      //   isLoading(false);
+      //   throw Exception('Failed to load suggestions: ${jsonData['status']}');
+      // }
     } else {
       isLoading(false);
       throw Exception('Failed to load suggestions');
@@ -108,123 +115,129 @@ class LocationController extends GetxController {
     }
     isLoading(true);
     final String baseUrl =
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";
+        "https://barikoi.xyz/v2/api/search/autocomplete/place?q=$input&api_key=$apiKey";
+    // "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&components=country:BD&key=$apiKey";
 
     final response = await http.get(Uri.parse(baseUrl));
 
     if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      if (jsonData['status'] == 'OK') {
-        final predictions = jsonData['predictions'];
-        suggestionsVia.clear();
-        suggestionsVia.addAll(predictions
-            .map<Suggestion>((e) => Suggestion.fromJson(e))
-            .toList());
-        isLoading(false);
-      } else {
-        isLoading(false);
-        throw Exception('Failed to load suggestions: ${jsonData['status']}');
-      }
+      final jsonData = BariKoiMapModel.fromJson(json.decode(response.body));
+      // if (jsonData['status'] == 'OK') {
+      //   final predictions = jsonData['predictions'];
+      suggestionsVia.clear();
+      suggestionsVia.addAll(jsonData.places ?? []);
+      // suggestionsVia.addAll(predictions
+      //     .map<Suggestion>((e) => Suggestion.fromJson(e))
+      //     .toList());
+      isLoading(false);
+      // } else {
+      //   isLoading(false);
+      //   throw Exception('Failed to load suggestions: ${jsonData['status']}');
+      // }
     } else {
       isLoading(false);
       throw Exception('Failed to load suggestions');
     }
   }
 
-  void selectViaAddress(Suggestion suggestion) async {
-    final String placeId = suggestion.placeId;
-    final String detailsUrl =
-        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry,address_components&key=$apiKey";
+  void selectViaAddress(Places suggestion) async {
+    viaLocation.value = suggestion.address??'';
 
-    final response = await http.get(Uri.parse(detailsUrl));
-    isLoading(true);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final Map<String, dynamic> result = jsonData['result'];
-      final Map<String, dynamic> geometry = result['geometry'];
-      final Map<String, dynamic> location = geometry['location'];
-      final double lat = location['lat'];
-      final double lng = location['lng'];
-
-      final List<dynamic> addressComponents = result['address_components'];
-      String divisionName = '';
-      isLoading(false);
-      // Find the administrative_area_level_1 component
-      for (final component in addressComponents) {
-        final List<dynamic> types = component['types'];
-        if (types.contains('administrative_area_level_1')) {
-          divisionName = component['long_name'];
-          break;
-        }
-      }
-
-      print('Selected Drop Address: ${suggestion.description}');
-      viaLocation.value = suggestion.description;
-      print('Division Drop Name: $divisionName');
-      print('Latitude: $lat, Longitude: $lng');
-
-      // You can do other operations with the address, division name, lat, and lng here
-    } else {
-      throw Exception('Failed to fetch place details');
-    }
+    // final String placeId = suggestion.placeId;
+    // final String detailsUrl =
+    //     "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry,address_components&key=$apiKey";
+    //
+    // final response = await http.get(Uri.parse(detailsUrl));
+    // isLoading(true);
+    // if (response.statusCode == 200) {
+    //   final jsonData = json.decode(response.body);
+    //   final Map<String, dynamic> result = jsonData['result'];
+    //   final Map<String, dynamic> geometry = result['geometry'];
+    //   final Map<String, dynamic> location = geometry['location'];
+    //   final double lat = location['lat'];
+    //   final double lng = location['lng'];
+    //
+    //   final List<dynamic> addressComponents = result['address_components'];
+    //   String divisionName = '';
+    //   isLoading(false);
+    //   // Find the administrative_area_level_1 component
+    //   for (final component in addressComponents) {
+    //     final List<dynamic> types = component['types'];
+    //     if (types.contains('administrative_area_level_1')) {
+    //       divisionName = component['long_name'];
+    //       break;
+    //     }
+    //   }
+    //
+    //   print('Selected Drop Address: ${suggestion.description}');
+    //   viaLocation.value = suggestion.description;
+    //   print('Division Drop Name: $divisionName');
+    //   print('Latitude: $lat, Longitude: $lng');
+    //
+    //   // You can do other operations with the address, division name, lat, and lng here
+    // } else {
+    //   throw Exception('Failed to fetch place details');
+    // }
   }
 
-  void selectPikUpAddress(Suggestion suggestion) async {
-    final String placeId = suggestion.placeId;
-    final String detailsUrl =
-        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=name,formatted_address,geometry,address_components&language=bn&key=$apiKey";
-    debugPrint('Details :: ${suggestion.placeId}');
-    debugPrint('Url :: $detailsUrl');
-    final response = await http.get(Uri.parse(detailsUrl));
-    isLoading(true);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final Map<String, dynamic> result = jsonData['result'];
-      final Map<String, dynamic> geometry = result['geometry'];
-      final Map<String, dynamic> location = geometry['location'];
-      final double lat = location['lat'];
-      final double lng = location['lng'];
+  void selectPikUpAddress(Places suggestion) async {
+    pickUpLocation.value = suggestion.address??'';
 
-      final List<dynamic> addressComponents = result['address_components'];
-      String district = '';
-      String division = '';
-      isLoading(false);
-      // Find the administrative_area_level_1 component
-      pickUpLocation.value = '${jsonData['result']['name']}';
-      for (final component in addressComponents) {
-        final List<dynamic> types = component['types'];
-        if (types.contains('administrative_area_level_2')) {
-          district = component['long_name'];
-        }
-        // if (types.contains('administrative_area_level_1')) {
-        //   division = component['long_name'];
-        //
-        // }
-      }
-
-      print('Selected PickUp Address: ${suggestion.description}');
-      selectedPickUpLat.value = lat.toString();
-      selectedPickUpLng.value = lng.toString();
-      selectedPickUpDistrict.value = district;
-      final divisionName = await getDivisionFromPlaceId(placeId);
-      // var divisionName=division.split(' ')[0];
-      var matchedId = divisionContainer.divisionList
-          .firstWhere(
-            (division) => division.name == divisionName,
-        orElse: () => DivisionList(),
-      )
-          .id.toString();
-      pickupDivision.value=matchedId;
-      print('District PickUp Name:: ${selectedPickUpDistrict.value}');
-      print('Division PickUp division id:: ${pickupDivision.value}');
-      print('Division PickUp Name:: ${divisionName}');
-      print('Latitude: $lat, Longitude: $lng');
-      
-    } else {
-      throw Exception('Failed to fetch place details');
-    }
+    selectedPickUpLat.value =suggestion.latitude??'';
+    selectedPickUpLng.value = suggestion.longitude??"";
+    selectedPickUpDistrict.value = suggestion.district??'';
+    final divisionName = getDivisionFromDistrict(suggestion.district??'');
+    // var divisionName=division.split(' ')[0];
+    var matchedId = divisionContainer.divisionList
+        .firstWhere(
+          (division) => division.name == divisionName,
+      orElse: () => DivisionList(),
+    )
+        .id
+        .toString();
+    pickupDivision.value = matchedId;
+    // final String placeId = suggestion.placeId;
+    // final String detailsUrl =
+    //     "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=name,formatted_address,geometry,address_components&language=bn&key=$apiKey";
+    // debugPrint('Details :: ${suggestion.placeId}');
+    // debugPrint('Url :: $detailsUrl');
+    // final response = await http.get(Uri.parse(detailsUrl));
+    // isLoading(true);
+    // if (response.statusCode == 200) {
+    //   final jsonData = json.decode(response.body);
+    //   final Map<String, dynamic> result = jsonData['result'];
+    //   final Map<String, dynamic> geometry = result['geometry'];
+    //   final Map<String, dynamic> location = geometry['location'];
+    //   final double lat = location['lat'];
+    //   final double lng = location['lng'];
+    //
+    //   final List<dynamic> addressComponents = result['address_components'];
+    //   String district = '';
+    //   String division = '';
+    //   isLoading(false);
+    //   // Find the administrative_area_level_1 component
+    //   pickUpLocation.value = '${jsonData['result']['name']}';
+    //   for (final component in addressComponents) {
+    //     final List<dynamic> types = component['types'];
+    //     if (types.contains('administrative_area_level_2')) {
+    //       district = component['long_name'];
+    //     }
+    //     // if (types.contains('administrative_area_level_1')) {
+    //     //   division = component['long_name'];
+    //     //
+    //     // }
+    //   }
+    //
+    //   print('Selected PickUp Address: ${suggestion.description}');
+    //
+    //   print('District PickUp Name:: ${selectedPickUpDistrict.value}');
+    //   print('Division PickUp division id:: ${pickupDivision.value}');
+    //   print('Division PickUp Name:: ${divisionName}');
+    //   print('Latitude: $lat, Longitude: $lng');
+    // } else {
+    //   throw Exception('Failed to fetch place details');
+    // }
   }
-
 
   Future<String?> getDivisionFromPlaceId(String placeId) async {
     final String url =
@@ -238,13 +251,16 @@ class LocationController extends GetxController {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        final List<dynamic> components = jsonData['result']['address_components'];
+        final List<dynamic> components =
+            jsonData['result']['address_components'];
 
         for (final component in components) {
           final List<dynamic> types = component['types'];
           if (types.contains('administrative_area_level_1')) {
             final String divisionName = component['long_name'];
-            return divisionName.split(' ').first; // Optional: just "Dhaka" from "Dhaka Division"
+            return divisionName
+                .split(' ')
+                .first; // Optional: just "Dhaka" from "Dhaka Division"
           }
         }
 
@@ -259,13 +275,9 @@ class LocationController extends GetxController {
     }
   }
 
-
-
-
-
   var dropUpBnLocation = ''.obs;
 
-  getDropDetailsAddress(Suggestion suggestion) async {
+  Future<void> getDropDetailsAddress(Suggestion suggestion) async {
     dropUpBnLocation.value = '';
     final String placeId = suggestion.placeId;
     final String detailsUrl =
@@ -287,82 +299,89 @@ class LocationController extends GetxController {
     }
   }
 
+  // Future<void> selectMultipleDropAddress(Suggestion suggestion) async {
+  //   final String placeId = suggestion.placeId;
+  //   final String detailsUrl =
+  //       "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry,address_components&language=bn&key=$apiKey";
+  //
+  //   final response = await http.get(Uri.parse(detailsUrl));
+  //   isLoading(true); // Set loading state
+  //
+  //   if (response.statusCode == 200) {
+  //     final jsonData = json.decode(response.body);
+  //     final Map<String, dynamic> result = jsonData['result'];
+  //     final Map<String, dynamic> geometry = result['geometry'];
+  //     final Map<String, dynamic> location = geometry['location'];
+  //     final double lat = location['lat'];
+  //     final double lng = location['lng'];
+  //
+  //     final List<dynamic> addressComponents = result['address_components'];
+  //     isLoading(false); // Set loading state to false
+  //
+  //     for (final component in addressComponents) {
+  //       final List<dynamic> types = component['types'];
+  //       if (types.contains('administrative_area_level_2')) {
+  //         break;
+  //       }
+  //     }
+  //
+  //     selectedDropUpLat.value = lat.toString();
+  //     selectedDropUpLng.value = lng.toString();
+  //
+  //     print('Selected Drop Address: ${suggestion.description}');
+  //     print('Latitude: $lat, Longitude: $lng');
+  //   } else {
+  //     throw Exception('Failed to fetch place details');
+  //   }
+  // }
 
-  Future<void> selectMultipleDropAddress(Suggestion suggestion,) async {
-    final String placeId = suggestion.placeId;
-    final String detailsUrl =
-        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry,address_components&language=bn&key=$apiKey";
+  void selectDropAddress(Places suggestion) async {
+    dropLocation.value =suggestion.address??'';
+    selectedDropUpLat.value = suggestion.latitude??'';
+    selectedDropUpLng.value = suggestion.longitude??'';
+    selectedDropOffDistrict.value = suggestion.district??'';
 
-    final response = await http.get(Uri.parse(detailsUrl));
-    isLoading(true); // Set loading state
 
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final Map<String, dynamic> result = jsonData['result'];
-      final Map<String, dynamic> geometry = result['geometry'];
-      final Map<String, dynamic> location = geometry['location'];
-      final double lat = location['lat'];
-      final double lng = location['lng'];
 
-      final List<dynamic> addressComponents = result['address_components'];
-      isLoading(false); // Set loading state to false
-
-      for (final component in addressComponents) {
-        final List<dynamic> types = component['types'];
-        if (types.contains('administrative_area_level_2')) {
-          break;
-        }
-      }
-
-      selectedDropUpLat.value = lat.toString();
-      selectedDropUpLng.value = lng.toString();
-
-      print('Selected Drop Address: ${suggestion.description}');
-      print('Latitude: $lat, Longitude: $lng');
-    } else {
-      throw Exception('Failed to fetch place details');
-    }
-  }
-
-  void selectDropAddress(Suggestion suggestion) async {
-    final String placeId = suggestion.placeId;
-    final String detailsUrl =
-        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry,address_components&language=bn&key=$apiKey";
-
-    final response = await http.get(Uri.parse(detailsUrl));
-    isLoading(true);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final Map<String, dynamic> result = jsonData['result'];
-      final Map<String, dynamic> geometry = result['geometry'];
-      final Map<String, dynamic> location = geometry['location'];
-      final double lat = location['lat'];
-      final double lng = location['lng'];
-
-      final List<dynamic> addressComponents = result['address_components'];
-      String districtName = '';
-      isLoading(false);
-      for (final component in addressComponents) {
-        final List<dynamic> types = component['types'];
-        if (types.contains('administrative_area_level_2')) {
-          districtName = component['long_name'];
-          break;
-        }
-      }
-
-      print('Selected Drop Address: ${suggestion.description}');
-      dropLocation.value = '${addressComponents[0]['long_name']} ${addressComponents[1]['long_name']}';
-
-      selectedDropUpLat.value = lat.toString();
-      selectedDropUpLng.value = lng.toString();
-      selectedDropOffDistrict.value = districtName;
-      print('District Drop Name:: ${selectedDropOffDistrict.value}');
-      print('Latitude: $lat, Longitude: $lng');
-
-      // You can do other operations with the address, division name, lat, and lng here
-    } else {
-      throw Exception('Failed to fetch place details');
-    }
+    // final String placeId = suggestion.placeId;
+    // final String detailsUrl =
+    //     "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry,address_components&language=bn&key=$apiKey";
+    //
+    // final response = await http.get(Uri.parse(detailsUrl));
+    // isLoading(true);
+    // if (response.statusCode == 200) {
+    //   final jsonData = json.decode(response.body);
+    //   final Map<String, dynamic> result = jsonData['result'];
+    //   final Map<String, dynamic> geometry = result['geometry'];
+    //   final Map<String, dynamic> location = geometry['location'];
+    //   final double lat = location['lat'];
+    //   final double lng = location['lng'];
+    //
+    //   final List<dynamic> addressComponents = result['address_components'];
+    //   String districtName = '';
+    //   isLoading(false);
+    //   for (final component in addressComponents) {
+    //     final List<dynamic> types = component['types'];
+    //     if (types.contains('administrative_area_level_2')) {
+    //       districtName = component['long_name'];
+    //       break;
+    //     }
+    //   }
+    //
+    //   print('Selected Drop Address: ${suggestion.description}');
+    //   dropLocation.value =
+    //       '${addressComponents[0]['long_name']} ${addressComponents[1]['long_name']}';
+    //
+    //   selectedDropUpLat.value = lat.toString();
+    //   selectedDropUpLng.value = lng.toString();
+    //   selectedDropOffDistrict.value = districtName;
+    //   print('District Drop Name:: ${selectedDropOffDistrict.value}');
+    //   print('Latitude: $lat, Longitude: $lng');
+    //
+    //   // You can do other operations with the address, division name, lat, and lng here
+    // } else {
+    //   throw Exception('Failed to fetch place details');
+    // }
   }
 
   Future<void> getRoadDistance({
@@ -381,14 +400,17 @@ class LocationController extends GetxController {
         final data = json.decode(response.body);
 
         if (data['status'] == 'OK') {
-          final distanceValue = data['rows'][0]['elements'][0]['distance']['value']; // Distance in meters
+          final distanceValue =
+              data['rows'][0]['elements'][0]['distance']['value']; // Distance in meters
           final duration = data['rows'][0]['elements'][0]['duration']['text'];
 
           // Convert distance to kilometers (if needed)
           double distanceInKm = distanceValue / 1000.0;
 
           // Update observable variable
-          distance.value = distanceInKm.toStringAsFixed(1); // Rounded to 1 decimal place
+          distance.value = distanceInKm.toStringAsFixed(
+            1,
+          ); // Rounded to 1 decimal place
           reachTime.value = duration;
 
           print('Distance in KM: $distanceInKm');
@@ -402,6 +424,13 @@ class LocationController extends GetxController {
       print('Error: $e');
     }
   }
+}
 
 
+
+
+// Helper method
+String getDivisionFromDistrict(String district) {
+  final key = district.trim();
+  return districtToDivision[key] ?? 'Unknown';
 }

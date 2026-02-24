@@ -928,9 +928,9 @@ class _RentalPointPageState extends State<RentalPointPage> {
       locationController.pickUpLocation.value = address;
 
       if (placeId != null) {
-        locationController.selectPikUpAddress(
-          Suggestion(placeId: placeId, description: address),
-        );
+        // locationController.selectPikUpAddress(
+        //   Suggestion(placeId: placeId, description: address),
+        // );
       }
     } else {
       locationController.selectedDropUpLat.value = lat;
