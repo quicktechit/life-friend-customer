@@ -27,9 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _loadData() async {
-    SharedPreferencesManager _prefsManager =
+    SharedPreferencesManager prefsManager =
     await SharedPreferencesManager.getInstance();
-    token = _prefsManager.getToken();
+    token = prefsManager.getToken();
 
     log(token.toString());
     Timer(Duration(seconds: 2), () {
