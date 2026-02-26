@@ -516,12 +516,13 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                         InkWell(
                           onTap: () {
                             if (upLat != 0.0 && upLng != 0.0) {
-                              Get.to(() => MapWithDirections(
-                                pickUpLat: upLat,
-                                pickUpLng: upLng,
-                                dropUpLat: downLat,
-                                dropUpLng: downLng,
-                              ));
+                              // Get.to(() => MapWithDirections(
+                              //   pickUpLat: upLat,
+                              //   pickUpLng: upLng,
+                              //   dropUpLat: downLat,
+                              //   dropUpLng: downLng,
+                              // ));
+                              _controller.openMapWithDirections(upLat, upLng, downLat, downLng);
                             }
                           },
                           child: Container(

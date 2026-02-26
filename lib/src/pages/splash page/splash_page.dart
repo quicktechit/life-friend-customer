@@ -34,7 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
     log(token.toString());
     Timer(Duration(seconds: 2), () {
       if (token == null) {
-        Get.to(() => OnboardPage());
+        Get.to(() => AuthStartPage());
+        // Get.to(() => OnboardPage());
       } else {
 
         Get.offAll(() => DashboardView());

@@ -1,27 +1,14 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:velocity_x/velocity_x.dart';
-
 import '../../../configs/appColors.dart';
-import '../../../configs/appUtils.dart';
-import '../../../configs/loader.dart';
-import '../../../controllers/airport/quick_tech_airport_cotnroller.dart';
 import '../../../controllers/division controller/division_controller.dart';
 import '../../../controllers/live location controller/live_location_controller.dart';
 import '../../../controllers/rental trip request controllers/rental_trip_request_check_controller.dart';
-import '../../../models/suggestion_model.dart';
 import '../../../widgets/button/primaryButton.dart';
 import '../../../widgets/car selected option/car_selected_option_widget.dart';
 import '../../../widgets/date and time widget/date_time_widget.dart';
 import '../../../widgets/note_controller.dart';
 import '../../../widgets/yes_no_ambulance_button.dart';
-
-import '../../map_page/controller/LocationPickerController.dart';
 import '../rental/tripDetailsPage.dart';
 
 class AmbulancePage extends StatefulWidget {
@@ -48,9 +35,9 @@ class AmbulancePage extends StatefulWidget {
 
 class _AmbulancePageState extends State<AmbulancePage> {
   final noteController = TextEditingController();
-  final LocationPickerController locationMapController = Get.put(
-    LocationPickerController(),
-  );
+  // final LocationPickerController locationMapController = Get.put(
+  //   LocationPickerController(),
+  // );
   final DivisionController divisionController = Get.put(DivisionController());
   var isRoundTrip = false;
   int roundTripValue = 0;
@@ -68,9 +55,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
   DateTime selectedReturnDate = DateTime.now();
   TimeOfDay selectedReturnTime = TimeOfDay.now();
   final LocationController locationController = Get.put(LocationController());
-  final RentalFormCheckController _controller = Get.put(
-    RentalFormCheckController(),
-  );
+
 
   @override
   Widget build(BuildContext context) {

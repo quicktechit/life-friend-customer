@@ -6,6 +6,8 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/appUtils.dart';
 import 'package:pickup_load_update/src/controllers/live%20location%20controller/live_location_controller.dart';
 
+import '../models/BariKoiMapModel.dart';
+
 class DropWidget extends StatefulWidget {
   const DropWidget({super.key});
 
@@ -134,13 +136,13 @@ class DropWidgetState extends State<DropWidget> {
                   physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
-                    final suggestion = locationController.suggestionsDrop[index];
+                    Places suggestion = locationController.suggestionsDrop[index];
                     return Material(
                       color: Colors.transparent,
                       child: InkWell(
                         onTap: () {
                           debugPrint('Testing ::: ');
-                          locationController.dropC.text = suggestion.description;
+                          locationController.dropC.text = suggestion.address??'';
                           locationController.selectDropAddress(suggestion);
                           locationController.suggestionsDrop.clear();
                         },
@@ -182,7 +184,7 @@ class DropWidgetState extends State<DropWidget> {
                                     ),
                                     SizedBox(height: 4),
                                     Text(
-                                      suggestion.description,
+                                      suggestion.address??'',
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.black87,

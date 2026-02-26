@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:pickup_load_update/src/models/new_all_trip_history_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../configs/appBaseUrls.dart';
 import '../../configs/base_client.dart';
@@ -154,6 +155,32 @@ class NewAllTripHistoryController extends GetxController{
       log("Error: $e");
     } finally {
       isLoading(false);
+    }
+  }
+
+  Future<void> openMapWithDirections(
+      double pickupLat,
+      double pickupLng,
+      double dropoffLat,
+      double dropoffLng,
+      ) async {
+    try {
+      // Using geo: scheme (Android native)
+      // final geoUrl = 'geo:0,0?q=$pickupLat,$pickupLng($pickupLng,$pickupLat)&destination=$dropoffLat,$dropoffLng';
+
+      // Better approach - use Google Maps URL
+      final googleMapsUrl = 'https://www.google.com/maps/dir/$pickupLat,$pickupLng/$dropoffLat,$dropoffLng';
+
+      // if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+        await launchUrl(
+          Uri.parse(googleMapsUrl),
+          mode: LaunchMode.externalApplication,
+        );
+      // } else {
+      //   print('Could not launch maps');
+      // }
+    } catch (e) {
+      print('Error: $e');
     }
   }
 }

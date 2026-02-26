@@ -87,95 +87,95 @@ class _SelectLocationState extends State<SelectLocation> {
   }
 
   Future<void> _handlePickupLocationSelection() async {
-    pickupLocation = await Get.to(
-          () =>
-          MapSinglePickerScreen(
-            lat:
-            double.tryParse(locationController.selectedPickUpLat.value) ?? null,
-            lng:
-            double.tryParse(locationController.selectedPickUpLng.value) ?? null,
-          ),
-    );
-
-    if (pickupLocation != null) {
-      Get.snackbar(
-        "Location Selected",
-        "${pickupLocation['address']}",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-
-      pickLat = pickupLocation['lat'];
-      pickLng = pickupLocation['lng'];
-      locationController.selectedPickUpLat.value = pickLat.toString();
-      locationController.selectedPickUpLng.value = pickLng.toString();
-      locationController.pickUpC.text = pickupLocation['address'].toString();
-      locationController.pickUpLocation.value = pickupLocation['address']
-          .toString();
-
-      if (pickupLocation['place_id'] != null) {
-        // locationController.selectPikUpAddress(
-        //   Places(
-        //     placeId: pickupLocation['place_id'],
-        //     description: pickupLocation['address'],
-        //   ),
-        // );
-      }
-    }
+    // pickupLocation = await Get.to(
+    //       () =>
+    //       MapSinglePickerScreen(
+    //         lat:
+    //         double.tryParse(locationController.selectedPickUpLat.value) ?? null,
+    //         lng:
+    //         double.tryParse(locationController.selectedPickUpLng.value) ?? null,
+    //       ),
+    // );
+    //
+    // if (pickupLocation != null) {
+    //   Get.snackbar(
+    //     "Location Selected",
+    //     "${pickupLocation['address']}",
+    //     snackPosition: SnackPosition.BOTTOM,
+    //     backgroundColor: Colors.green,
+    //     colorText: Colors.white,
+    //   );
+    //
+    //   pickLat = pickupLocation['lat'];
+    //   pickLng = pickupLocation['lng'];
+    //   locationController.selectedPickUpLat.value = pickLat.toString();
+    //   locationController.selectedPickUpLng.value = pickLng.toString();
+    //   locationController.pickUpC.text = pickupLocation['address'].toString();
+    //   locationController.pickUpLocation.value = pickupLocation['address']
+    //       .toString();
+    //
+    //   if (pickupLocation['place_id'] != null) {
+    //     // locationController.selectPikUpAddress(
+    //     //   Places(
+    //     //     placeId: pickupLocation['place_id'],
+    //     //     description: pickupLocation['address'],
+    //     //   ),
+    //     // );
+    //   }
+    // }
   }
 
   Future<void> _handleDropLocationSelection() async {
-    final selectedLocations = await Get.to(
-          () =>
-          MapMultiPickerScreen(
-            initialLocations: truckController.dropLatLngList
-                .map(
-                  (loc) =>
-              {
-                'lat': double.tryParse(loc['lat'] ?? '0') ?? 0.0,
-                'lng': double.tryParse(loc['lng'] ?? '0') ?? 0.0,
-                'address': '',
-              },
-            )
-                .toList(),
-          ),
-    );
+    // final selectedLocations = await Get.to(
+    //       () =>
+          // MapMultiPickerScreen(
+          //   initialLocations: truckController.dropLatLngList
+          //       .map(
+          //         (loc) =>
+          //     {
+          //       'lat': double.tryParse(loc['lat'] ?? '0') ?? 0.0,
+          //       'lng': double.tryParse(loc['lng'] ?? '0') ?? 0.0,
+          //       'address': '',
+          //     },
+          //   )
+          //       .toList(),
+          // ),
+    // );
 
-    if (selectedLocations != null && selectedLocations is List) {
-      setState(() {
-        if (dropWidgets.length == 1 && dropControllers[0].text.isEmpty) {
-          dropWidgets.clear();
-          dropControllers.clear();
-          truckController.dropLatLngList.clear();
-        }
-
-        for (var loc in selectedLocations) {
-          if (dropWidgets.length >= 5) break;
-
-          final address = loc['address'] ?? '';
-          final lat = loc['lat'].toString();
-          final lng = loc['lng'].toString();
-
-          final controller = TextEditingController(text: address);
-          dropControllers.add(controller);
-
-          truckController.dropLatLngList.add({'lat': lat, 'lng': lng});
-
-          dropWidgets.add(
-            CustomDropWidget(
-              controller: controller,
-              onLocationSelected: (newLat, newLng) {
-                truckController.dropLatLngList.add({
-                  'lat': newLat,
-                  'lng': newLng,
-                });
-              },
-            ),
-          );
-        }
-      });
-    }
+    // if (selectedLocations != null && selectedLocations is List) {
+    //   setState(() {
+    //     if (dropWidgets.length == 1 && dropControllers[0].text.isEmpty) {
+    //       dropWidgets.clear();
+    //       dropControllers.clear();
+    //       truckController.dropLatLngList.clear();
+    //     }
+    //
+    //     for (var loc in selectedLocations) {
+    //       if (dropWidgets.length >= 5) break;
+    //
+    //       final address = loc['address'] ?? '';
+    //       final lat = loc['lat'].toString();
+    //       final lng = loc['lng'].toString();
+    //
+    //       final controller = TextEditingController(text: address);
+    //       dropControllers.add(controller);
+    //
+    //       truckController.dropLatLngList.add({'lat': lat, 'lng': lng});
+    //
+    //       dropWidgets.add(
+    //         CustomDropWidget(
+    //           controller: controller,
+    //           onLocationSelected: (newLat, newLng) {
+    //             truckController.dropLatLngList.add({
+    //               'lat': newLat,
+    //               'lng': newLng,
+    //             });
+    //           },
+    //         ),
+    //       );
+    //     }
+    //   });
+    // }
   }
 
   Widget _buildLocationIndicator() {

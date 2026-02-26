@@ -55,9 +55,9 @@ class RentalPointPage extends StatefulWidget {
 
 class _RentalPointPageState extends State<RentalPointPage> {
   final noteController = TextEditingController();
-  final LocationPickerController locationMapController = Get.put(
-    LocationPickerController(),
-  );
+  // final LocationPickerController locationMapController = Get.put(
+  //   LocationPickerController(),
+  // );
   final DivisionController divisionController = Get.put(DivisionController());
   var isRoundTrip = false;
   int roundTripValue = 0;
@@ -901,16 +901,17 @@ class _RentalPointPageState extends State<RentalPointPage> {
     required String lat,
     required String lng,
   }) async {
-    final location = await Get.to(
-      () => MapSinglePickerScreen(
-        lat: double.tryParse(lat),
-        lng: double.tryParse(lng),
-      ),
-    );
+    // final location=Map<String, dynamic>'';
+    // = await Get.to(
+    //   () => MapSinglePickerScreen(
+    //     lat: double.tryParse(lat),
+    //     lng: double.tryParse(lng),
+    //   ),
+    // );
 
-    if (location == null) return;
+    // if (location == null) return;
 
-    _updateLocationData(location, isPickup);
+    // _updateLocationData(location, isPickup);
   }
 
   void _updateLocationData(Map<String, dynamic> location, bool isPickup) {

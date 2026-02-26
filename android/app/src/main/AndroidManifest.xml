@@ -36,8 +36,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC1LrGdAl5vX5Jp9muuou2iAo52Yu49pFc"/>
+<!--        <meta-data android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyC1LrGdAl5vX5Jp9muuou2iAo52Yu49pFc"/>-->
         <meta-data
             android:name="com.google.android.play.core.install.BIND_INSTALL_SERVICE"
             android:value="true"/>

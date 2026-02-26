@@ -25,9 +25,9 @@ class SearchWidgets extends StatefulWidget {
 }
 
 class _SearchWidgetsState extends State<SearchWidgets> {
-  final LocationPickerController locationMapController = Get.put(
-    LocationPickerController(),
-  );
+  // final LocationPickerController locationMapController = Get.put(
+  //   LocationPickerController(),
+  // );
 
   final LocationController locationController = Get.put(LocationController());
 

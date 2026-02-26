@@ -12,7 +12,7 @@ import 'package:pickup_load_update/src/widgets/division_box_widget.dart';
 import '../../configs/appColors.dart';
 import '../../models/BariKoiMapModel.dart';
 import '../../models/division_model.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class LocationController extends GetxController {
   final Rx<TextEditingController?> activeController =
       Rx<TextEditingController?>(null);
@@ -424,6 +424,11 @@ class LocationController extends GetxController {
       print('Error: $e');
     }
   }
+
+
+
+
+
 }
 
 

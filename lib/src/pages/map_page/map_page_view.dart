@@ -1,8 +1,8 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:maplibre_gl/maplibre_gl.dart';
 
 class MapWithDirections extends StatefulWidget {
   final double pickUpLat;
@@ -11,132 +11,135 @@ class MapWithDirections extends StatefulWidget {
   final double dropUpLng;
 
   const MapWithDirections({
-    Key? key,
+    super.key,
     required this.pickUpLat,
     required this.pickUpLng,
     required this.dropUpLat,
     required this.dropUpLng,
-  }) : super(key: key);
+  });
 
   @override
-  _MapWithDirectionsState createState() => _MapWithDirectionsState();
+  State<MapWithDirections> createState() => _MapWithDirectionsState();
 }
 
 class _MapWithDirectionsState extends State<MapWithDirections> {
-  GoogleMapController? mapController;
-  final Set<Marker> _markers = {};
-  final Set<Polyline> _polylines = {};
-  final String _apiKey = "AIzaSyC1LrGdAl5vX5Jp9muuou2iAo52Yu49pFc";
+  MapLibreMapController? mController;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-
-    _markers.addAll([
-      Marker(
-        markerId: const MarkerId("start"),
-        position: LatLng(widget.pickUpLat, widget.pickUpLng),
-        infoWindow: const InfoWindow(title: "Start"),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue), // Green color
-      ),
-      Marker(
-        markerId: const MarkerId("end"),
-        position: LatLng(widget.dropUpLat, widget.dropUpLng),
-        infoWindow: const InfoWindow(title: "End"),
-        // Default color (red)
-      ),
-    ]);
-
-
-    setState(() {}); // update markers
-
-    _getDirections();
-  }
-
-  Future<void> _getDirections() async {
-    final start = "${widget.pickUpLat},${widget.pickUpLng}";
-    final end = "${widget.dropUpLat},${widget.dropUpLng}";
-    final url =
-        "https://maps.googleapis.com/maps/api/directions/json?origin=$start&destination=$end&key=$_apiKey";
-log(url);
-    try {
-      final response = await http.get(Uri.parse(url));
-      final data = json.decode(response.body);
-
-      if (data['routes'] == null || data['routes'].isEmpty) {
-        print("❌ No routes found in API response");
-        return;
-      }
-
-      final overviewPolyline = data['routes'][0]['overview_polyline']['points'];
-      final points = _decodePolyline(overviewPolyline);
-
-      _polylines.add(
-        Polyline(
-          polylineId: const PolylineId("route"),
-          points: points,
-          color: Colors.blue,
-          width: 5,
-        ),
-      );
-
-      setState(() {});
-    } catch (e) {
-      print("❌ Exception while fetching directions: $e");
-    }
-  }
-
-  List<LatLng> _decodePolyline(String encoded) {
-    List<LatLng> polyline = [];
-    int index = 0, len = encoded.length;
-    int lat = 0, lng = 0;
-
-    while (index < len) {
-      int shift = 0, result = 0;
-      int b;
-      do {
-        b = encoded.codeUnitAt(index++) - 63;
-        result |= (b & 0x1f) << shift;
-        shift += 5;
-      } while (b >= 0x20);
-      int dLat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-      lat += dLat;
-
-      shift = 0;
-      result = 0;
-      do {
-        b = encoded.codeUnitAt(index++) - 63;
-        result |= (b & 0x1f) << shift;
-        shift += 5;
-      } while (b >= 0x20);
-      int dLng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-      lng += dLng;
-
-      polyline.add(LatLng(lat / 1E5, lng / 1E5));
-    }
-
-    return polyline;
-  }
+  static const apiKey = 'bkoi_029d49cbee063aac30a15bf669de3027eae2c84ca9f06666b7cebfb7b24c9bc3';
+  static const styleId = 'osm-liberty';
+  static const mapUrl = 'https://map.barikoi.com/styles/$styleId/style.json?key=$apiKey';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Map with Directions")),
-      body: GoogleMap(
+      appBar: AppBar(title: const Text("Map with Directions",style: TextStyle(color: Colors.white),)),
+      body: MaplibreMap(
         initialCameraPosition: CameraPosition(
           target: LatLng(widget.pickUpLat, widget.pickUpLng),
-          zoom: 13.0,
+          zoom: 18,
         ),
-        onMapCreated: _onMapCreated,
-        markers: _markers,
-        polylines: _polylines,
-        myLocationEnabled: true,
-        myLocationButtonEnabled: true,
+        styleString: mapUrl,
+        onMapCreated: (MapLibreMapController mapController) {
+          mController = mapController;
+        },
+        onStyleLoadedCallback: _onStyleLoaded,
       ),
     );
+  }
+
+  Future<void> _onStyleLoaded() async {
+    if (mController == null) return;
+    await _addMarkers();
+    await _getDirections();
+  }
+
+  Future<void> _addMarkers() async {
+    // Pickup marker (green circle)
+    await mController!.addCircle(
+      CircleOptions(
+        geometry: LatLng(widget.pickUpLat, widget.pickUpLng),
+        circleRadius: 10,
+        circleColor: "#00CC00",
+        circleStrokeColor: "#FFFFFF",
+        circleStrokeWidth: 2,
+      ),
+    );
+
+    // Drop marker (red circle)
+    await mController!.addCircle(
+      CircleOptions(
+        geometry: LatLng(widget.dropUpLat, widget.dropUpLng),
+        circleRadius: 10,
+        circleColor: "#FF0000",
+        circleStrokeColor: "#FFFFFF",
+        circleStrokeWidth: 2,
+      ),
+    );
+
+    // Pickup label
+    await mController!.addSymbol(
+      SymbolOptions(
+        geometry: LatLng(widget.pickUpLat, widget.pickUpLng),
+        textField: "Pickup",
+        textSize: 12,
+        textColor: "#000000",
+        textOffset: const Offset(0, 2),
+      ),
+    );
+
+    // Drop label
+    await mController!.addSymbol(
+      SymbolOptions(
+        geometry: LatLng(widget.dropUpLat, widget.dropUpLng),
+        textField: "Drop",
+        textSize: 12,
+        textColor: "#000000",
+        textOffset: const Offset(0, 2),
+      ),
+    );
+  }
+
+
+  Future<void> _getDirections() async {
+    const String apiKey = 'bkoi_029d49cbee063aac30a15bf669de3027eae2c84ca9f06666b7cebfb7b24c9bc3';
+
+    final url =
+        "https://barikoi.xyz/v2/api/route/"
+        "${widget.pickUpLng},${widget.pickUpLat};"
+        "${widget.dropUpLng},${widget.dropUpLat}"
+        "?api_key=$apiKey&geometries=polyline";
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      // Get encoded polyline string
+      final String encodedPolyline =
+      data['routes'][0]['geometry'];
+
+      // Decode polyline
+      PolylinePoints polylinePoints = PolylinePoints(apiKey: apiKey);
+      List<PointLatLng> decodedPoints =
+      PolylinePoints.decodePolyline(encodedPolyline);
+
+      List<LatLng> routeCoords = decodedPoints
+          .map((point) => LatLng(point.latitude, point.longitude))
+          .toList();
+
+      // Remove old line if needed
+      await mController?.clearLines();
+
+      await mController!.addLine(
+        LineOptions(
+          geometry: routeCoords,
+          lineColor: "#0066FF",
+          lineWidth: 5.0,
+          lineOpacity: 0.8,
+        ),
+      );
+    } else {
+      print("Route API Error: ${response.statusCode}");
+    }
   }
 }

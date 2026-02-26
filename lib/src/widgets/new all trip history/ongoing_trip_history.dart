@@ -263,8 +263,8 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                 ),
                                 child: Text(
                                   item.rentalRelationships != null
-                                      ? "${item.rentalRelationships?.vehicle?.name?.toUpperCase() ?? 'N/A'}"
-                                      : "${item.returnRelationships?.returnVehicle?.name?.toUpperCase() ?? 'N/A'}",
+                                      ? item.rentalRelationships?.vehicle?.name?.toUpperCase() ?? 'N/A'
+                                      : item.returnRelationships?.returnVehicle?.name?.toUpperCase() ?? 'N/A',
                                   style: TextStyle(
                                     fontSize: 9,
                                     fontWeight: FontWeight.w700,
@@ -505,12 +505,13 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                         InkWell(
                           onTap: () {
                             if (upLat != 0.0 && upLng != 0.0) {
-                              Get.to(() => MapWithDirections(
-                                pickUpLat: upLat,
-                                pickUpLng: upLng,
-                                dropUpLat: downLat,
-                                dropUpLng: downLng,
-                              ));
+                              _controller.openMapWithDirections(upLat, upLng, downLat, downLng);
+                              // Get.to(() => MapWithDirections(
+                              //   pickUpLat: upLat,
+                              //   pickUpLng: upLng,
+                              //   dropUpLat: downLat,
+                              //   dropUpLng: downLng,
+                              // ));
                             }
                           },
                           child: Container(

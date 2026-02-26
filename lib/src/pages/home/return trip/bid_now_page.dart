@@ -206,25 +206,25 @@ class ReturnTripBidNowPageState extends State<ReturnTripBidNowPage> {
                       Column(
                         children: [
                           GestureDetector(
-                            onTap: () async {
-                              pickupLocation =
-                              await Get.to(() => MapSinglePickerScreen(
-                                lat: double.tryParse( _locationController.selectedPickUpLat.value) ?? null,
-                                lng: double.tryParse( _locationController.selectedPickUpLng.value) ?? null,
-                              ));
-                              if (pickupLocation != null) {
-                                Get.snackbar("Single Location",
-                                    "${pickupLocation['address']}\n(${pickupLocation['lat']}, ${pickupLocation['lng']})");
-                                pickLat = pickupLocation['lat'];
-                                pickLng = pickupLocation['lng'];
-                                _locationController.selectedPickUpLat.value=pickupLocation['lat'].toString();
-                                _locationController.selectedPickUpLng.value=pickupLocation['lng'].toString();
-                                _locationController.pickUpC.text =
-                                pickupLocation['address'].toString();
-                                _locationController.pickUpLocation.value =
-                                pickupLocation['address'].toString();
-                              }
-                            },
+                            // onTap: () async {
+                              // pickupLocation =
+                              // await Get.to(() => MapSinglePickerScreen(
+                              //   lat: double.tryParse( _locationController.selectedPickUpLat.value) ?? null,
+                              //   lng: double.tryParse( _locationController.selectedPickUpLng.value) ?? null,
+                              // ));
+                              // if (pickupLocation != null) {
+                              //   Get.snackbar("Single Location",
+                              //       "${pickupLocation['address']}\n(${pickupLocation['lat']}, ${pickupLocation['lng']})");
+                              //   pickLat = pickupLocation['lat'];
+                              //   pickLng = pickupLocation['lng'];
+                              //   _locationController.selectedPickUpLat.value=pickupLocation['lat'].toString();
+                              //   _locationController.selectedPickUpLng.value=pickupLocation['lng'].toString();
+                              //   _locationController.pickUpC.text =
+                              //   pickupLocation['address'].toString();
+                              //   _locationController.pickUpLocation.value =
+                              //   pickupLocation['address'].toString();
+                              // }
+                            // },
                             child: Image.asset(
                               "assets/images/pick.png",
                               scale: 15,
@@ -238,48 +238,48 @@ class ReturnTripBidNowPageState extends State<ReturnTripBidNowPage> {
                           ),
                           sizeH5,
                           GestureDetector(
-                            onTap: () async {
-                              debugPrint('Testing ::: ');
-                              final selectedLocations = await Get.to(() => MapMultiPickerScreen(
-                                initialLocations: truckController.dropLatLngList.map((loc) => {
-                                  'lat': double.tryParse(loc['lat'] ?? '0') ?? 0.0,
-                                  'lng': double.tryParse(loc['lng'] ?? '0') ?? 0.0,
-                                  'address': '', // If you have address info, include it here
-                                }).toList(),
-                              ));
-
-                              if (selectedLocations != null && selectedLocations is List) {
-                                setState(() {
-                                  // If first widget is empty and unused, remove it
-                                  if (dropWidgets.length == 1 && dropControllers[0].text.isEmpty) {
-                                    dropWidgets.clear();
-                                    dropControllers.clear();
-                                    truckController.dropLatLngList.clear(); // Optional: reset stored lat/lng
-                                  }
-
-                                  for (var loc in selectedLocations) {
-                                    if (dropWidgets.length >= 5) break;
-
-                                    final controller = TextEditingController(text: loc['address'] ?? '');
-                                    dropControllers.add(controller);
-
-                                    truckController.dropLatLngList.add({
-                                      'lat': loc['lat'].toString(),
-                                      'lng': loc['lng'].toString(),
-                                    });
-
-                                    dropWidgets.add(
-                                      CustomDropWidget(
-                                        controller: controller,
-                                        onLocationSelected: (lat, lng) {
-                                          truckController.dropLatLngList.add({'lat': lat, 'lng': lng});
-                                        },
-                                      ),
-                                    );
-                                  }
-                                });
-                              }
-                            },
+                            // onTap: () async {
+                            //   debugPrint('Testing ::: ');
+                            //   final selectedLocations = await Get.to(() => MapMultiPickerScreen(
+                            //     initialLocations: truckController.dropLatLngList.map((loc) => {
+                            //       'lat': double.tryParse(loc['lat'] ?? '0') ?? 0.0,
+                            //       'lng': double.tryParse(loc['lng'] ?? '0') ?? 0.0,
+                            //       'address': '', // If you have address info, include it here
+                            //     }).toList(),
+                            //   ));
+                            //
+                            //   if (selectedLocations != null && selectedLocations is List) {
+                            //     setState(() {
+                            //       // If first widget is empty and unused, remove it
+                            //       if (dropWidgets.length == 1 && dropControllers[0].text.isEmpty) {
+                            //         dropWidgets.clear();
+                            //         dropControllers.clear();
+                            //         truckController.dropLatLngList.clear(); // Optional: reset stored lat/lng
+                            //       }
+                            //
+                            //       for (var loc in selectedLocations) {
+                            //         if (dropWidgets.length >= 5) break;
+                            //
+                            //         final controller = TextEditingController(text: loc['address'] ?? '');
+                            //         dropControllers.add(controller);
+                            //
+                            //         truckController.dropLatLngList.add({
+                            //           'lat': loc['lat'].toString(),
+                            //           'lng': loc['lng'].toString(),
+                            //         });
+                            //
+                            //         dropWidgets.add(
+                            //           CustomDropWidget(
+                            //             controller: controller,
+                            //             onLocationSelected: (lat, lng) {
+                            //               truckController.dropLatLngList.add({'lat': lat, 'lng': lng});
+                            //             },
+                            //           ),
+                            //         );
+                            //       }
+                            //     });
+                            //   }
+                            // },
                             child: Image.asset(
                               "assets/images/map.png",
                               scale: 15,

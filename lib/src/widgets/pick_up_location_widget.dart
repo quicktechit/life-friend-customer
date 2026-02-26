@@ -6,6 +6,8 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/appUtils.dart';
 import 'package:pickup_load_update/src/controllers/live%20location%20controller/live_location_controller.dart';
 
+import '../models/BariKoiMapModel.dart';
+
 class PickUp extends StatefulWidget {
   const PickUp({super.key});
 
@@ -134,12 +136,12 @@ class _PickUpState extends State<PickUp> {
                   physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
-                    final suggestion = locationController.suggestionsPickUp[index];
+                    Places suggestion = locationController.suggestionsPickUp[index];
                     return Material(
                       color: Colors.transparent,
                       child: InkWell(
                         onTap: () {
-                          locationController.pickUpC.text = suggestion.description;
+                          locationController.pickUpC.text = suggestion.address??'';
                           locationController.selectPikUpAddress(suggestion);
                           locationController.suggestionsPickUp.clear();
                         },
@@ -169,7 +171,7 @@ class _PickUpState extends State<PickUp> {
                               SizedBox(width: 12),
                               Expanded(
                                 child: Text(
-                                  suggestion.description,
+                                  suggestion.address??'',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black87,
