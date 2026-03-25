@@ -30,7 +30,7 @@ Widget buildQuickServiceCard(
           await returnTripFilter.returnTripFilterList();
           return;
         case 'ambulance':
-          await vehicleController.getVehicles(id: '2');
+          await vehicleController.getVehicles(id: '6');
 
           Get.to(() => SearchWidgets(tripType: 'Ambulance'));
           break;

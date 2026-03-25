@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/appUtils.dart';
@@ -15,20 +16,15 @@ import 'package:pickup_load_update/src/widgets/custom_button_widget.dart';
 import 'package:pickup_load_update/src/widgets/text/kText.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class RentalListPage extends StatelessWidget {
+import '../../../controllers/rental trip request controllers/rental_trip_req_submit_controller.dart';
+
+class RentalListPage extends StatefulWidget {
   final bool? isAirport;
   final bool? isTrac;
   final bool? ambulance;
   final String tripType;
-  final CarCategoryController carCategoryController = Get.put(
-    CarCategoryController(),
-  );
-  final vehicleController = Get.put(QuickTechVehiclesController());
 
-  // Variable to store the selected item
-  final Rxn<dynamic> selectedItem = Rxn<dynamic>();
-
-  RentalListPage({
+  const RentalListPage({
     super.key,
     this.isAirport,
     this.isTrac,
@@ -36,12 +32,27 @@ class RentalListPage extends StatelessWidget {
     this.ambulance,
   });
 
+  @override
+  State<RentalListPage> createState() => _RentalListPageState();
+}
+
+class _RentalListPageState extends State<RentalListPage> {
+  final CarCategoryController carCategoryController = Get.put(
+    CarCategoryController(),
+  );
+  final RentalTripSubmitController controller = Get.put(RentalTripSubmitController());
+  final vehicleController = Get.put(QuickTechVehiclesController());
+
+  // Variable to store the selected item
+  final Rxn<dynamic> selectedItem = Rxn<dynamic>();
+
   String get _pageTitle {
-    if (isTrac == true) return 'truckTrip'.tr;
-    if (isAirport == true) return "airportTrip".tr;
-    if (ambulance == true) return "ambulanceService".tr;
+    if (widget.isTrac == true) return 'truckTrip'.tr;
+    if (widget.isAirport == true) return "airportTrip".tr;
+    if (widget.ambulance == true) return "ambulanceService".tr;
     return "carTrip".tr;
   }
+
 
   String _getVehicleIcon(String vehicleType) {
     switch (vehicleType.toLowerCase()) {
@@ -54,6 +65,13 @@ class RentalListPage extends StatelessWidget {
       default:
         return '🚗';
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.selectedAnswers.clear();
   }
 
   @override
@@ -662,7 +680,7 @@ class RentalListPage extends StatelessWidget {
                         _buildDetailItem(
                           icon: Icons.calendar_today,
                           label: 'Created',
-                          value: _formatDate(vehicle.createdAt),
+                          value: formatFullDateTime(vehicle.createdAt.toString()),
                         ),
                       ],
                     ),
@@ -674,7 +692,7 @@ class RentalListPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
-                          'Last updated: ${_formatDate(vehicle.updatedAt)}',
+                          'Last updated: ${formatFullDateTime(vehicle.updatedAt.toString())}',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[500],
@@ -761,11 +779,11 @@ class RentalListPage extends StatelessWidget {
   }
 
   // Helper method to format date
-  String _formatDate(String? dateString) {
+  String formatFullDateTime(String? dateString) {
     if (dateString == null) return 'N/A';
     try {
-      DateTime date = DateTime.parse(dateString);
-      return '${date.day}/${date.month}/${date.year}';
+      DateTime date = DateTime.parse(dateString.replaceFirst(' ', 'T'));
+      return DateFormat('dd MMM yyyy, hh:mm a').format(date);
     } catch (e) {
       return dateString;
     }
@@ -887,7 +905,7 @@ class RentalListPage extends StatelessWidget {
   }
 
   void _handleNext(BuildContext context) {
-    if (ambulance == true) {
+    if (widget.ambulance == true) {
       Get.to(
         () => AmbulancePage(
           carImg: Urls.getImageURL(
@@ -896,30 +914,30 @@ class RentalListPage extends StatelessWidget {
           carName: selectedItem.value!.name.toString(),
           capacity: selectedItem.value!.capacity.toString(),
           carId: selectedItem.value!.id.toString(),
-          tripType: tripType == 'car'
+          tripType: widget.tripType == 'car'
               ? '2'
-              : tripType == 'truck'
+              : widget.tripType == 'truck'
               ? '1'
-              : tripType == 'bike'
+              : widget.tripType == 'bike'
               ? '4'
-              : '2',
+              : '2', question: selectedItem.value.vehicleQuestions??[],
         ),
       );
     } else {
       Get.to(
         () => RentalPointPage(
-          isAirport: isAirport,
+          isAirport: widget.isAirport,
           carImg: Urls.getImageURL(
             endPoint: selectedItem.value!.image.toString(),
           ),
           carName: selectedItem.value!.name.toString(),
           capacity: selectedItem.value!.capacity.toString(),
           carId: selectedItem.value!.id.toString(),
-          tripType: tripType == 'car'
+          tripType: widget.tripType == 'car'
               ? '2'
-              : tripType == 'truck'
+              : widget.tripType == 'truck'
               ? '1'
-              : tripType == 'bike'
+              : widget.tripType == 'bike'
               ? '4'
               : '1',
         ),

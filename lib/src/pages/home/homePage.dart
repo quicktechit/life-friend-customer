@@ -356,20 +356,7 @@ class _HomePageState extends State<HomePage>
         ),
         SizedBox(height: 20.h),
         _buildServicesSection(context),
-        // GridView.builder(
-        //   physics: const NeverScrollableScrollPhysics(),
-        //   shrinkWrap: true,
-        //   itemCount: quickServices.length,
-        //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        //     crossAxisCount: 3,
-        //     mainAxisSpacing: 10,
-        //     crossAxisSpacing: 10,
-        //     childAspectRatio: 0.85, // Made taller to fit text comfortably
-        //   ),
-        //   itemBuilder: (context, index) {
-        //     return _buildQuickServiceCard(quickServices[index], index);
-        //   },
-        // ),
+
       ],
     );
   }

@@ -746,6 +746,12 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                 buttonName: "Next",
                 icon: Icons.navigate_next_outlined,
                 onTap: () {
+                  if(locationController.pickUpC.text.isEmpty||locationController.dropC.text.isEmpty){
+                    Get.snackbar("Warning", "Pickup and Drop off Location required");
+                    return;
+                  }
+
+
                   switch (widget.tripType) {
                     case 'Ambulance':
                       Get.to(

@@ -17,7 +17,7 @@ import '../../../widgets/via_location_widget.dart';
 import '../rental/rentalPointPage.dart';
 
 class SingleTrip extends StatefulWidget {
-  final Data? item;
+  final Datum? item;
   final String tripType;
   SingleTrip({super.key, this.item, required this.tripType});
 

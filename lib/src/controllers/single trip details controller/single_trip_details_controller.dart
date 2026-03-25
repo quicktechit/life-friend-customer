@@ -18,6 +18,7 @@ class SingleTripDetailsController extends GetxController {
     try {
       isLoading.value = true;
       print("==========>>>> trip id $tripId");
+      print("==========>>>> trip type $type");
       SharedPreferencesManager prefsManager =
           await SharedPreferencesManager.getInstance();
       String? token = prefsManager.getToken();

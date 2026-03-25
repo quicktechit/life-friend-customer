@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import '../../../configs/appColors.dart';
 import '../../../controllers/division controller/division_controller.dart';
 import '../../../controllers/live location controller/live_location_controller.dart';
+import '../../../controllers/rental trip request controllers/rental_trip_req_submit_controller.dart';
 import '../../../controllers/rental trip request controllers/rental_trip_request_check_controller.dart';
+import '../../../models/vehicle_categories/quick_tech_get_vehicle_categories.dart';
 import '../../../widgets/button/primaryButton.dart';
 import '../../../widgets/car selected option/car_selected_option_widget.dart';
 import '../../../widgets/date and time widget/date_time_widget.dart';
@@ -16,6 +18,7 @@ class AmbulancePage extends StatefulWidget {
   final String carName;
   final String capacity;
   final String carId;
+  final List<VehicleQuestion> question;
 
   final String tripType;
 
@@ -26,7 +29,7 @@ class AmbulancePage extends StatefulWidget {
     required this.capacity,
     required this.carId,
 
-    required this.tripType,
+    required this.tripType, required this.question,
   });
 
   @override
@@ -38,6 +41,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
   // final LocationPickerController locationMapController = Get.put(
   //   LocationPickerController(),
   // );
+  final RentalTripSubmitController controller = Get.find();
   final DivisionController divisionController = Get.put(DivisionController());
   var isRoundTrip = false;
   int roundTripValue = 0;
@@ -81,362 +85,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            // const SizedBox(height: 20),
 
-            /// Car info card
-            // _buildCarSelectionSection(),
-
-            // const SizedBox(height: 24),
-
-            /// Location section
-            // Container(
-            //   margin: const EdgeInsets.symmetric(horizontal: 16),
-            //   padding: const EdgeInsets.all(11),
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(16),
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.black.withOpacity(0.05),
-            //         blurRadius: 10,
-            //         offset: const Offset(0, 4),
-            //       ),
-            //     ],
-            //   ),
-            //   child: Column(
-            //     children: [
-            //       Row(
-            //         children: [
-            //           Container(
-            //             width: 24,
-            //             height: 24,
-            //             alignment: AlignmentGeometry.center,
-            //             decoration: BoxDecoration(
-            //               shape: BoxShape.circle,
-            //               color: primaryColor,
-            //             ),
-            //             child: const Icon(
-            //               Icons.map_outlined,
-            //               color: Colors.white,
-            //               size: 14,
-            //             ),
-            //           ),
-            //           const SizedBox(width: 12),
-            //           Text(
-            //             'Location Details',
-            //             style: TextStyle(
-            //               fontSize: 16,
-            //               fontWeight: FontWeight.w600,
-            //               color: Colors.grey[800],
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       sizeH10,
-            //       Row(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         crossAxisAlignment: CrossAxisAlignment.center,
-            //         children: [
-            //           // Vertical timeline with icons
-            //           Column(
-            //             children: [
-            //               // Pickup icon with timeline
-            //               GestureDetector(
-            //                 onTap: () async {
-            //                   pickupLocation = await Get.to(
-            //                         () =>
-            //                         MapSinglePickerScreen(
-            //                           lat: double.tryParse(
-            //                             locationController.selectedPickUpLat
-            //                                 .value,
-            //                           ),
-            //                           lng: double.tryParse(
-            //                             locationController.selectedPickUpLng
-            //                                 .value,
-            //                           ),
-            //                         ),
-            //                   );
-            //
-            //                   if (pickupLocation != null) {
-            //                     Get.snackbar(
-            //                       "Single Location",
-            //                       "${pickupLocation['address']}\n(${pickupLocation['lat']}, ${pickupLocation['lng']})",
-            //                     );
-            //
-            //                     locationController.selectedPickUpLat.value =
-            //                         pickupLocation['lat'].toString();
-            //                     locationController.selectedPickUpLng.value =
-            //                         pickupLocation['lng'].toString();
-            //                     pickLat =
-            //                         locationController.selectedPickUpLat.value;
-            //                     pickLng =
-            //                         locationController.selectedPickUpLng.value;
-            //                     locationController.pickUpC.text =
-            //                         pickupLocation['address'].toString();
-            //                     locationController.pickUpLocation.value =
-            //                         pickupLocation['address'].toString();
-            //                     if (pickupLocation['place_id'] != null) {
-            //                       locationController.selectPikUpAddress(
-            //                         Suggestion(
-            //                           placeId: pickupLocation['place_id'],
-            //                           description: pickupLocation['address'],
-            //                         ),
-            //                       );
-            //                     }
-            //                   }
-            //                 },
-            //                 child: Container(
-            //                   width: 44,
-            //                   height: 44,
-            //                   decoration: BoxDecoration(
-            //                     color: primaryColor.withOpacity(0.1),
-            //                     borderRadius: BorderRadius.circular(12),
-            //                     border: Border.all(
-            //                       color: primaryColor.withOpacity(0.3),
-            //                       width: 1.5,
-            //                     ),
-            //                   ),
-            //                   child: Icon(
-            //                     Icons.location_on_outlined,
-            //                     color: primaryColor,
-            //                     size: 24,
-            //                   ),
-            //                 ),
-            //               ),
-            //               sizeH5,
-            //
-            //               // Vertical timeline connector
-            //               Container(
-            //                 height: 70,
-            //                 width: 1.5,
-            //                 color: Colors.grey.withOpacity(0.4),
-            //               ),
-            //
-            //               // Via point indicator (conditional)
-            //               if (showViaLocation) ...[
-            //                 sizeH5,
-            //                 Container(
-            //                   width: 32,
-            //                   height: 32,
-            //                   decoration: BoxDecoration(
-            //                     color: Colors.orange.withOpacity(0.1),
-            //                     borderRadius: BorderRadius.circular(8),
-            //                     border: Border.all(
-            //                       color: Colors.orange.withOpacity(0.3),
-            //                       width: 1.5,
-            //                     ),
-            //                   ),
-            //                   child: Icon(
-            //                     Icons.route_outlined,
-            //                     color: Colors.orange,
-            //                     size: 18,
-            //                   ),
-            //                 ),
-            //                 sizeH5,
-            //                 Container(
-            //                   height: 40,
-            //                   width: 1.5,
-            //                   color: Colors.grey.withOpacity(0.4),
-            //                 ),
-            //               ],
-            //
-            //               sizeH5,
-            //
-            //               // Dropoff icon
-            //               GestureDetector(
-            //                 onTap: () async {
-            //                   dropOffLocation = await Get.to(
-            //                         () =>
-            //                         MapSinglePickerScreen(
-            //                           lat: double.tryParse(
-            //                             locationController.selectedDropUpLat
-            //                                 .value,
-            //                           ),
-            //                           lng: double.tryParse(
-            //                             locationController.selectedDropUpLng
-            //                                 .value,
-            //                           ),
-            //                         ),
-            //                   );
-            //
-            //                   if (dropOffLocation != null) {
-            //                     Get.snackbar(
-            //                       "Single Location",
-            //                       "${dropOffLocation['address']}\n(${dropOffLocation['lat']}, ${dropOffLocation['lng']})",
-            //                     );
-            //                     dropLat = dropOffLocation['lat'];
-            //                     dropLng = dropOffLocation['lng'];
-            //                     locationController.selectedDropUpLat.value =
-            //                     dropOffLocation['lat'];
-            //                     locationController.selectedDropUpLng.value =
-            //                     dropOffLocation['lng'];
-            //                     locationController.dropC.text =
-            //                     dropOffLocation['address'];
-            //                     locationController.dropLocation.value =
-            //                     dropOffLocation['address'];
-            //                   }
-            //                 },
-            //                 child: Container(
-            //                   width: 44,
-            //                   height: 44,
-            //                   decoration: BoxDecoration(
-            //                     color: Colors.red.withOpacity(0.1),
-            //                     borderRadius: BorderRadius.circular(12),
-            //                     border: Border.all(
-            //                       color: Colors.red.withOpacity(0.3),
-            //                       width: 1.5,
-            //                     ),
-            //                   ),
-            //                   child: Icon(
-            //                     Icons.flag_outlined,
-            //                     color: Colors.red,
-            //                     size: 24,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //
-            //           sizeW20,
-            //
-            //           // Location input fields
-            //           Expanded(
-            //             child: Column(
-            //               mainAxisAlignment: MainAxisAlignment.start,
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 // Pickup section
-            //                 Container(
-            //                   margin: EdgeInsets.only(bottom: 16),
-            //                   child: Column(
-            //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //                     children: [
-            //                       Row(
-            //                         children: [
-            //                           Container(
-            //                             width: 6,
-            //                             height: 6,
-            //                             decoration: BoxDecoration(
-            //                               color: primaryColor,
-            //                               shape: BoxShape.circle,
-            //                             ),
-            //                           ),
-            //                           SizedBox(width: 8),
-            //                           KText(
-            //                             text: 'pickUpPoint'.tr,
-            //                             fontSize: 16,
-            //                             fontWeight: FontWeight.bold,
-            //                             color: Colors.black87,
-            //                           ),
-            //                         ],
-            //                       ),
-            //                       SizedBox(height: 8),
-            //                       PickUp(),
-            //                     ],
-            //                   ),
-            //                 ),
-            //                 // // Add/Remove via point button
-            //                 // Align(
-            //                 //   alignment: AlignmentGeometry.centerRight,
-            //                 //   child: InkWell(
-            //                 //     onTap: () {
-            //                 //       setState(() {
-            //                 //         showViaLocation = !showViaLocation;
-            //                 //       });
-            //                 //     },
-            //                 //     borderRadius: BorderRadius.circular(20),
-            //                 //     child: Container(
-            //                 //       width: 100,
-            //                 //       height: 35,
-            //                 //       decoration: BoxDecoration(
-            //                 //         color: showViaLocation ? Colors.red[50] : Colors.green[50],
-            //                 //         border: Border.all(
-            //                 //           color: showViaLocation ? Colors.red.withOpacity(0.3) : Colors.green.withOpacity(0.3),
-            //                 //           width: 1.5,
-            //                 //         ),
-            //                 //       ),
-            //                 //       child: Row(
-            //                 //         children: [
-            //                 //           KText(text: "Add Via Locations"),
-            //                 //           Icon(
-            //                 //             showViaLocation ? Icons.remove : Icons.add,
-            //                 //             color: showViaLocation ? Colors.red : Colors.green,
-            //                 //             size: 20,
-            //                 //           ),
-            //                 //         ],
-            //                 //       ),
-            //                 //     ),
-            //                 //   ),
-            //                 // ),
-            //                 // // Via location (conditional)
-            //                 if (showViaLocation)
-            //                   Container(
-            //                     margin: EdgeInsets.only(bottom: 16),
-            //                     child: Column(
-            //                       crossAxisAlignment: CrossAxisAlignment.start,
-            //                       children: [
-            //                         Row(
-            //                           children: [
-            //                             Container(
-            //                               width: 6,
-            //                               height: 6,
-            //                               decoration: BoxDecoration(
-            //                                 color: Colors.orange,
-            //                                 shape: BoxShape.circle,
-            //                               ),
-            //                             ),
-            //                             SizedBox(width: 8),
-            //                             KText(
-            //                               text: 'Via Point'.tr,
-            //                               fontSize: 14,
-            //                               fontWeight: FontWeight.bold,
-            //                               color: Colors.black87,
-            //                             ),
-            //                           ],
-            //                         ),
-            //                         SizedBox(height: 8),
-            //                         ViaLocation(),
-            //                       ],
-            //                     ),
-            //                   ),
-            //
-            //                 // Dropoff section
-            //                 Container(
-            //                   child: Column(
-            //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //                     children: [
-            //                       Row(
-            //                         children: [
-            //                           Container(
-            //                             width: 6,
-            //                             height: 6,
-            //                             decoration: BoxDecoration(
-            //                               color: Colors.red,
-            //                               shape: BoxShape.circle,
-            //                             ),
-            //                           ),
-            //                           SizedBox(width: 8),
-            //                           KText(
-            //                             text: 'dropOffPoint'.tr,
-            //                             fontSize: 16,
-            //                             fontWeight: FontWeight.bold,
-            //                             color: Colors.black87,
-            //                           ),
-            //                         ],
-            //                       ),
-            //                       SizedBox(height: 8),
-            //                       DropWidget(),
-            //                     ],
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ],
-            //   ),
-            // ),
 
             const SizedBox(height: 16),
 
@@ -486,61 +135,100 @@ class _AmbulancePageState extends State<AmbulancePage> {
                   ),
                   const SizedBox(height: 16),
 
-                  YesNoRadioRow(
-                    title:
-                    "পিকআপ লোকেশন কি হাসপাতাল/ডায়াগনস্টিক সেন্টার/ক্লিনিক?",
-                    value: true,
-                    onChanged: (val) {
-                      setState(() {});
-                    },
-                  ),
 
-                  YesNoRadioRow(
-                    title: "যানবাহনের ধরন?",
-                    option1: "রোগী",
-                    option2: "লাশ",
-                    value: true,
-                    onChanged: (val) {
-                      setState(() {});
-                    },
-                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(widget.question.length, (index) {
+                      final q = widget.question[index];
 
-                  YesNoRadioRow(
-                    title:
-                    "কতটি অক্সিজেন সিলিন্ডার প্রয়োজন হবে? (১টি সিলিন্ডার সবসময় থাকে)",
-                    option1: "২",
-                    value: true,
-                    onChanged: (val) {
-                      setState(() {});
-                    },
-                  ),
+                      return Obx(() {
+                        /// get selected answer
+                        final selected = controller.selectedAnswers[q.id];
 
-                  YesNoRadioRow(
-                    title:
-                    "মৃতদেহ অপসারণের জন্য অতিরিক্ত ফি প্রযোজ্য (বিড মূল্যের অন্তর্ভুক্ত নয়)",
-                    value: true,
-                    onChanged: (val) {
-                      setState(() {});
-                    },
-                  ),
+                        /// map string → bool
+                        bool? value;
+                        if (selected == q.options[0]) {
+                          value = true;
+                        } else if (q.options.length > 1 && selected == q.options[1]) {
+                          value = false;
+                        }
 
-                  YesNoRadioRow(
-                    title:
-                    "রোগীর ওঠানামার জন্য কি হুইলচেয়ার প্রয়োজন? (সবসময় ৪ জন সহকারী থাকে)",
-                    value: true,
-                    onChanged: (val) {
-                      setState(() {});
-                    },
-                  ),
+                        return YesNoRadioRow(
+                          title: q.question ?? "",
+                          option1: q.options.isNotEmpty ? q.options[0] : "Yes",
+                          option2: q.options.length > 1 ? q.options[1] : "No",
+                          value: value,
 
-                  YesNoRadioRow(
-                    title: "আইসিইউ বা অ্যাম্বুলেন্সে কি ডাক্তার প্রয়োজন?",
-                    value: true,
-                    shodDivider: false,
-                    onChanged: (val) {
-                      setState(() {});
-                    },
-                  ),
+                          onChanged: (val) {
+                            if (q.id == null) return;
+
+                            /// map bool → string
+                            final answer = val == true
+                                ? q.options[0]
+                                : (q.options.length > 1 ? q.options[1] : "");
+
+                            controller.setAnswer(q.id!, answer);
+                          },
+                        );
+                      });
+                    }),
+                  )
+
+                  // YesNoRadioRow(
+                  //   title:
+                  //   "পিকআপ লোকেশন কি হাসপাতাল/ডায়াগনস্টিক সেন্টার/ক্লিনিক?",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title: "যানবাহনের ধরন?",
+                  //   option1: "রোগী",
+                  //   option2: "লাশ",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title:
+                  //   "কতটি অক্সিজেন সিলিন্ডার প্রয়োজন হবে? (১টি সিলিন্ডার সবসময় থাকে)",
+                  //   option1: "২",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title:
+                  //   "মৃতদেহ অপসারণের জন্য অতিরিক্ত ফি প্রযোজ্য (বিড মূল্যের অন্তর্ভুক্ত নয়)",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title:
+                  //   "রোগীর ওঠানামার জন্য কি হুইলচেয়ার প্রয়োজন? (সবসময় ৪ জন সহকারী থাকে)",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title: "আইসিইউ বা অ্যাম্বুলেন্সে কি ডাক্তার প্রয়োজন?",
+                  //   value: true,
+                  //   shodDivider: false,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
                 ],
               ),
             ),
@@ -607,58 +295,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
             const SizedBox(height: 24),
 
             /// Submit Button
-            // Container(
-            //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.black.withOpacity(0.05),
-            //         blurRadius: 10,
-            //         offset: const Offset(0, -4),
-            //       ),
-            //     ],
-            //   ),
-            //   child: Obx(
-            //     () => _controller.isLoading.value
-            //         ? Center(
-            //             child: Container(
-            //               width: 40,
-            //               height: 40,
-            //               padding: const EdgeInsets.all(8),
-            //               child: CircularProgressIndicator(
-            //                 color: primaryColor,
-            //                 strokeWidth: 3,
-            //               ),
-            //             ),
-            //           )
-            //         : SizedBox(
-            //             width: double.infinity,
-            //             child: ElevatedButton(
-            //               onPressed: _submitTripRequest,
-            //               style: ElevatedButton.styleFrom(
-            //                 backgroundColor: primaryColor,
-            //                 foregroundColor: Colors.white,
-            //                 padding: const EdgeInsets.symmetric(vertical: 16),
-            //                 shape: RoundedRectangleBorder(
-            //                   borderRadius: BorderRadius.circular(12),
-            //                 ),
-            //                 elevation: 0,
-            //                 shadowColor: Colors.transparent,
-            //               ),
-            //               child: Text(
-            //                 'Submit Trip Request',
-            //                 style: TextStyle(
-            //                   fontSize: 16,
-            //                   fontWeight: FontWeight.w600,
-            //                   color: Colors.white,
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //
-            //   ),
-            // ),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: primaryButton(buttonName: 'Submit Trip Request',radius: 16.0, onTap:
@@ -675,32 +312,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
     );
   }
 
-  Widget _buildCarSelectionSection() {
-    final shouldShowCar = !['4', '6', 'truck'].contains(widget.tripType);
 
-    return shouldShowCar
-        ? Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(11),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: CarSelectedOption(
-        carImg: widget.carImg,
-        carName: widget.carName,
-        capacity: "${widget.capacity} Seats Capacity",
-      ),
-    )
-        : const SizedBox();
-  }
 
   /// Submit trip request method
   void _submitTripRequest() {
@@ -766,7 +378,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
             dropOffMap:
             '${locationController.selectedDropUpLat.value},${locationController
                 .selectedDropUpLng.value}',
-            categoryID: widget.tripType,
+            categoryID: widget.tripType, question: widget.question,
           ),
     );
   }

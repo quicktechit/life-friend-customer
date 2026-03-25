@@ -18,6 +18,7 @@ import 'package:pickup_load_update/src/widgets/rental_trip_title.dart';
 import 'package:pickup_load_update/src/widgets/text/custom_text_filed_widget.dart';
 import 'package:pickup_load_update/src/widgets/text/kText.dart';
 
+import '../../../models/vehicle_categories/quick_tech_get_vehicle_categories.dart';
 import '../../../widgets/yes_no_ambulance_button.dart';
 
 class TripDetailsPage extends StatefulWidget {
@@ -37,6 +38,7 @@ class TripDetailsPage extends StatefulWidget {
   final bool isAmbulance;
   final String roundTripDetailsJourney;
   final String pickupDivision;
+  final List<VehicleQuestion>? question;
 
   const TripDetailsPage({super.key,
     required this.carImg,
@@ -54,7 +56,7 @@ class TripDetailsPage extends StatefulWidget {
     required this.map,
     required this.roundTripDetailsJourney,
     required this.dropOffMap,
-    required this.pickupDivision,
+    required this.pickupDivision,  this.question,
   });
 
   @override
@@ -63,7 +65,7 @@ class TripDetailsPage extends StatefulWidget {
 
 class _TripDetailsPageState extends State<TripDetailsPage> {
   final TextEditingController addPromoController = TextEditingController();
-  final RentalTripSubmitController _controller = Get.put(RentalTripSubmitController());
+  final RentalTripSubmitController controller = Get.find();
   final airportController = Get.put(QuickTechAirportController());
   String promoCode = '';
   var box = GetStorage();
@@ -71,7 +73,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
   @override
   void initState() {
     Future.delayed(Duration(hours: 1), () {
-      RentalTripExpireController().expireTripMethod(tripId: _controller.tripBid.toInt());
+      RentalTripExpireController().expireTripMethod(tripId: controller.tripBid.toInt());
     });
     super.initState();
     log(" pick uf map ${widget.map}----- drop of map ${widget.dropOffMap}");
@@ -125,7 +127,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
             buttonName: 'requestTripRequest',
             onTap: () async {
               debugPrint('Category id ::: ${widget.categoryID}');
-              await _controller.rentalFormSubmit(
+              await controller.rentalFormSubmit(
                   pickUpLocation: widget.pickUpPoint,
                   viaLocation: widget.viaPoint,
                   dropLocation: widget.dropPoint,
@@ -143,7 +145,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                   hour: airportController.selectedTripType.value == 'round' ? '0' : airportController.hour.value.toString(),
                   note: widget.note
               ).then((value) {
-                log(_controller.id.toString(), name: 'Debug ID');
+                log(controller.id.toString(), name: 'Debug ID');
                 box.write("type", widget.categoryID == '4' ? 'Bike' : '');
                 Get.to(() => LiveBiddingPage(
                   createdAt: DateTime.now().toLocal().toString(),
@@ -211,109 +213,148 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
             ),
           ),
           if(widget.isAmbulance)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-            padding: const EdgeInsets.all(11),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(11),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: primaryColor,
+                        ),
+                        child: const Icon(
+                          Icons.medical_services,
+                          color: Colors.white,
+                          size: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'মেডিকেল প্রয়োজনীয়তা',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(widget.question?.length??0, (index) {
+                      final q = widget.question![index];
+
+                      return Obx(() {
+                        /// get selected answer
+                        final selected = controller.selectedAnswers[q.id];
+
+                        /// map string → bool
+                        bool? value;
+                        if (selected == q.options[0]) {
+                          value = true;
+                        } else if (q.options.length > 1 && selected == q.options[1]) {
+                          value = false;
+                        }
+
+                        return YesNoRadioRow(
+                          title: q.question ?? "",
+                          option1: q.options.isNotEmpty ? q.options[0] : "Yes",
+                          option2: q.options.length > 1 ? q.options[1] : "No",
+                          value: value,
+
+                          onChanged: (val) {
+                            // if (q.id == null) return;
+                            //
+                            // /// map bool → string
+                            // final answer = val == true
+                            //     ? q.options[0]
+                            //     : (q.options.length > 1 ? q.options[1] : "");
+                            //
+                            // controller.setAnswer(q.id!, answer);
+                          },
+                        );
+                      });
+                    }),
+                  )
+
+                  // YesNoRadioRow(
+                  //   title:
+                  //   "পিকআপ লোকেশন কি হাসপাতাল/ডায়াগনস্টিক সেন্টার/ক্লিনিক?",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title: "যানবাহনের ধরন?",
+                  //   option1: "রোগী",
+                  //   option2: "লাশ",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title:
+                  //   "কতটি অক্সিজেন সিলিন্ডার প্রয়োজন হবে? (১টি সিলিন্ডার সবসময় থাকে)",
+                  //   option1: "২",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title:
+                  //   "মৃতদেহ অপসারণের জন্য অতিরিক্ত ফি প্রযোজ্য (বিড মূল্যের অন্তর্ভুক্ত নয়)",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title:
+                  //   "রোগীর ওঠানামার জন্য কি হুইলচেয়ার প্রয়োজন? (সবসময় ৪ জন সহকারী থাকে)",
+                  //   value: true,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // YesNoRadioRow(
+                  //   title: "আইসিইউ বা অ্যাম্বুলেন্সে কি ডাক্তার প্রয়োজন?",
+                  //   value: true,
+                  //   shodDivider: false,
+                  //   onChanged: (val) {
+                  //     setState(() {});
+                  //   },
+                  // ),
+                ],
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: primaryColor,
-                      ),
-                      child: const Icon(
-                        Icons.medical_services,
-                        color: Colors.white,
-                        size: 14,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      'মেডিকেল প্রয়োজনীয়তা',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-
-                YesNoRadioRow(
-                  title:
-                  "পিকআপ লোকেশন কি হাসপাতাল/ডায়াগনস্টিক সেন্টার/ক্লিনিক?",
-                  value: true,
-                  onChanged: (val) {
-                    setState(() {});
-                  },
-                ),
-
-                YesNoRadioRow(
-                  title: "যানবাহনের ধরন?",
-                  option1: "রোগী",
-                  option2: "লাশ",
-                  value: true,
-                  onChanged: (val) {
-                    setState(() {});
-                  },
-                ),
-
-                YesNoRadioRow(
-                  title:
-                  "কতটি অক্সিজেন সিলিন্ডার প্রয়োজন হবে? (১টি সিলিন্ডার সবসময় থাকে)",
-                  option1: "২",
-                  value: true,
-                  onChanged: (val) {
-                    setState(() {});
-                  },
-                ),
-
-                YesNoRadioRow(
-                  title:
-                  "মৃতদেহ অপসারণের জন্য অতিরিক্ত ফি প্রযোজ্য (বিড মূল্যের অন্তর্ভুক্ত নয়)",
-                  value: true,
-                  onChanged: (val) {
-                    setState(() {});
-                  },
-                ),
-
-                YesNoRadioRow(
-                  title:
-                  "রোগীর ওঠানামার জন্য কি হুইলচেয়ার প্রয়োজন? (সবসময় ৪ জন সহকারী থাকে)",
-                  value: true,
-                  onChanged: (val) {
-                    setState(() {});
-                  },
-                ),
-
-                YesNoRadioRow(
-                  title: "আইসিইউ বা অ্যাম্বুলেন্সে কি ডাক্তার প্রয়োজন?",
-                  value: true,
-                  shodDivider: false,
-                  onChanged: (val) {
-                    setState(() {});
-                  },
-                ),
-              ],
-            ),
-          ),
           // Trip Details Card
           Container(
             margin: EdgeInsets.all(12),

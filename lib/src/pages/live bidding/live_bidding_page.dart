@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -29,7 +28,11 @@ class LiveBiddingPage extends StatefulWidget {
   final String createdAt;
   final String type;
 
-  const LiveBiddingPage({super.key, required this.createdAt, required this.type});
+  const LiveBiddingPage({
+    super.key,
+    required this.createdAt,
+    required this.type,
+  });
 
   @override
   State<LiveBiddingPage> createState() => _LiveBiddingPageState();
@@ -48,16 +51,19 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   late StreamController<Duration> _timerStreamController;
   late Timer _timer;
 
-  final LiveBiddingController liveBiddingController =
-  Get.put(LiveBiddingController());
-  final SingleTripDetailsController _singleTripC =
-  Get.put(SingleTripDetailsController());
-  final RentalTripSubmitController _rentalTripSubmitController =
-  Get.put(RentalTripSubmitController());
+  final LiveBiddingController liveBiddingController = Get.put(
+    LiveBiddingController(),
+  );
+  final SingleTripDetailsController _singleTripC = Get.put(
+    SingleTripDetailsController(),
+  );
+  final RentalTripSubmitController _rentalTripSubmitController = Get.put(
+    RentalTripSubmitController(),
+  );
 
   // Define color scheme
-  final Color primaryRed =primaryColor; // Deep Red
-  final Color darkRed =primaryColor.withRed(200);
+  final Color primaryRed = primaryColor; // Deep Red
+  final Color darkRed = primaryColor.withRed(200);
   final Color lightRed = const Color(0xFFFFEBEE);
   final Color accentGold = const Color(0xFFFFD700);
 
@@ -66,15 +72,15 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
     super.initState();
 
     // Initialize the remaining time based on a 1-hour countdown
-    _remainingTime = Duration(hours: 1) -
+    _remainingTime =
+        Duration(hours: 1) -
         DateTime.now().difference(DateTime.parse(widget.createdAt));
 
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    )..addListener(() {
-      setState(() {});
-    });
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5))
+          ..addListener(() {
+            setState(() {});
+          });
     _controller!.repeat();
 
     _startDataRefreshTimer();
@@ -111,9 +117,10 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
 
   @override
   void dispose() {
-    _controller?.dispose();
     _timer.cancel();
     _timerStreamController.close();
+    _controller?.dispose();
+
     super.dispose();
   }
 
@@ -129,7 +136,6 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-
           elevation: 0,
           leading: IconButton(
             onPressed: () {
@@ -221,18 +227,16 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 4),
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.circle,
-                          color: Colors.red,
-                          size: 10,
-                        ),
+                        Icon(Icons.circle, color: Colors.red, size: 10),
                         const SizedBox(width: 6),
                         Text(
                           "LIVE",
@@ -257,11 +261,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                       maxLines: 2,
                     ),
                   ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.white,
-                    size: 16,
-                  ),
+                  Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
                 ],
               ),
             ),
@@ -292,14 +292,18 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                               height: 300,
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(primaryRed),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    primaryRed,
+                                  ),
                                 ),
                               ),
                             );
                           }
 
                           // ✅ FIRST CHECK THE MAIN LIST
-                          if (liveBiddingController.filteredLiveBidData.isEmpty) {
+                          if (liveBiddingController
+                              .filteredLiveBidData
+                              .isEmpty) {
                             return EmptyBoxWidget(
                               title: "noLiveMessage".tr,
                               truckImage: widget.type == "Bike"
@@ -309,8 +313,11 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                           }
 
                           // ✅ SAFE ACCESS
-                          final tripBids = liveBiddingController
-                              .filteredLiveBidData.first.tripBids ??
+                          final tripBids =
+                              liveBiddingController
+                                  .filteredLiveBidData
+                                  .first
+                                  .tripBids ??
                               [];
 
                           if (tripBids.isEmpty) {
@@ -321,250 +328,250 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                   : 'assets/images/empty.png',
                             ).p12();
                           }
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: liveBiddingController
-                                  .filteredLiveBidData.first.tripBids?.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final data = tripBids[index];
-                                final isSelected = selectedCarIndex == index;
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: liveBiddingController
+                                .filteredLiveBidData
+                                .first
+                                .tripBids
+                                ?.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final data = tripBids[index];
+                              final isSelected = selectedCarIndex == index;
 
-                                return GestureDetector(
-                                  onTap: () {
-                                    _singleTripC.singleTripDetails(
-                                        data.tripId.toString(), 'normal');
-                                    setState(() {
-                                      selectedCarIndex = index;
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
+                              return GestureDetector(
+                                onTap: () {
+                                  _singleTripC.singleTripDetails(
+                                    data.tripId.toString(),
+                                    'normal',
+                                  );
+                                  setState(() {
+                                    selectedCarIndex = index;
+                                  });
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? darkRed.withAlpha(50)
+                                        : lightRed,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
                                       color: isSelected
-                                          ? darkRed.withAlpha(50)
-                                          : lightRed,
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(
-                                        color: isSelected
-                                            ? primaryRed
-                                            : Colors.transparent,
-                                        width: 2,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withAlpha(50),
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
+                                          ? primaryRed
+                                          : Colors.transparent,
+                                      width: 2,
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              // Vehicle Image
-                                              Container(
-                                                width: 80,
-                                                height: 80,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(12),
-                                                  color: Colors.grey[900],
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      Urls.getImageURL(
-                                                        endPoint: data.getBrand
-                                                            ?.image
-                                                            ?.toString() ??
-                                                            '',
-                                                      ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withAlpha(50),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Vehicle Image
+                                            Container(
+                                              width: 80,
+                                              height: 80,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                color: Colors.grey[900],
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    Urls.getImageURL(
+                                                      endPoint:
+                                                          data.getBrand?.image
+                                                              ?.toString() ??
+                                                          '',
                                                     ),
-                                                    fit: BoxFit.cover,
                                                   ),
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                              const SizedBox(width: 16),
+                                            ),
+                                            const SizedBox(width: 16),
 
-                                              // Vehicle Details
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          data.getBrand?.name
-                                                              ?.toString() ??
-                                                              data.getvehicle
-                                                                  ?.model ??
-                                                              '',
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                            FontWeight.bold,
-                                                          ),
+                                            // Vehicle Details
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        data.getBrand?.name
+                                                                ?.toString() ??
+                                                            data
+                                                                .getvehicle
+                                                                ?.model ??
+                                                            '',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
                                                         ),
-                                                        if (isSelected)
-                                                          Icon(
-                                                            Icons
-                                                                .check_circle_rounded,
-                                                            color: primaryRed,
-                                                            size: 24,
-                                                          ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 4),
-                                                    Text(
-                                                      '${data.getBrand?.capacity?.toString() ?? ''} Seats Capacity',
-                                                      style: TextStyle(
-                                                        color: Colors.grey[400],
-                                                        fontSize: 14,
                                                       ),
+                                                      if (isSelected)
+                                                        Icon(
+                                                          Icons
+                                                              .check_circle_rounded,
+                                                          color: primaryRed,
+                                                          size: 24,
+                                                        ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    '${data.getBrand?.capacity?.toString() ?? ''} Seats Capacity',
+                                                    style: TextStyle(
+                                                      color: Colors.grey[400],
+                                                      fontSize: 14,
                                                     ),
-                                                    const SizedBox(height: 8),
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                          padding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                            horizontal: 8,
-                                                            vertical: 4,
-                                                          ),
-                                                          decoration:
-                                                          BoxDecoration(
-                                                            color: darkRed
-                                                                .withAlpha(
-                                                                60),
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                          ),
-                                                          child: Text(
-                                                            '${data.getvehicle?.metro?.toString() ?? ''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
-                                                            style: TextStyle(
-                                                              color: primaryRed,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold,
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets.symmetric(
+                                                              horizontal: 8,
+                                                              vertical: 4,
                                                             ),
+                                                        decoration: BoxDecoration(
+                                                          color: darkRed
+                                                              .withAlpha(60),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                8,
+                                                              ),
+                                                        ),
+                                                        child: Text(
+                                                          '${data.getvehicle?.metro?.toString() ?? ''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
+                                                          style: TextStyle(
+                                                            color: primaryRed,
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      // Price Tag
+                                      Positioned(
+                                        right: 16,
+                                        top: 16,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                            vertical: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [primaryRed, darkRed],
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: primaryRed.withAlpha(80),
+                                                blurRadius: 10,
+                                                spreadRadius: 1,
                                               ),
                                             ],
                                           ),
+                                          child: Text(
+                                            '৳${data.amount?.toString() ?? '0'}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
+                                      ),
 
-                                        // Price Tag
-                                        Positioned(
-                                          right: 16,
-                                          top: 16,
+                                      // View Details Button
+                                      Positioned(
+                                        right: 16,
+                                        bottom: 16,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Get.to(
+                                              () => CarDetailsPage(
+                                                tripId:
+                                                    data.tripId?.toString() ??
+                                                    '',
+                                                bidId:
+                                                    data.id?.toString() ?? '',
+                                              ),
+                                            );
+                                          },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                              vertical: 8,
+                                              horizontal: 12,
+                                              vertical: 6,
                                             ),
                                             decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  primaryRed,
-                                                  darkRed,
-                                                ],
-                                              ),
+                                              color: Colors.grey.shade300,
                                               borderRadius:
-                                              BorderRadius.circular(20),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color:
-                                                  primaryRed.withAlpha(80),
-                                                  blurRadius: 10,
-                                                  spreadRadius: 1,
+                                                  BorderRadius.circular(8),
+                                              border: Border.all(
+                                                color: Colors.white.withAlpha(
+                                                  60,
+                                                ),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Details',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  color: Colors.black,
+                                                  size: 12,
                                                 ),
                                               ],
                                             ),
-                                            child: Text(
-                                              '৳${data.amount?.toString() ?? '0'}',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
                                           ),
                                         ),
-
-                                        // View Details Button
-                                        Positioned(
-                                          right: 16,
-                                          bottom: 16,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Get.to(() => CarDetailsPage(
-                                                tripId: data.tripId
-                                                    ?.toString() ??
-                                                    '',
-                                                bidId:
-                                                data.id?.toString() ??
-                                                    '',
-                                              ));
-                                            },
-                                            child: Container(
-                                              padding:
-                                              const EdgeInsets.symmetric(
-                                                horizontal: 12,
-                                                vertical: 6,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey.shade300,
-                                                borderRadius:
-                                                BorderRadius.circular(8),
-                                                border: Border.all(
-                                                  color: Colors.white
-                                                      .withAlpha(60),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    'Details',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 4),
-                                                  Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    color: Colors.black,
-                                                    size: 12,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                            );
-
+                                ),
+                              );
+                            },
+                          );
                         }),
                       ),
                     ),
@@ -681,53 +688,62 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                     .filteredLiveBidData
                                                     .length) {
                                           var selectedBidData =
-                                          liveBiddingController
-                                              .filteredLiveBidData
-                                              .first
-                                              .tripBids?[selectedCarIndex!];
+                                              liveBiddingController
+                                                  .filteredLiveBidData
+                                                  .first
+                                                  .tripBids?[selectedCarIndex!];
 
                                           final ReturnBidConfirmController
                                           confirmController =
-                                          ReturnBidConfirmController();
+                                              ReturnBidConfirmController();
 
                                           await confirmController.bidConfirm(
+                                            amount: selectedBidData?.amount,
                                             bidId: selectedBidData?.id
                                                 .toString(),
                                             tripId: selectedBidData?.tripId
                                                 .toString(),
                                           );
 
-                                          if (confirmController
-                                              .bidConfirmModel.value.status ==
-                                              "success") {
-                                            _rentalTripSubmitController
-                                                .liveBidStart.value = false;
-
-                                            Get.to(
-                                                    () => LiveBiddingConfirmScreen(
-                                                  rentalBidConfirm:
-                                                  confirmController
-                                                      .bidConfirmModel
-                                                      .value
-                                                      .data!,
-                                                ));
-                                          }
+                                          // if (confirmController
+                                          //         .bidConfirmModel
+                                          //         .value
+                                          //         .status ==
+                                          //     "success") {
+                                          //   _rentalTripSubmitController
+                                          //           .liveBidStart
+                                          //           .value =
+                                          //       false;
+                                          //
+                                          //   Get.to(
+                                          //     () => LiveBiddingConfirmScreen(
+                                          //       rentalBidConfirm:
+                                          //           confirmController
+                                          //               .bidConfirmModel
+                                          //               .value
+                                          //               .data!,
+                                          //     ),
+                                          //   );
+                                          // }
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.transparent,
                                         shadowColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(12),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
                                         ),
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.check_circle,
-                                              color: Colors.white),
+                                          Icon(
+                                            Icons.check_circle,
+                                            color: Colors.white,
+                                          ),
                                           const SizedBox(width: 8),
                                           Text(
                                             'Confirm',
@@ -764,16 +780,19 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                         backgroundColor: Colors.transparent,
                                         shadowColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(12),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
                                         ),
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.close,
-                                              color: Colors.black),
+                                          Icon(
+                                            Icons.close,
+                                            color: Colors.black,
+                                          ),
                                           const SizedBox(width: 8),
                                           Text(
                                             'Change',
@@ -825,7 +844,9 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 4),
+                                  horizontal: 12,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   color: primaryRed.withAlpha(60),
                                   borderRadius: BorderRadius.circular(8),
@@ -956,7 +977,8 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: liveBiddingController.beforeCancelList.length,
                       itemBuilder: (context, index) {
-                        var item = liveBiddingController.beforeCancelList[index];
+                        var item =
+                            liveBiddingController.beforeCancelList[index];
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 8),
                           child: ListTile(
@@ -995,7 +1017,9 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                 });
                               } else {
                                 cancelController.sendBeforeCancel(
-                                    tripId, item.id.toString());
+                                  tripId,
+                                  item.id.toString(),
+                                );
                               }
                             },
                           ),
@@ -1054,7 +1078,8 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
+                                      vertical: 16,
+                                    ),
                                   ),
                                   child: Text(
                                     "Back",
@@ -1070,7 +1095,9 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                 child: ElevatedButton(
                                   onPressed: () {
                                     cancelController.sendBeforeCancel(
-                                        tripId, '14');
+                                      tripId,
+                                      '14',
+                                    );
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: primaryRed,
@@ -1078,7 +1105,8 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
+                                      vertical: 16,
+                                    ),
                                   ),
                                   child: Text(
                                     "Submit",

@@ -12,7 +12,7 @@ import '../../models/vehicle_categories/quick_tech_get_vehicle_categories.dart';
 class QuickTechVehiclesController extends GetxController {
   var isLoading = false.obs;
   var vehicleCategories = QuickTechGetVehicleCategories().obs;
-  var data = <Data>[].obs;
+  var data = <Datum>[].obs;
 
   Future<void> getVehicles({required String id}) async {
     SharedPreferencesManager _prefsManager =
@@ -21,6 +21,7 @@ class QuickTechVehiclesController extends GetxController {
 
     var headers = {'Authorization': 'Bearer $token'};
     debugPrint('Testing ::: $token');
+    debugPrint('Testing ::: $id');
     var request = http.Request(
       'GET',
       Uri.parse('${Urls.domain}/api/v1/customer/category/$id'),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +9,8 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/base_client.dart';
 import 'package:pickup_load_update/src/configs/local_storage.dart';
 import 'package:pickup_load_update/src/models/rental_bid_confirm_model.dart';
+
+import '../../pages/live bidding/inapp_webview.dart';
 
 class ReturnBidConfirmController extends GetxController {
   var isLoading = false.obs;
@@ -18,12 +21,13 @@ class ReturnBidConfirmController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    bidConfirm();
+
   }
 
   Future<void> bidConfirm({
      dynamic bidId,
      dynamic tripId,
+     dynamic amount,
   }) async {
     try {
       isLoading.value = true;
@@ -39,6 +43,7 @@ class ReturnBidConfirmController extends GetxController {
       request.headers['Authorization'] = 'Bearer $token';
       request.fields['bid_id'] = bidId.toString();
       request.fields['trip_id'] = tripId.toString();
+      request.fields['amount'] = amount.toString();
 
       var response = await http.Response.fromStream(await request.send());
 
@@ -47,13 +52,14 @@ class ReturnBidConfirmController extends GetxController {
 
         if (responseBody != null) {
           if (responseBody['status'] == 'success') {
-            bidConfirmModel.value =
-                RentalBidConfirmModel.fromJson(responseBody);
-
-            trackingCode.value =
-                bidConfirmModel.value.data!.tripConfirm!.trackingId.toString();
-            otp.value =
-                bidConfirmModel.value.data!.tripConfirm!.otp.toString();
+            // bidConfirmModel.value =
+            //     RentalBidConfirmModel.fromJson(responseBody);
+            //
+            // trackingCode.value =
+            //     bidConfirmModel.value.data!.tripConfirm!.trackingId.toString();
+            // otp.value =
+            //     bidConfirmModel.value.data!.tripConfirm!.otp.toString();
+            Get.to(()=>WebViewScreen(urls: responseBody['payment_url'].toString(),));
             box.write("liveBidStart",false);
             box.write("liveBidTruckStart",false);
             Get.snackbar('Success', 'Bid Confirm Successfully',
