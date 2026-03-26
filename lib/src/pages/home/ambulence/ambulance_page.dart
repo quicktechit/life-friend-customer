@@ -5,6 +5,7 @@ import '../../../controllers/division controller/division_controller.dart';
 import '../../../controllers/live location controller/live_location_controller.dart';
 import '../../../controllers/rental trip request controllers/rental_trip_req_submit_controller.dart';
 import '../../../controllers/rental trip request controllers/rental_trip_request_check_controller.dart';
+import '../../../controllers/vehicles categoris/quick_tech_vehicles_controller.dart';
 import '../../../models/vehicle_categories/quick_tech_get_vehicle_categories.dart';
 import '../../../widgets/button/primaryButton.dart';
 import '../../../widgets/car selected option/car_selected_option_widget.dart';
@@ -29,7 +30,8 @@ class AmbulancePage extends StatefulWidget {
     required this.capacity,
     required this.carId,
 
-    required this.tripType, required this.question,
+    required this.tripType,
+    required this.question,
   });
 
   @override
@@ -38,11 +40,14 @@ class AmbulancePage extends StatefulWidget {
 
 class _AmbulancePageState extends State<AmbulancePage> {
   final noteController = TextEditingController();
+
   // final LocationPickerController locationMapController = Get.put(
   //   LocationPickerController(),
   // );
   final RentalTripSubmitController controller = Get.find();
   final DivisionController divisionController = Get.put(DivisionController());
+
+
   var isRoundTrip = false;
   int roundTripValue = 0;
   bool showViaLocation = false;
@@ -59,7 +64,6 @@ class _AmbulancePageState extends State<AmbulancePage> {
   DateTime selectedReturnDate = DateTime.now();
   TimeOfDay selectedReturnTime = TimeOfDay.now();
   final LocationController locationController = Get.put(LocationController());
-
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +89,6 @@ class _AmbulancePageState extends State<AmbulancePage> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-
-
             const SizedBox(height: 16),
 
             /// Ambulance specific questions
@@ -135,7 +137,6 @@ class _AmbulancePageState extends State<AmbulancePage> {
                   ),
                   const SizedBox(height: 16),
 
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(widget.question.length, (index) {
@@ -149,7 +150,8 @@ class _AmbulancePageState extends State<AmbulancePage> {
                         bool? value;
                         if (selected == q.options[0]) {
                           value = true;
-                        } else if (q.options.length > 1 && selected == q.options[1]) {
+                        } else if (q.options.length > 1 &&
+                            selected == q.options[1]) {
                           value = false;
                         }
 
@@ -172,7 +174,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
                         );
                       });
                     }),
-                  )
+                  ),
 
                   // YesNoRadioRow(
                   //   title:
@@ -232,7 +234,6 @@ class _AmbulancePageState extends State<AmbulancePage> {
                 ],
               ),
             ),
-
 
             const SizedBox(height: 16),
 
@@ -295,24 +296,21 @@ class _AmbulancePageState extends State<AmbulancePage> {
             const SizedBox(height: 24),
 
             /// Submit Button
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: primaryButton(buttonName: 'Submit Trip Request',radius: 16.0, onTap:
-              _submitTripRequest),
+              child: primaryButton(
+                buttonName: 'Submit Trip Request',
+                radius: 16.0,
+                onTap: _submitTripRequest,
+              ),
             ),
 
             const SizedBox(height: 20),
-          ]
-          ,
-        )
-        ,
-      )
-      ,
+          ],
+        ),
+      ),
     );
   }
-
-
 
   /// Submit trip request method
   void _submitTripRequest() {
@@ -323,9 +321,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
     String period = selectedTime.period == DayPeriod.am ? 'AM' : 'PM';
 
     String journeyTimeAndDate =
-        '${selectedDate.year}-${selectedDate.month.toString().padLeft(
-        2, '0')}-${selectedDate.day.toString().padLeft(
-        2, '0')} ${hour}:${minute} $period';
+        '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')} ${hour}:${minute} $period';
 
     if (locationController.pickUpLocation.isEmpty ||
         locationController.dropLocation.isEmpty) {
@@ -346,42 +342,36 @@ class _AmbulancePageState extends State<AmbulancePage> {
       dropLocation: locationController.dropLocation.toString(),
       dateTime: journeyTimeAndDate,
       map:
-      '${locationController.selectedPickUpLat.value},${locationController
-          .selectedPickUpLng.value}',
+          '${locationController.selectedPickUpLat.value},${locationController.selectedPickUpLng.value}',
       roundTrip: roundTripValue.toString(),
       roundTripTimeDate: '',
       vehicleId: widget.carId,
       dropMap:
-      '${locationController.selectedDropUpLat.value},${locationController
-          .selectedDropUpLng.value}',
+          '${locationController.selectedDropUpLat.value},${locationController.selectedDropUpLng.value}',
     );
 
     Get.to(
-          () =>
-          TripDetailsPage(
-            carImg: widget.carImg,
-            carName: widget.carName,
-            capacity: widget.capacity,
-            carId: widget.carId,
-            pickUpPoint: locationController.pickUpLocation.toString(),
-            dropPoint: locationController.dropLocation.toString(),
-            viaPoint: locationController.viaLocation.toString(),
-            note: noteController.text,
-            tripDetailsJourney: journeyTimeAndDate,
-            roundTrip: roundTripValue.toString(),
-            map:
-            '${locationController.selectedPickUpLat.value} ${locationController
-                .selectedPickUpLng.value}',
-            roundTripDetailsJourney: '',
-            pickupDivision: locationController.pickupDivision.value,
-            isAmbulance: true,
-            dropOffMap:
-            '${locationController.selectedDropUpLat.value},${locationController
-                .selectedDropUpLng.value}',
-            categoryID: widget.tripType, question: widget.question,
-          ),
+      () => TripDetailsPage(
+        carImg: widget.carImg,
+        carName: widget.carName,
+        capacity: widget.capacity,
+        carId: widget.carId,
+        pickUpPoint: locationController.pickUpLocation.toString(),
+        dropPoint: locationController.dropLocation.toString(),
+        viaPoint: locationController.viaLocation.toString(),
+        note: noteController.text,
+        tripDetailsJourney: journeyTimeAndDate,
+        roundTrip: roundTripValue.toString(),
+        map:
+            '${locationController.selectedPickUpLat.value} ${locationController.selectedPickUpLng.value}',
+        roundTripDetailsJourney: '',
+        pickupDivision: locationController.pickupDivision.value,
+        isAmbulance: true,
+        dropOffMap:
+            '${locationController.selectedDropUpLat.value},${locationController.selectedDropUpLng.value}',
+        categoryID: widget.tripType,
+        question: widget.question,
+      ),
     );
   }
 }
-
-

@@ -214,15 +214,15 @@ class _TruckListPageState extends State<TruckListPage> {
                                           DateTime.now().toLocal().toString(), type: 'Truck',
                                     ));
                               }
-                            : null, // Disable if no item selected
-                        child: Text(
-                          "submit".tr,
-                          style: TextStyle(color: Colors.white),
-                        ),
+                            : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: selectedItem.value != null
                               ? primaryColor
                               : Colors.grey,
+                        ), // Disable if no item selected
+                        child: Text(
+                          "submit".tr,
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),

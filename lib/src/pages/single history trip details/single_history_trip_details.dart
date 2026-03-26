@@ -5,6 +5,7 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/controllers/pdf_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pickup_load_update/src/models/single_trip_details_model.dart' as normal_model;
+import 'package:velocity_x/velocity_x.dart';
 import '../../configs/appUtils.dart';
 import '../../controllers/single trip details controller/single_trip_details_controller.dart';
 import '../../models/single_return_trip_model.dart' as return_model;
@@ -1027,9 +1028,9 @@ class _SingleHistoryTripDetailsPageState
 
   Widget _buildMedicalServicesCard() {
     // Only show if category is medical (adjust the condition as needed)
-    // if (widget.tripRequest.categoryId != 3) {
-    //   return SizedBox.shrink();
-    // }
+    if (_singleTripDetailsController.singleTripDetailsModel.value.data?.tripHistory?.categoryId != '6') {
+      return SizedBox.shrink();
+    }
 
     return Container(
       padding: EdgeInsets.all(16),
@@ -1079,12 +1080,12 @@ class _SingleHistoryTripDetailsPageState
           SizedBox(height: 16),
 
           // Medical Services List
-          ...medicalServices.map((service) {
+          ...?_singleTripDetailsController.singleTripDetailsModel.value.data?.tripHistory?.tripQuestionAnswers?.map((service) {
             return buildMedicalServiceItem(
-              icon: service['icon'] as IconData,
-              iconColor: service['color'] as Color,
-              title: service['title'] as String,
-              answer: service['answer'] as String,
+              icon: Icons.local_hospital,
+              iconColor: Vx.randomPrimaryColor,
+              title: service.question??'N/A',
+              answer: service.answer??'N/A',
             );
           }).toList(),
         ],

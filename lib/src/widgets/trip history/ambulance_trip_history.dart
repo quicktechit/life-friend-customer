@@ -21,7 +21,7 @@ import '../../controllers/trip history controller/ambulance_trip_history_control
 import '../../controllers/trip history controller/rental_trip_history_controller.dart';
 
 class AmbulanceTripTripHistory extends StatefulWidget {
-  AmbulanceTripTripHistory({super.key});
+  const AmbulanceTripTripHistory({super.key});
 
   @override
   State<AmbulanceTripTripHistory> createState() => _AmbulanceTripTripHistoryState();

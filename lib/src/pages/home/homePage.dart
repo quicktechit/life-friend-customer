@@ -30,13 +30,14 @@ final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // Controllers and dependencies...
+  final RentalTripSubmitController _rentalTripSubmitController = Get.put(
+    RentalTripSubmitController()
+  );
   final vehicleController = Get.put(QuickTechVehiclesController());
   final ReturnTripFilter returnTripFilter = Get.put(ReturnTripFilter());
   final TruckController truckController = Get.put(TruckController());
   var box = GetStorage();
-  final RentalTripSubmitController _rentalTripSubmitController = Get.put(
-    RentalTripSubmitController(),
-  );
+
 
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;

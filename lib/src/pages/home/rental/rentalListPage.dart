@@ -8,6 +8,7 @@ import 'package:pickup_load_update/src/configs/appUtils.dart';
 import 'package:pickup_load_update/src/configs/loader.dart';
 import 'package:pickup_load_update/src/controllers/car%20category%20controller/car_category_list_controller.dart';
 import 'package:pickup_load_update/src/controllers/vehicles%20categoris/quick_tech_vehicles_controller.dart';
+import 'package:pickup_load_update/src/models/vehicle_categories/quick_tech_get_vehicle_categories.dart';
 import 'package:pickup_load_update/src/pages/home/ambulence/ambulance_page.dart';
 import 'package:pickup_load_update/src/pages/home/rental/rentalPointPage.dart';
 import 'package:pickup_load_update/src/widgets/button/primaryButton.dart';
@@ -40,11 +41,12 @@ class _RentalListPageState extends State<RentalListPage> {
   final CarCategoryController carCategoryController = Get.put(
     CarCategoryController(),
   );
-  final RentalTripSubmitController controller = Get.put(RentalTripSubmitController());
+  final RentalTripSubmitController controller = Get.put(
+    RentalTripSubmitController(),
+  );
   final vehicleController = Get.put(QuickTechVehiclesController());
 
   // Variable to store the selected item
-  final Rxn<dynamic> selectedItem = Rxn<dynamic>();
 
   String get _pageTitle {
     if (widget.isTrac == true) return 'truckTrip'.tr;
@@ -52,7 +54,6 @@ class _RentalListPageState extends State<RentalListPage> {
     if (widget.ambulance == true) return "ambulanceService".tr;
     return "carTrip".tr;
   }
-
 
   String _getVehicleIcon(String vehicleType) {
     switch (vehicleType.toLowerCase()) {
@@ -198,7 +199,7 @@ class _RentalListPageState extends State<RentalListPage> {
     );
   }
 
-  Widget _buildVehicleList(List<dynamic> vehicles) {
+  Widget _buildVehicleList(List<Datum> vehicles) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView.builder(
@@ -209,10 +210,11 @@ class _RentalListPageState extends State<RentalListPage> {
 
           return GestureDetector(
             onTap: () {
-              selectedItem.value = vehicle;
+              vehicleController.selectedItem.value = vehicle;
             },
             child: Obx(() {
-              final isSelected = selectedItem.value == vehicle;
+              final isSelected =
+                  vehicleController.selectedItem.value == vehicle;
 
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
@@ -680,7 +682,9 @@ class _RentalListPageState extends State<RentalListPage> {
                         _buildDetailItem(
                           icon: Icons.calendar_today,
                           label: 'Created',
-                          value: formatFullDateTime(vehicle.createdAt.toString()),
+                          value: formatFullDateTime(
+                            vehicle.createdAt.toString(),
+                          ),
                         ),
                       ],
                     ),
@@ -708,7 +712,7 @@ class _RentalListPageState extends State<RentalListPage> {
                 padding: const EdgeInsets.all(16),
                 child: ElevatedButton(
                   onPressed: () {
-                    selectedItem.value = vehicle;
+                    vehicleController.selectedItem.value = vehicle;
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
@@ -790,8 +794,8 @@ class _RentalListPageState extends State<RentalListPage> {
   }
 
   Widget _buildNextButton(BuildContext context) {
-    final isEnabled = selectedItem.value != null;
-    final selected = selectedItem.value;
+    final isEnabled = vehicleController.selectedItem.value != null;
+    final selected = vehicleController.selectedItem.value;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -857,7 +861,7 @@ class _RentalListPageState extends State<RentalListPage> {
                   ),
                   IconButton(
                     onPressed: () {
-                      selectedItem.value = null;
+                      vehicleController.selectedItem.value = null;
                     },
                     icon: const Icon(Icons.close),
                     color: Colors.grey[500],
@@ -909,18 +913,14 @@ class _RentalListPageState extends State<RentalListPage> {
       Get.to(
         () => AmbulancePage(
           carImg: Urls.getImageURL(
-            endPoint: selectedItem.value!.image.toString(),
+            endPoint: vehicleController.selectedItem.value!.image.toString(),
           ),
-          carName: selectedItem.value!.name.toString(),
-          capacity: selectedItem.value!.capacity.toString(),
-          carId: selectedItem.value!.id.toString(),
-          tripType: widget.tripType == 'car'
-              ? '2'
-              : widget.tripType == 'truck'
-              ? '1'
-              : widget.tripType == 'bike'
-              ? '4'
-              : '2', question: selectedItem.value.vehicleQuestions??[],
+          carName: vehicleController.selectedItem.value!.name.toString(),
+          capacity: vehicleController.selectedItem.value!.capacity.toString(),
+          carId: vehicleController.selectedItem.value!.id.toString(),
+          tripType: '6',
+          question:
+              vehicleController.selectedItem.value?.vehicleQuestions ?? [],
         ),
       );
     } else {
@@ -928,11 +928,11 @@ class _RentalListPageState extends State<RentalListPage> {
         () => RentalPointPage(
           isAirport: widget.isAirport,
           carImg: Urls.getImageURL(
-            endPoint: selectedItem.value!.image.toString(),
+            endPoint: vehicleController.selectedItem.value!.image.toString(),
           ),
-          carName: selectedItem.value!.name.toString(),
-          capacity: selectedItem.value!.capacity.toString(),
-          carId: selectedItem.value!.id.toString(),
+          carName: vehicleController.selectedItem.value!.name.toString(),
+          capacity: vehicleController.selectedItem.value!.capacity.toString(),
+          carId: vehicleController.selectedItem.value!.id.toString(),
           tripType: widget.tripType == 'car'
               ? '2'
               : widget.tripType == 'truck'

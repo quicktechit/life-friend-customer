@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import 'package:pickup_load_update/src/widgets/car_live_bidding_widget.dart';
 import 'package:pickup_load_update/src/widgets/divider_widget.dart';
 import 'package:pickup_load_update/src/widgets/slider/slider_widget.dart';
 import '../../controllers/rental trip request controllers/rental_trip_bid_confirm_controller.dart';
+import '../../controllers/vehicles categoris/quick_tech_vehicles_controller.dart';
 import 'bidding_confirm_screen.dart';
 
 class LiveBiddingPage extends StatefulWidget {
@@ -41,12 +43,17 @@ class LiveBiddingPage extends StatefulWidget {
 class _LiveBiddingPageState extends State<LiveBiddingPage>
     with TickerProviderStateMixin {
   AnimationController? _controller;
+
+  final vehicleController = Get.put(QuickTechVehiclesController());
+  late Duration _remainingTime;
+  late Timer _countdownTimer;
+  late Timer _refreshTimer;
   bool determinate = false;
-  final CancelController cancelController = Get.put(CancelController());
+
   int? selectedCarIndex;
   var box = GetStorage();
   bool _timerRunning = false;
-  Duration _remainingTime = const Duration(hours: 1);
+  var isOther = false;
 
   late StreamController<Duration> _timerStreamController;
   late Timer _timer;
@@ -54,12 +61,15 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   final LiveBiddingController liveBiddingController = Get.put(
     LiveBiddingController(),
   );
+
   final SingleTripDetailsController _singleTripC = Get.put(
     SingleTripDetailsController(),
   );
-  final RentalTripSubmitController _rentalTripSubmitController = Get.put(
-    RentalTripSubmitController(),
-  );
+
+  final RentalTripSubmitController _rentalTripSubmitController =
+  Get.put(RentalTripSubmitController());
+
+  final CancelController cancelController = Get.put(CancelController());
 
   // Define color scheme
   final Color primaryRed = primaryColor; // Deep Red
@@ -70,16 +80,21 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   @override
   void initState() {
     super.initState();
+    log("${vehicleController.selectedItem.value?.biddingTime}");
+    final biddingTime =
+        int.tryParse(
+          vehicleController.selectedItem.value?.biddingTime ?? '60',
+        ) ??
+        60;
 
-    // Initialize the remaining time based on a 1-hour countdown
-    _remainingTime =
-        Duration(hours: 1) -
-        DateTime.now().difference(DateTime.parse(widget.createdAt));
+    _remainingTime = Duration(minutes: biddingTime);
 
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 5))
           ..addListener(() {
-            setState(() {});
+            if (mounted) {
+              setState(() {});
+            }
           });
     _controller!.repeat();
 
@@ -90,24 +105,24 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   }
 
   void _startCountdownTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() {
-        if (_remainingTime > Duration.zero) {
-          _remainingTime -= Duration(seconds: 1);
-        } else {
-          _rentalTripSubmitController.liveBidStart.value = false;
-          box.write("liveBidStart", false);
-          _timer.cancel();
-          _timerStreamController.add(Duration.zero);
-        }
-      });
-      _timerStreamController.add(_remainingTime);
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_remainingTime > Duration.zero) {
+        setState(() {
+          _remainingTime -= const Duration(seconds: 1);
+        });
+        _timerStreamController.add(_remainingTime);
+      } else {
+        _rentalTripSubmitController.liveBidStart.value = false;
+        box.write("liveBidStart", false);
+        _countdownTimer.cancel();
+        _timerStreamController.add(Duration.zero);
+      }
     });
   }
 
   void _startDataRefreshTimer() {
     if (!_timerRunning) {
-      _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      _refreshTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
         liveBiddingController.getLiveBid();
       });
 
@@ -117,10 +132,10 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
 
   @override
   void dispose() {
-    _timer.cancel();
+    _countdownTimer.cancel();
+    _refreshTimer.cancel();
     _timerStreamController.close();
     _controller?.dispose();
-
     super.dispose();
   }
 
@@ -813,72 +828,72 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         ),
                       ),
 
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
 
                     // Offer Slider Section
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: lightRed,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withAlpha(50),
-                            blurRadius: 15,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Ongoing Offer'.tr,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: primaryRed.withAlpha(60),
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color: primaryRed.withAlpha(80),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Best Price',
-                                  style: TextStyle(
-                                    color: primaryRed,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          SliderWidget(),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Adjust your bid to get the best deal',
-                            style: TextStyle(
-                              color: grey,
-                              fontSize: 12,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(20),
+                    //   decoration: BoxDecoration(
+                    //     color: lightRed,
+                    //     borderRadius: BorderRadius.circular(20),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //         color: Colors.black.withAlpha(50),
+                    //         blurRadius: 15,
+                    //         spreadRadius: 2,
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   child: Column(
+                    //     children: [
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Text(
+                    //             'Ongoing Offer'.tr,
+                    //             style: TextStyle(
+                    //               color: Colors.black,
+                    //               fontSize: 18,
+                    //               fontWeight: FontWeight.bold,
+                    //             ),
+                    //           ),
+                    //           Container(
+                    //             padding: const EdgeInsets.symmetric(
+                    //               horizontal: 12,
+                    //               vertical: 4,
+                    //             ),
+                    //             decoration: BoxDecoration(
+                    //               color: primaryRed.withAlpha(60),
+                    //               borderRadius: BorderRadius.circular(8),
+                    //               border: Border.all(
+                    //                 color: primaryRed.withAlpha(80),
+                    //               ),
+                    //             ),
+                    //             child: Text(
+                    //               'Best Price',
+                    //               style: TextStyle(
+                    //                 color: primaryRed,
+                    //                 fontSize: 12,
+                    //                 fontWeight: FontWeight.w600,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       const SizedBox(height: 20),
+                    //       SliderWidget(),
+                    //       const SizedBox(height: 10),
+                    //       Text(
+                    //         'Adjust your bid to get the best deal',
+                    //         style: TextStyle(
+                    //           color: grey,
+                    //           fontSize: 12,
+                    //           fontStyle: FontStyle.italic,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
 
                     const SizedBox(height: 80), // Bottom padding
                   ],
@@ -897,8 +912,6 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
     int seconds = duration.inSeconds % 60;
     return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
-
-  var isOther = false;
 
   void cancelTripRequestReason(BuildContext context, String tripId) {
     isOther = false;

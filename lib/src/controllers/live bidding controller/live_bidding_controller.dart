@@ -40,10 +40,10 @@ class LiveBiddingController extends GetxController {
           liveBidData.assignAll(rentalTrip.tripList!);
 
           filteredLiveBidDataTruck.assignAll(
-              rentalTrip.tripList!.where((trip) => trip.categoryId == 1).toList()
+              rentalTrip.tripList!.where((trip) => trip.categoryId == '1').toList()
           );
           filteredLiveBidData.assignAll(
-              rentalTrip.tripList!.where((trip) => trip.categoryId != 1).toList()
+              rentalTrip.tripList!.where((trip) => trip.categoryId != '1').toList()
           );
         } else {
           throw 'Live Bid History data is empty!';

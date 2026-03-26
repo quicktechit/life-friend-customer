@@ -43,7 +43,8 @@ class ReturnBidConfirmController extends GetxController {
       request.headers['Authorization'] = 'Bearer $token';
       request.fields['bid_id'] = bidId.toString();
       request.fields['trip_id'] = tripId.toString();
-      request.fields['amount'] = amount.toString();
+      // request.fields['amount'] = amount.toString();
+      request.fields['amount'] = '5';
 
       var response = await http.Response.fromStream(await request.send());
 
@@ -59,9 +60,10 @@ class ReturnBidConfirmController extends GetxController {
             //     bidConfirmModel.value.data!.tripConfirm!.trackingId.toString();
             // otp.value =
             //     bidConfirmModel.value.data!.tripConfirm!.otp.toString();
-            Get.to(()=>WebViewScreen(urls: responseBody['payment_url'].toString(),));
             box.write("liveBidStart",false);
             box.write("liveBidTruckStart",false);
+            Get.to(()=>WebViewScreen(urls: responseBody['payment_url'].toString(),));
+
             Get.snackbar('Success', 'Bid Confirm Successfully',
                 colorText: white, backgroundColor: Colors.black);
             print(
@@ -85,4 +87,5 @@ class ReturnBidConfirmController extends GetxController {
       isLoading.value = false;
     }
   }
+
 }

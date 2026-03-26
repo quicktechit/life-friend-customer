@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import '../../models/vehicle_categories/quick_tech_get_vehicle_categories.dart';
 
 class QuickTechVehiclesController extends GetxController {
+  final Rxn<Datum> selectedItem = Rxn<Datum>();
   var isLoading = false.obs;
   var vehicleCategories = QuickTechGetVehicleCategories().obs;
   var data = <Datum>[].obs;

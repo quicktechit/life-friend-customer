@@ -25,6 +25,7 @@ import '../../pages/map_page/map_page_view.dart';
 class AllConfirmTripHistory extends StatefulWidget {
   const AllConfirmTripHistory({super.key});
 
+
   @override
   State<AllConfirmTripHistory> createState() => _AllConfirmTripHistoryState();
 }
@@ -383,7 +384,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                         padding: EdgeInsets.only(left: 24, bottom: 2),
                                         child: Text(
                                           "• ${location.dropoffLocation}",
-                                          maxLines: 1,
+                                          maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -391,13 +392,13 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                             color: textColor,
                                           ),
                                         ),
-                                      )).toList(),
+                                      )),
                                     if (item.rentalRelationships?.trip?.dropoffLocation != null)
                                       Padding(
                                         padding: EdgeInsets.only(left: 24),
                                         child: Text(
                                           "• ${item.rentalRelationships?.trip?.dropoffLocation}",
-                                          maxLines: 1,
+                                          maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -419,7 +420,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                             color: textColor,
                                           ),
                                         ),
-                                      )).toList(),
+                                      )),
                                   ],
                                 ),
                               ),

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 
+import '../../controllers/vehicles categoris/quick_tech_vehicles_controller.dart';
 
 class DateAndTime extends StatefulWidget {
   final Function(DateTime, TimeOfDay) onDateTimeSelected;
@@ -20,17 +21,24 @@ class DateAndTime extends StatefulWidget {
 }
 
 class _DateAndTimeState extends State<DateAndTime> {
+  final vehicleController = Get.put(QuickTechVehiclesController());
   final dateFormat = DateFormat('d MMMM yyyy');
   final timeFormat = DateFormat('h:mm a');
   DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = _getInitialTime(); // Use helper function
+  late TimeOfDay selectedTime; // Use helper function
   bool isToday = true;
   DateTime now = DateTime.now();
 
   // Helper function to get initial time (now + 3 hours)
-  static TimeOfDay _getInitialTime() {
+  TimeOfDay _getInitialTime() {
     final DateTime now = DateTime.now();
-    final DateTime threeHoursLater = now.add(const Duration(hours: 3));
+    final DateTime threeHoursLater = now.add(
+      Duration(
+        minutes: int.parse(
+          vehicleController.selectedItem.value?.blockTime ?? '60',
+        ),
+      ),
+    );
 
     return TimeOfDay(
       hour: threeHoursLater.hour,
@@ -41,16 +49,18 @@ class _DateAndTimeState extends State<DateAndTime> {
   @override
   void initState() {
     super.initState();
-    _checkIfToday();
+    selectedTime = _getInitialTime();
 
     // Notify parent widget about the initial time
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onDateTimeSelected(selectedDate, selectedTime);
     });
+    _checkIfToday();
   }
 
   void _checkIfToday() {
-    isToday = selectedDate.year == now.year &&
+    isToday =
+        selectedDate.year == now.year &&
         selectedDate.month == now.month &&
         selectedDate.day == now.day;
 
@@ -67,7 +77,13 @@ class _DateAndTimeState extends State<DateAndTime> {
 
       if (selectedDateTime.isBefore(currentDateTime)) {
         // Add 3 hours to current time
-        final DateTime threeHoursLater = currentDateTime.add(const Duration(hours: 3));
+        final DateTime threeHoursLater = currentDateTime.add(
+          Duration(
+            minutes: int.parse(
+              vehicleController.selectedItem.value?.blockTime ?? '60',
+            ),
+          ),
+        );
         setState(() {
           selectedTime = TimeOfDay(
             hour: threeHoursLater.hour,
@@ -103,7 +119,8 @@ class _DateAndTimeState extends State<DateAndTime> {
         if (isToday && widget.enableTimeConstraint) {
           final nowTime = TimeOfDay.now();
           if (selectedTime.hour < nowTime.hour ||
-              (selectedTime.hour == nowTime.hour && selectedTime.minute <= nowTime.minute)) {
+              (selectedTime.hour == nowTime.hour &&
+                  selectedTime.minute <= nowTime.minute)) {
             // Set to current time + 15 minutes
             selectedTime = TimeOfDay(
               hour: nowTime.hour + (nowTime.minute + 15) ~/ 60,
@@ -127,7 +144,13 @@ class _DateAndTimeState extends State<DateAndTime> {
     TimeOfDay initialTime;
 
     if (isToday && widget.enableTimeConstraint) {
-      final threeHoursLater = now.add(const Duration(hours: 3));
+      final threeHoursLater = now.add(
+        Duration(
+          minutes: int.parse(
+            vehicleController.selectedItem.value?.blockTime ?? '60',
+          ),
+        ),
+      );
       initialTime = TimeOfDay(
         hour: threeHoursLater.hour,
         minute: threeHoursLater.minute,
@@ -150,11 +173,10 @@ class _DateAndTimeState extends State<DateAndTime> {
               hourMinuteColor: primaryColor.withAlpha(30),
               dialHandColor: primaryColor,
               dialBackgroundColor: primaryColor.withAlpha(10),
-              entryModeIconColor: primaryColor,dayPeriodColor: primaryColor.withAlpha(100),
+              entryModeIconColor: primaryColor,
+              dayPeriodColor: primaryColor.withAlpha(100),
             ),
-            colorScheme: ColorScheme.light(
-              primary: primaryColor,
-            ),
+            colorScheme: ColorScheme.light(primary: primaryColor),
           ),
           child: child!,
         );
@@ -169,7 +191,6 @@ class _DateAndTimeState extends State<DateAndTime> {
       widget.onDateTimeSelected(selectedDate, selectedTime);
     }
   }
-
 
   String _getFormattedTime() {
     if (selectedTime == TimeOfDay.now()) {
@@ -209,18 +230,11 @@ class _DateAndTimeState extends State<DateAndTime> {
       children: [
         Row(
           children: [
-            Icon(
-              Icons.access_time,
-              size: 20,
-              color: primaryColor,
-            ),
+            Icon(Icons.access_time, size: 20, color: primaryColor),
             const SizedBox(width: 8),
             Text(
               'journeyTime'.tr,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -304,11 +318,7 @@ class _DateAndTimeState extends State<DateAndTime> {
                     color: primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Icon(
-                    Icons.schedule,
-                    size: 20,
-                    color: primaryColor,
-                  ),
+                  child: Icon(Icons.schedule, size: 20, color: primaryColor),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -335,7 +345,7 @@ class _DateAndTimeState extends State<DateAndTime> {
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
-                            '${'fromNowTo'.tr} 3h',
+                            '${'fromNowTo'.tr} ${int.parse(vehicleController.selectedItem.value?.blockTime ?? '60')}M',
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.orange.shade700,
@@ -364,17 +374,11 @@ class _DateAndTimeState extends State<DateAndTime> {
               decoration: BoxDecoration(
                 color: primaryColor.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: primaryColor.withOpacity(0.2),
-                ),
+                border: Border.all(color: primaryColor.withOpacity(0.2)),
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.check_circle,
-                    size: 16,
-                    color: primaryColor,
-                  ),
+                  Icon(Icons.check_circle, size: 16, color: primaryColor),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(

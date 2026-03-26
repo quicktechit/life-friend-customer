@@ -83,6 +83,7 @@ class TripHistory {
   final String? assignedDriverId;
 
   final List<DropoffLocations>? dropoffLocations;
+  final List<TripQuestionAnswer>? tripQuestionAnswers;
   final Vehicle? vehicle;
 
   TripHistory({
@@ -127,6 +128,7 @@ class TripHistory {
     this.assignedDriverId,
     this.dropoffLocations,
     this.vehicle,
+    this.tripQuestionAnswers,
   });
 
   /// helper to safely convert any value -> String
@@ -171,8 +173,12 @@ class TripHistory {
       otp = _toStr(json['otp']),
       partnerId = _toStr(json['partner_id']),
       assignedDriverId = _toStr(json['assigned_driver_id']),
+
       dropoffLocations = (json['dropoff_locations'] as List?)
           ?.map((e) => DropoffLocations.fromJson(e))
+          .toList(),
+      tripQuestionAnswers = (json['trip_question_answers'] as List?)
+          ?.map((e) => TripQuestionAnswer.fromJson(e))
           .toList(),
       vehicle = json['vehicle'] != null
           ? Vehicle.fromJson(json['vehicle'])
@@ -489,6 +495,38 @@ class Partner {
     'created_at': createdAt,
     'updated_at': updatedAt,
   };
+}
+
+class TripQuestionAnswer {
+  TripQuestionAnswer({
+    required this.id,
+    required this.tripId,
+    required this.questionId,
+    required this.question,
+    required this.answer,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  final int? id;
+  final int? tripId;
+  final int? questionId;
+  final String? question;
+  final String? answer;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  factory TripQuestionAnswer.fromJson(Map<String, dynamic> json) {
+    return TripQuestionAnswer(
+      id: json["id"],
+      tripId: json["trip_id"],
+      questionId: json["question_id"],
+      question: json["question"],
+      answer: json["answer"],
+      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+    );
+  }
 }
 
 class Driver {
