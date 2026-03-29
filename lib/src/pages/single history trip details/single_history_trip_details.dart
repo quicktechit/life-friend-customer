@@ -956,6 +956,7 @@ class _SingleHistoryTripDetailsPageState
       }),
     );
   }
+
   Widget _buildNoDataView() {
     return Center(
       child: Column(

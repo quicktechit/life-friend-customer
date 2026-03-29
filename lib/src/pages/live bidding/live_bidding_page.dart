@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/widgets.dart';
+import 'package:marquee/marquee.dart';
+import 'package:pickup_load_update/src/configs/appUtils.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -81,13 +84,17 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   void initState() {
     super.initState();
     log("${vehicleController.selectedItem.value?.biddingTime}");
-    final biddingTime =
-        int.tryParse(
-          vehicleController.selectedItem.value?.biddingTime ?? '60',
-        ) ??
-        60;
 
-    _remainingTime = Duration(minutes: biddingTime);
+    final savedSeconds = box.read<int>('remainingTime') ?? 0;
+
+    // Default bidding time in minutes
+    final biddingTime =
+    int.parse(vehicleController.selectedItem.value?.biddingTime ?? '60');
+
+    // Initialize remaining time
+    _remainingTime = savedSeconds > 0
+        ? Duration(seconds: savedSeconds)
+        : Duration(minutes: biddingTime);
 
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 5))
@@ -109,6 +116,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
       if (_remainingTime > Duration.zero) {
         setState(() {
           _remainingTime -= const Duration(seconds: 1);
+          box.write('remainingTime', _remainingTime.inSeconds);
         });
         _timerStreamController.add(_remainingTime);
       } else {
@@ -132,10 +140,11 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
 
   @override
   void dispose() {
+    _controller?.stop(); // Stop the animation
+    _controller?.dispose(); // Dispose the controller
     _countdownTimer.cancel();
     _refreshTimer.cancel();
     _timerStreamController.close();
-    _controller?.dispose();
     super.dispose();
   }
 
@@ -149,6 +158,17 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
         }
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () async {
+          final Uri launchUri = Uri(
+            scheme: 'tel',
+            path: '01886720053',
+          );
+
+          // if (await canLaunchUrl(launchUri)) {
+          await launchUrl(launchUri);
+
+        },
+        child: Icon(Icons.headset_mic_sharp,color: primaryColor,),),
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
@@ -280,7 +300,22 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                 ],
               ),
             ),
-
+            sizeH10,
+            Marquee(
+              text: 'liveDesc'.tr,
+              style: TextStyle(fontWeight: FontWeight.bold),
+              scrollAxis: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              blankSpace: 20.0,
+              velocity: 80.0,
+              pauseAfterRound: Duration(seconds: 1),
+              startPadding: 25.0,
+              accelerationDuration: Duration(seconds: 1),
+              accelerationCurve: Curves.linear,
+              decelerationDuration: Duration(milliseconds: 500),
+              decelerationCurve: Curves.easeOut,
+            ).h(50),
+            
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(8),
@@ -912,6 +947,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
     int seconds = duration.inSeconds % 60;
     return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
+
 
   void cancelTripRequestReason(BuildContext context, String tripId) {
     isOther = false;

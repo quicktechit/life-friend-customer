@@ -170,14 +170,15 @@ class Translation extends Translations {
           "adnots":
               "Provide layered information: type of goods, tonnage, loading time.",
           "youHaveTruckOngoingTrip": "You have an ongoing trip",
-          "info": 'Please provide detailed information'
+          "info": 'Please provide detailed information',
+          "liveDesc":'If you are unable to find a suitable vehicle at the scheduled time, please try again by changing the time or call our customer care for any assistance.'
         },
         'bn': {
           "info": 'বিস্তারিত তথ্য প্রদান করুন',
           "adnots": "বিস্তারিত তথ্য প্রদান করুন : পন্যের ধরন,টন,লোডের সময়",
           "complete": 'সম্পূর্ণ',
           "confirm": 'কনফার্ম',
-
+          "liveDesc":'নির্ধারিত সময়ে উপযুক্ত গাড়ি না পেলে সময় পরিবর্তন করে আবার চেষ্টা করুন অথবা যেকোনো সহযোগিতার জন্য আমাদের কাস্টমার কেয়ারে কল দিন।',
   "youHaveOtherOngoingTrip": "এইখানে আপনার চলমান ট্রিপ আছে",
           "youHaveTruckOngoingTrip": "এইখানে আপনার চলমান ট্রিপ আছে",
           "ongoing": 'চলমান',

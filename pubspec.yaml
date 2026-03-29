@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.7.3
   in_app_update: ^4.2.5
+  marquee: ^2.3.0
   hexcolor: ^3.0.2
   flutter_screenutil: ^5.9.3
   carousel_slider: ^5.1.1
