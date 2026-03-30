@@ -107,6 +107,7 @@ class ProfilePage extends StatelessWidget {
                           onTap: () async {
                             await Get.to(
                               EditProfilePage(
+                                image: _profileController.image.value,
                                 firstName: _profileController.customerName
                                     .toString(),
                                 lastName: '',
