@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDbe0KInrsaPyiXhkE-DPBzrOkSMDxRMaA',
-    appId: '1:1016970413483:android:b4884f9ddcdbf6b91d7eee',
-    messagingSenderId: '1016970413483',
-    projectId: 'pickup-load-bd7ac',
-    storageBucket: 'pickup-load-bd7ac.firebasestorage.app',
+    apiKey: 'AIzaSyCDIWhZazysSWz5x4tsziL0T-5d4TnM6QY',
+    appId: '1:823258685691:android:593618b4bfa25d9efa105e',
+    messagingSenderId: '823258685691',
+    projectId: 'riderrapp-5cef9',
+    storageBucket: 'riderrapp-5cef9.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAbb4MEnDJKFHEqw3QS5ktsjBA0TfcYzhw',
-    appId: '1:1016970413483:ios:598644a8225cf2971d7eee',
-    messagingSenderId: '1016970413483',
-    projectId: 'pickup-load-bd7ac',
-    storageBucket: 'pickup-load-bd7ac.firebasestorage.app',
+    apiKey: 'AIzaSyCw9rAg2MA4YpXn9EhcJ8eto6KYVFZ45p4',
+    appId: '1:823258685691:ios:7fb4dc6f1287ab39fa105e',
+    messagingSenderId: '823258685691',
+    projectId: 'riderrapp-5cef9',
+    storageBucket: 'riderrapp-5cef9.firebasestorage.app',
     iosBundleId: 'com.quicktech.pickupLoadUpdate',
   );
 }

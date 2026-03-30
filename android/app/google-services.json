@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1016970413483",
-    "project_id": "pickup-load-bd7ac",
-    "storage_bucket": "pickup-load-bd7ac.firebasestorage.app"
+    "project_number": "823258685691",
+    "project_id": "riderrapp-5cef9",
+    "storage_bucket": "riderrapp-5cef9.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1016970413483:android:b4884f9ddcdbf6b91d7eee",
+        "mobilesdk_app_id": "1:823258685691:android:593618b4bfa25d9efa105e",
         "android_client_info": {
-          "package_name": "com.quicktech.pickup_load"
+          "package_name": "com.quicktech.riderr_customer"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDbe0KInrsaPyiXhkE-DPBzrOkSMDxRMaA"
+          "current_key": "AIzaSyCDIWhZazysSWz5x4tsziL0T-5d4TnM6QY"
         }
       ],
       "services": {
@@ -26,15 +26,15 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1016970413483:android:8c44b4c7846ce86c1d7eee",
+        "mobilesdk_app_id": "1:823258685691:android:275bc79652b40e73fa105e",
         "android_client_info": {
-          "package_name": "com.quicktechit.pickupLoad"
+          "package_name": "com.quicktechit.riderr_partner"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDbe0KInrsaPyiXhkE-DPBzrOkSMDxRMaA"
+          "current_key": "AIzaSyCDIWhZazysSWz5x4tsziL0T-5d4TnM6QY"
         }
       ],
       "services": {
