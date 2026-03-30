@@ -43,8 +43,8 @@ class ReturnBidConfirmController extends GetxController {
       request.headers['Authorization'] = 'Bearer $token';
       request.fields['bid_id'] = bidId.toString();
       request.fields['trip_id'] = tripId.toString();
-      // request.fields['amount'] = amount.toString();
-      request.fields['amount'] = '5';
+      request.fields['amount'] = amount.toString();
+      // request.fields['amount'] = '5';
 
       var response = await http.Response.fromStream(await request.send());
 

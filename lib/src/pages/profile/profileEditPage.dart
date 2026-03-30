@@ -27,7 +27,7 @@ class EditProfilePage extends StatefulWidget {
   final String email;
   final String? image;
 
-  EditProfilePage({
+  const EditProfilePage({
     required this.firstName,
     required this.lastName,
     required this.address,
@@ -595,7 +595,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               title: Text('take_photo'.tr),
               onTap: () async {
                 Get.back();
-                // Implement camera functionality
+                await _pickImage(ImageSource.camera);
               },
             ),
             ListTile(
@@ -603,7 +603,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               title: Text('choose_from_gallery'.tr),
               onTap: () async {
                 Get.back();
-                // Implement gallery picker
+                await _pickImage(ImageSource.gallery);
               },
             ),
           ],
@@ -638,6 +638,38 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile = await picker.pickImage(
+        source: source,
+        maxWidth: 1024, // Optional: limit image width
+        maxHeight: 1024, // Optional: limit image height
+        imageQuality: 85, // Optional: compress image (0-100)
+      );
+
+      if (pickedFile != null) {
+        profileImage = pickedFile;
+        // You can add additional logic here, like:
+        // - Update UI to show the selected image
+        // - Upload to server
+        // - Save to local storage
+
+        // For example, to trigger a rebuild:
+        setState(() {}); // If using StatefulWidget
+        // or update a controller if using GetX
+      }
+    } catch (e) {
+      // Handle any errors
+      print('Error picking image: $e');
+      // Show error message to user
+      Get.snackbar(
+        'error'.tr,
+        'failed_to_pick_image'.tr,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
   void _updateProfile() {
     if (_formKey.currentState!.validate()) {
       EditProfileController().editProfileMethod(

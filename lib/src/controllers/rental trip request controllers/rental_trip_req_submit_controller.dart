@@ -136,6 +136,9 @@ class RentalTripSubmitController extends GetxController {
           throw 'Failed!';
         }
       } else {
+        print(response.statusCode);
+        print(response.reasonPhrase);
+        print(response.body);
         throw 'Request failed with status: ${response.statusCode}';
       }
     } catch (e) {

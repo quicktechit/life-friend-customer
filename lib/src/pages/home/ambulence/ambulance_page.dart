@@ -126,7 +126,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        'মেডিকেল প্রয়োজনীয়তা',
+                        'medicalRequirement'.tr,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -281,7 +281,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Additional Notes',
+                    'additionalNotes'.tr,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -299,7 +299,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: primaryButton(
-                buttonName: 'Submit Trip Request',
+                buttonName: 'submitTripRequest',
                 radius: 16.0,
                 onTap: _submitTripRequest,
               ),

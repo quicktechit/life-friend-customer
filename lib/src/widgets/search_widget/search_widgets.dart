@@ -51,7 +51,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: KText(
-          text: 'Search Locations',
+          text: 'searchLocations',
           color: Colors.white,
           fontSize: 17,
         ),
@@ -95,7 +95,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'Location Details',
+                          'locationDetails'.tr,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -285,7 +285,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                               Container(
                                 margin: EdgeInsets.only(bottom: 10),
                                 child: CustomForm(
-                                  hintText: 'Pickup Locations',
+                                  hintText: 'pickUpPoint'.tr,
                                   controller: locationController.pickUpC,
                                   onChange: (value) {
                                     value.isEmpty
@@ -322,7 +322,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                                   borderRadius: BorderRadius.circular(20),
                                   child: Row(mainAxisAlignment: .end,
                                     children: [
-                                      KText(text: "Via Locations"),sizeW5,
+                                      KText(text: "Via Point"),sizeW5,
                                       Container(
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(
@@ -350,7 +350,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                                 Column(
                                   children: [
                                     CustomForm(
-                                      hintText: 'Via Locations',
+                                      hintText: 'Via Point'.tr,
                                       controller: locationController.viaTextC,
                                       onChange: (value) {
                                         value.isEmpty
@@ -383,7 +383,7 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CustomForm(
-                                    hintText: 'Dropoff Locations',
+                                    hintText: 'dropOffPoint'.tr,
 
                                     controller: locationController.dropC,
                                     sufIcon: IconButton(
@@ -743,11 +743,11 @@ class _SearchWidgetsState extends State<SearchWidgets> {
 
               Spacer(),
               primaryButton(
-                buttonName: "Next",
+                buttonName: "next",
                 icon: Icons.navigate_next_outlined,
                 onTap: () {
                   if(locationController.pickUpC.text.isEmpty||locationController.dropC.text.isEmpty){
-                    Get.snackbar("Warning", "Pickup and Drop off Location required");
+                    Get.snackbar("warning".tr, "pickupDropRequired".tr);
                     return;
                   }
 

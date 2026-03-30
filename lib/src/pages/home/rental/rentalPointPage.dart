@@ -172,7 +172,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            'Additional Notes',
+                            'additionalNotes'.tr,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -215,7 +215,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
               child: CarSelectedOption(
                 carImg: widget.carImg,
                 carName: widget.carName,
-                capacity: "${widget.capacity} Seats Capacity",
+                capacity: "${widget.capacity} ${"Seats Capacity".tr}",
               ),
             ),
           )
@@ -243,7 +243,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                 ),
                 SizedBox(width: 8),
                 Text(
-                  'pickUpFrom',
+                  'pickUpFrom'.tr,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -256,7 +256,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
             Row(
               children: [
                 _buildRadioTile(
-                  'Airport',
+                  'airports'.tr,
                   'fromAirport'.tr,
                   Icons.airplanemode_active,
                 ),
@@ -345,7 +345,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
               Icon(Icons.location_on_outlined, color: primaryColor, size: 20),
               SizedBox(width: 8),
               Text(
-                'Trip Locations',
+                'tripLocations'.tr,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -536,7 +536,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'Schedule Trip',
+                      'scheduleTrip'.tr,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -571,7 +571,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
               Icon(Icons.trip_origin_outlined, color: primaryColor, size: 20),
               SizedBox(width: 8),
               Text(
-                'Trip Options',
+                'tripOptions'.tr,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -620,7 +620,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Round Trip',
+                      'roundTrip'.tr,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -629,7 +629,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      'Enable for return journey',
+                      'enableReturnJourney'.tr,
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                   ],
@@ -673,7 +673,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'Return Schedule',
+                      'returnSchedule'.tr,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -718,7 +718,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
               Icon(Icons.timer_outlined, color: Colors.blue[700], size: 18),
               SizedBox(width: 8),
               Text(
-                'Hourly Booking',
+                'hourlyService'.tr,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -767,7 +767,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                       ),
                     ),
                     Text(
-                      'Hours',
+                      'hours'.tr,
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                   ],
@@ -866,7 +866,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
         child: primaryButton(
-          buttonName: 'Submit Trip Request',
+          buttonName: 'submitTripRequest',
           radius: 16.0,
           onTap: _handleSubmit,
         ),

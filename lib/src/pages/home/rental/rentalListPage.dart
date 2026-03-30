@@ -354,7 +354,7 @@ class _RentalListPageState extends State<RentalListPage> {
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        '${vehicle.capacity} seats',
+                                        '${vehicle.capacity} ${'seats'.tr}',
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
@@ -381,7 +381,7 @@ class _RentalListPageState extends State<RentalListPage> {
                                                   BorderRadius.circular(12),
                                             ),
                                             child: Text(
-                                              'Available',
+                                              'available'.tr,
                                               style: TextStyle(
                                                 fontSize: 10,
                                                 color: Colors.green[700],
@@ -439,7 +439,7 @@ class _RentalListPageState extends State<RentalListPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'See More Details',
+                              'seeMoreDetails'.tr,
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -628,8 +628,8 @@ class _RentalListPageState extends State<RentalListPage> {
                               color: Colors.green.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: const Text(
-                              'Available',
+                            child:  Text(
+                              'available'.tr,
                               style: TextStyle(
                                 color: Colors.green,
                                 fontWeight: FontWeight.w600,
@@ -643,8 +643,8 @@ class _RentalListPageState extends State<RentalListPage> {
                     const SizedBox(height: 24),
 
                     // Specifications
-                    const Text(
-                      'Specifications',
+                     Text(
+                      'specifications'.tr,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -665,23 +665,23 @@ class _RentalListPageState extends State<RentalListPage> {
                         if (vehicle.capacity != null)
                           _buildDetailItem(
                             icon: Icons.people,
-                            label: 'Capacity',
-                            value: '${vehicle.capacity} Persons',
+                            label: 'seatCapacity'.tr,
+                            value: '${vehicle.capacity} ${"persons".tr}',
                           ),
                         _buildDetailItem(
                           icon: Icons.tag,
-                          label: 'Vehicle ID',
+                          label: 'vehicleId'.tr,
                           value: '#${vehicle.id ?? 'N/A'}',
                         ),
                         if (vehicle.slug != null)
                           _buildDetailItem(
                             icon: Icons.link,
-                            label: 'Slug',
+                            label: 'slug'.tr,
                             value: vehicle.slug!,
                           ),
                         _buildDetailItem(
                           icon: Icons.calendar_today,
-                          label: 'Created',
+                          label: 'created'.tr,
                           value: formatFullDateTime(
                             vehicle.createdAt.toString(),
                           ),
@@ -696,7 +696,7 @@ class _RentalListPageState extends State<RentalListPage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
-                          'Last updated: ${formatFullDateTime(vehicle.updatedAt.toString())}',
+                          '${"lastUpdated".tr} ${formatFullDateTime(vehicle.updatedAt.toString())}',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[500],
@@ -723,7 +723,7 @@ class _RentalListPageState extends State<RentalListPage> {
                     backgroundColor: primaryColor,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Select This Vehicle'),
+                  child:  Text('selectThisVehicle'.tr),
                 ),
               ),
             ],

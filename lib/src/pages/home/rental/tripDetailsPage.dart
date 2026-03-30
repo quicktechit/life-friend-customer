@@ -85,7 +85,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             width: 100,
             child: KText(
               text: label,
@@ -186,7 +186,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
             child: CarSelectedOption(
               carImg: widget.carImg,
               carName: widget.carName,
-              capacity: "${widget.capacity} Seats Capacity",
+              capacity: "${widget.capacity} ${'seatCapacity'.tr}",
             ),
           ),
 
@@ -247,7 +247,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        'মেডিকেল প্রয়োজনীয়তা',
+                        'medicalRequirement'.tr,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

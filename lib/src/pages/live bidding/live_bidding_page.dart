@@ -215,7 +215,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                       Text(
                         remainingTime > Duration.zero
                             ? _formatDuration(remainingTime)
-                            : "Time's up",
+                            : "timesUp".tr,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.white,
@@ -274,7 +274,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         Icon(Icons.circle, color: Colors.red, size: 10),
                         const SizedBox(width: 6),
                         Text(
-                          "LIVE",
+                          "live".tr,
                           style: TextStyle(
                             color: darkRed,
                             fontSize: 12,
@@ -287,7 +287,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      "Bidding in progress... Select your preferred vehicle",
+                      "biddingInProgress".tr,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -400,224 +400,202 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                     selectedCarIndex = index;
                                   });
                                 },
-                                child: Container(
-                                  margin: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? darkRed.withAlpha(50)
-                                        : lightRed,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: isSelected
-                                          ? primaryRed
-                                          : Colors.transparent,
-                                      width: 2,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withAlpha(50),
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(16),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            // Vehicle Image
-                                            Container(
-                                              width: 80,
-                                              height: 80,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                color: Colors.grey[900],
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    Urls.getImageURL(
-                                                      endPoint:
-                                                          data.getBrand?.image
-                                                              ?.toString() ??
-                                                          '',
-                                                    ),
+                                child: Stack(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Vehicle Image
+                                          Container(
+                                            width: 70,
+                                            height: 70,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              color: Colors.grey[900],
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                  Urls.getImageURL(
+                                                    endPoint:
+                                                        data.getBrand?.image
+                                                            ?.toString() ??
+                                                        '',
                                                   ),
-                                                  fit: BoxFit.cover,
                                                 ),
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                            const SizedBox(width: 16),
+                                          ),
+                                          const SizedBox(width: 16),
 
-                                            // Vehicle Details
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        data.getBrand?.name
-                                                                ?.toString() ??
-                                                            data
-                                                                .getvehicle
-                                                                ?.model ??
-                                                            '',
+                                          // Vehicle Details
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      data.getBrand?.name
+                                                              ?.toString() ??
+                                                          data
+                                                              .getvehicle
+                                                              ?.model ??
+                                                          '',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    if (isSelected)
+                                                      Icon(
+                                                        Icons
+                                                            .check_circle_rounded,
+                                                        color: primaryRed,
+                                                        size: 24,
+                                                      ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  '${data.getBrand?.capacity?.toString() ?? ''} ${'seatCapacity'.tr}',
+                                                  style: TextStyle(
+                                                    color: Colors.grey[400],
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 4,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: darkRed
+                                                            .withAlpha(60),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              8,
+                                                            ),
+                                                      ),
+                                                      child: Text(
+                                                        '${data.getvehicle?.metro?.toString() ?? ''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
                                                         style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
+                                                          color: primaryRed,
+                                                          fontSize: 11,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
                                                       ),
-                                                      if (isSelected)
-                                                        Icon(
-                                                          Icons
-                                                              .check_circle_rounded,
-                                                          color: primaryRed,
-                                                          size: 24,
-                                                        ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(height: 4),
-                                                  Text(
-                                                    '${data.getBrand?.capacity?.toString() ?? ''} Seats Capacity',
-                                                    style: TextStyle(
-                                                      color: Colors.grey[400],
-                                                      fontSize: 14,
                                                     ),
-                                                  ),
-                                                  const SizedBox(height: 8),
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets.symmetric(
-                                                              horizontal: 8,
-                                                              vertical: 4,
-                                                            ),
-                                                        decoration: BoxDecoration(
-                                                          color: darkRed
-                                                              .withAlpha(60),
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                8,
-                                                              ),
-                                                        ),
-                                                        child: Text(
-                                                          '${data.getvehicle?.metro?.toString() ?? ''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
-                                                          style: TextStyle(
-                                                            color: primaryRed,
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      // Price Tag
-                                      Positioned(
-                                        right: 16,
-                                        top: 16,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                            vertical: 8,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [primaryRed, darkRed],
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              20,
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: primaryRed.withAlpha(80),
-                                                blurRadius: 10,
-                                                spreadRadius: 1,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Text(
-                                            '৳${data.amount?.toString() ?? '0'}',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                      // View Details Button
-                                      Positioned(
-                                        right: 16,
-                                        bottom: 16,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Get.to(
-                                              () => CarDetailsPage(
-                                                tripId:
-                                                    data.tripId?.toString() ??
-                                                    '',
-                                                bidId:
-                                                    data.id?.toString() ?? '',
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                              vertical: 6,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              border: Border.all(
-                                                color: Colors.white.withAlpha(
-                                                  60,
-                                                ),
-                                              ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  'Details',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 4),
-                                                Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  color: Colors.black,
-                                                  size: 12,
+                                                  ],
                                                 ),
                                               ],
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    // Price Tag
+                                    Positioned(
+                                      right: 5,
+                                      top: 5,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 0,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [primaryRed, darkRed],
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: primaryRed.withAlpha(80),
+                                              blurRadius: 10,
+                                              spreadRadius: 1,
+                                            ),
+                                          ],
+                                        ),
+                                        child: Text(
+                                          '৳${data.amount?.toString() ?? '0'}',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+
+                                    // View Details Button
+                                    Positioned(
+                                      right: 16,
+                                      bottom: 16,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                            () => CarDetailsPage(
+                                              tripId:
+                                                  data.tripId?.toString() ??
+                                                  '',
+                                              bidId:
+                                                  data.id?.toString() ?? '',
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 6,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade300,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border: Border.all(
+                                              color: Colors.white.withAlpha(
+                                                60,
+                                              ),
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'details'.tr,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Icon(
+                                                Icons.arrow_forward_ios,
+                                                color: Colors.black,
+                                                size: 12,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               );
                             },
@@ -671,7 +649,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
-                                    'Cancel Trip'.tr,
+                                    'cancelTrip'.tr,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -704,7 +682,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         child: Column(
                           children: [
                             Text(
-                              'Selected Vehicle',
+                              'selectVehicle'.tr,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
@@ -796,7 +774,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                           ),
                                           const SizedBox(width: 8),
                                           Text(
-                                            'Confirm',
+                                            'confirm'.tr,
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
@@ -845,7 +823,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                           ),
                                           const SizedBox(width: 8),
                                           Text(
-                                            'Change',
+                                            'change'.tr,
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -993,7 +971,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          "Cancel Trip?",
+                          '${"cancelTrip".tr}?',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 22,
@@ -1002,7 +980,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Please tell us why you want to cancel",
+                          "cancelReasonPrompt".tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[400],
@@ -1090,7 +1068,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                       child: Column(
                         children: [
                           Text(
-                            "Please specify the reason",
+                            "specifyReason".tr,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -1108,7 +1086,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
                               ),
-                              hintText: "Type your reason here...",
+                              hintText: "typeReasonHere".tr,
                               hintStyle: TextStyle(color: Colors.grey[500]),
                               contentPadding: const EdgeInsets.all(16),
                             ),
@@ -1131,7 +1109,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                     ),
                                   ),
                                   child: Text(
-                                    "Back",
+                                    "back".tr,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
@@ -1158,7 +1136,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                     ),
                                   ),
                                   child: Text(
-                                    "Submit",
+                                    "submit".tr,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -1192,7 +1170,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                         ),
                       ),
                       child: Text(
-                        "Keep My Trip",
+                        "keepMyTrip".tr,
                         style: TextStyle(
                           color: primaryRed,
                           fontSize: 16,

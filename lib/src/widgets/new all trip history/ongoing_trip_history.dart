@@ -57,7 +57,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
           : _controller.allOngoingTripHistory.isEmpty
           ? Center(
         child: EmptyBoxWidget(
-          title: 'No ongoing trips available!',
+          title: 'noOngoingTrips'.tr,
           truckImage: 'assets/images/empty.png',
 
         ),
@@ -163,7 +163,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                               Icon(Icons.directions_car, size: 12, color: ongoingColor),
                               SizedBox(width: 6),
                               Text(
-                                'ONGOING',
+                                'ongoing'.tr,
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
@@ -177,7 +177,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                         SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Trip ID: ${item.trackingId}',
+                            '${"tripId".tr} ${item.trackingId}',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -198,7 +198,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                 Icon(Icons.autorenew, size: 12, color: Color(0xFF2196F3)),
                                 SizedBox(width: 4),
                                 Text(
-                                  'RETURN',
+                                  'return'.tr,
                                   style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
@@ -300,7 +300,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Pickup Location',
+                                            'pickupLocation'.tr,
                                             style: TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.w500,
@@ -355,7 +355,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                         Icon(Icons.location_on, size: 16, color: Colors.red),
                                         SizedBox(width: 8),
                                         Text(
-                                          'Dropoff Location${(item.rentalRelationships?.trip?.dropoffLocations?.length ?? 0) > 1 ? 's' : ''}',
+                                          '${"dropoffLocation".tr}${(item.rentalRelationships?.trip?.dropoffLocations?.length ?? 0) > 1 ? 's' : ''}',
                                           style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,
@@ -440,7 +440,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                   Icon(Icons.access_time, size: 14, color: subtitleColor),
                                   SizedBox(width: 8),
                                   Text(
-                                    'Trip Time:',
+                                    'tripTime'.tr,
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: subtitleColor,
@@ -527,7 +527,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                 Icon(Icons.map, size: 14, color: primaryColor),
                                 SizedBox(width: 6),
                                 Text(
-                                  'View Map',
+                                  'viewMap'.tr,
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
@@ -561,7 +561,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                             child: Row(
                               children: [
                                 Text(
-                                  'Fare:',
+                                  'fare'.tr,
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,

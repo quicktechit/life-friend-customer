@@ -81,10 +81,7 @@ class _HomePageState extends State<HomePage>
             child: CustomScrollView(
               physics: BouncingScrollPhysics(),
               slivers: [
-                // User Info & Location
-                // SliverToBoxAdapter(child: _buildUserInfoSection()),
 
-                // Active Trip Banner
                 SliverToBoxAdapter(child: _buildActiveTripBanner()),
 
                 _buildSearchBar(),
@@ -97,7 +94,7 @@ class _HomePageState extends State<HomePage>
                 SliverToBoxAdapter(child: _buildFeaturedServicesSection()),
 
                 // Promotions Section
-                SliverToBoxAdapter(child: _buildPromotionsSection()),
+                // SliverToBoxAdapter(child: _buildPromotionsSection()),
 
                 // Bottom Spacing
                 SliverToBoxAdapter(child: SizedBox(height: 50.h)),
@@ -128,11 +125,12 @@ class _HomePageState extends State<HomePage>
           child: TextField(
             readOnly: true,
             // Set to true if navigating to a dedicated search page
-            onTap: () {
-              Get.to(() => SearchWidgets(tripType: 'car',));
+            onTap: () async {
+              await vehicleController.getVehicles(id: '6');
+              Get.to(() => SearchWidgets(tripType: 'Ambulance'));
             },
             decoration: InputDecoration(
-              hintText: 'Search Whare To Go...?',
+              hintText: 'search_where'.tr,
               hintStyle: TextStyle(
                 color: Colors.grey.shade600,
                 fontSize: 14.sp,
@@ -186,8 +184,8 @@ class _HomePageState extends State<HomePage>
             children: [
               if (_rentalTripSubmitController.liveBidTruckStart.value)
                 _buildTripBanner(
-                  title: "Truck Trip in Progress",
-                  subtitle: "Tap to view details & track",
+                  title: "trip_progress".tr,
+                  subtitle: "view_track".tr,
                   icon: Icons.local_shipping,
                   iconColor: Color(0xFF3B82F6),
                   gradient: [Color(0xFFE0F2FE), Color(0xFFBAE6FD)],
@@ -205,8 +203,8 @@ class _HomePageState extends State<HomePage>
                 SizedBox(height: 12.h),
               if (_rentalTripSubmitController.liveBidStart.value)
                 _buildTripBanner(
-                  title: "Car Trip in Progress",
-                  subtitle: "Tap to view details & track",
+                  title: "trip_progress_car".tr,
+                  subtitle: "view_track".tr,
                   icon: Icons.directions_car,
                   iconColor: Color(0xFF10B981),
                   gradient: [Color(0xFFD1FAE5), Color(0xFFA7F3D0)],
@@ -338,14 +336,14 @@ class _HomePageState extends State<HomePage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 KText(
-                  text: "Quick Services",
+                  text: "quick_services".tr,
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF111827),
                 ),
                 SizedBox(height: 2.h),
                 KText(
-                  text: "Everything you need to move",
+                  text: "move_tagline".tr,
                   fontSize: 12.sp,
                   color: Color(0xFF6B7280),
                 ),
@@ -422,14 +420,14 @@ class _HomePageState extends State<HomePage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               KText(
-                text: "Featured Services",
+                text: "featured".tr,
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF111827),
               ),
               SizedBox(height: 4.h),
               KText(
-                text: "Premium transportation solutions",
+                text: 'premium'.tr,
                 fontSize: 12.sp,
                 color: Color(0xFF6B7280),
               ),
@@ -600,7 +598,7 @@ class _HomePageState extends State<HomePage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             KText(
-                              text: "Book Now",
+                              text: "book_now",
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
                               color: feature.color,
@@ -657,7 +655,7 @@ class _HomePageState extends State<HomePage>
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: KText(
-                    text: "SPECIAL OFFER",
+                    text: "special_offer".tr,
                     fontSize: 10.sp,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
