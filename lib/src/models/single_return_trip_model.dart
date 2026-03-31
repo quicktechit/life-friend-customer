@@ -53,6 +53,7 @@ class TripHistory {
   final DropoffDivision? dropoffDivision;
 
   final String? location;
+  final String? review_status;
   final String? destination;
   final String? amount;
   final String? timedate;
@@ -79,6 +80,7 @@ class TripHistory {
     this.id,
     this.pickupDivision,
     this.dropoffDivision,
+    this.review_status,
     this.location,
     this.destination,
     this.amount,
@@ -111,6 +113,7 @@ class TripHistory {
           ? DropoffDivision.fromJson(json['dropoff_division'])
           : null,
       location = _toStr(json['location']),
+        review_status = _toStr(json['review_status']),
       destination = _toStr(json['destination']),
       amount = _toStr(json['amount']),
       timedate = _toStr(json['timedate']),

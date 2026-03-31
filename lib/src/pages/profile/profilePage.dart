@@ -21,6 +21,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext conKText) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,elevation: 0,
         title: KText(
           text:"profile".tr,color: Colors.white,fontWeight: FontWeight.bold,fontSize: 17,
         ),
@@ -227,66 +228,66 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
 
+                // SizedBox(height: 30.h),
+                //
+                // // Additional Actions Card
+                // Container(
+                //   margin: EdgeInsets.symmetric(horizontal: 20.h),clipBehavior: Clip.antiAlias,
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(20),
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black12,
+                //         blurRadius: 15,
+                //         spreadRadius: 2,
+                //       ),
+                //     ],
+                //   ),
+                //   child: Column(
+                //     children: [
+                //       ListTile(
+                //         shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(20)),
+                //         leading: Icon(
+                //           Icons.settings_outlined,
+                //           color: Colors.blue.shade700,
+                //         ),
+                //         title: KText(
+                //          text:  'settings'.tr,
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //         trailing: Icon(
+                //           Icons.chevron_right,
+                //           color: Colors.grey.shade500,
+                //         ),
+                //         onTap: () {
+                //           // Navigate to settings
+                //         },
+                //       ),
+                //       Divider(height: 0),
+                //       ListTile(
+                //         shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(20)),
+                //         leading: Icon(
+                //           Icons.security_outlined,
+                //           color: Colors.blue.shade700,
+                //         ),
+                //         title: KText(
+                //          text:  'privacy'.tr,fontWeight: FontWeight.bold,
+                //
+                //         ),
+                //         trailing: Icon(
+                //           Icons.chevron_right,
+                //           color: Colors.grey.shade500,
+                //         ),
+                //         onTap: () {
+                //           // Navigate to privacy
+                //         },
+                //       ),
+                //     ],
+                //   ),
+                // ),
+
                 SizedBox(height: 30.h),
-
-                // Additional Actions Card
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20.h),clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 15,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(20)),
-                        leading: Icon(
-                          Icons.settings_outlined,
-                          color: Colors.blue.shade700,
-                        ),
-                        title: KText(
-                         text:  'settings'.tr,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        trailing: Icon(
-                          Icons.chevron_right,
-                          color: Colors.grey.shade500,
-                        ),
-                        onTap: () {
-                          // Navigate to settings
-                        },
-                      ),
-                      Divider(height: 0),
-                      ListTile(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(20)),
-                        leading: Icon(
-                          Icons.security_outlined,
-                          color: Colors.blue.shade700,
-                        ),
-                        title: KText(
-                         text:  'privacy'.tr,fontWeight: FontWeight.bold,
-
-                        ),
-                        trailing: Icon(
-                          Icons.chevron_right,
-                          color: Colors.grey.shade500,
-                        ),
-                        onTap: () {
-                          // Navigate to privacy
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 100.h),
               ],
             ),
           );

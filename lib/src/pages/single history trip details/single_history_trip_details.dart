@@ -5,7 +5,8 @@ import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/controllers/pdf_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:pickup_load_update/src/models/single_trip_details_model.dart' as normal_model;
+import 'package:pickup_load_update/src/models/single_trip_details_model.dart'
+    as normal_model;
 import 'package:velocity_x/velocity_x.dart';
 import '../../configs/appUtils.dart';
 import '../../controllers/single trip details controller/single_trip_details_controller.dart';
@@ -46,26 +47,32 @@ class SingleHistoryTripDetailsPage extends StatefulWidget {
 
 class _SingleHistoryTripDetailsPageState
     extends State<SingleHistoryTripDetailsPage> {
-  final SingleTripDetailsController _singleTripDetailsController =
-  Get.put(SingleTripDetailsController());
+  final SingleTripDetailsController _singleTripDetailsController = Get.put(
+    SingleTripDetailsController(),
+  );
   final PdfController pdfController = Get.put(PdfController());
-
+  var review;
+  final TextEditingController comment =TextEditingController();
   @override
   void initState() {
     super.initState();
     _singleTripDetailsController
         .singleTripDetails(widget.tripId, widget.type)
         .then((value) {
-      if (widget.isComplete == true) {
-        if (widget.isReturn == true) {
-          pdfController.generatePdf(
-              tripId: widget.tripId, tripType: "return_trip");
-        } else {
-          pdfController.generatePdf(
-              tripId: widget.tripId, tripType: "rental_trip");
-        }
-      }
-    });
+          if (widget.isComplete == true) {
+            if (widget.isReturn == true) {
+              pdfController.generatePdf(
+                tripId: widget.tripId,
+                tripType: "return_trip",
+              );
+            } else {
+              pdfController.generatePdf(
+                tripId: widget.tripId,
+                tripType: "rental_trip",
+              );
+            }
+          }
+        });
   }
 
   // Helper methods to get data based on trip type
@@ -116,7 +123,7 @@ class _SingleHistoryTripDetailsPageState
                 Icon(Icons.info_outline, color: primaryRed, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Trip Information',
+                  'trip_info'.tr,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -134,7 +141,7 @@ class _SingleHistoryTripDetailsPageState
               children: [
                 _buildInfoRow(
                   icon: Icons.confirmation_number,
-                  label: 'Trip ID',
+                  label: 'tripId'.tr,
                   value: '#${trackingId ?? "N/A"}',
                   valueStyle: TextStyle(
                     color: primaryRed,
@@ -144,7 +151,7 @@ class _SingleHistoryTripDetailsPageState
                 const SizedBox(height: 12),
                 _buildInfoRow(
                   icon: Icons.calendar_today,
-                  label: 'Date & Time',
+                  label: 'date_time'.tr,
                   value: dateTime ?? "N/A",
                 ),
                 const SizedBox(height: 12),
@@ -185,7 +192,11 @@ class _SingleHistoryTripDetailsPageState
                     color: primaryRed,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.location_on, color: Colors.white, size: 12),
+                  child: const Icon(
+                    Icons.location_on,
+                    color: Colors.white,
+                    size: 12,
+                  ),
                 ),
                 Container(
                   width: 2,
@@ -209,7 +220,7 @@ class _SingleHistoryTripDetailsPageState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Pickup Location',
+                    'pickupLocation'.tr,
                     style: TextStyle(
                       fontSize: 12,
                       color: textSecondary,
@@ -229,7 +240,7 @@ class _SingleHistoryTripDetailsPageState
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Dropoff Location(s)',
+                    'dropoffLocation'.tr,
                     style: TextStyle(
                       fontSize: 12,
                       color: textSecondary,
@@ -256,9 +267,9 @@ class _SingleHistoryTripDetailsPageState
   }
 
   Widget _buildNormalDropoffLocations(
-      List<normal_model.DropoffLocations>? dropoffLocations,
-      dynamic dropoffLocation,
-      ) {
+    List<normal_model.DropoffLocations>? dropoffLocations,
+    dynamic dropoffLocation,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -303,8 +314,8 @@ class _SingleHistoryTripDetailsPageState
   }
 
   Widget _buildReturnDropoffLocations(
-      List<return_model.DropoffLocations>? dropoffLocations,
-      ) {
+    List<return_model.DropoffLocations>? dropoffLocations,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -370,7 +381,7 @@ class _SingleHistoryTripDetailsPageState
                 Icon(Icons.directions_car, color: primaryRed, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Vehicle Details',
+                  'vehicle_details'.tr,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -393,16 +404,19 @@ class _SingleHistoryTripDetailsPageState
                     color: Colors.grey.shade100,
                     image: vehicleImage != null && vehicleImage.isNotEmpty
                         ? DecorationImage(
-                      image: NetworkImage(
-                        Urls.getImageURL(endPoint: vehicleImage),
-                      ),
-                      fit: BoxFit.cover,
-                    )
+                            image: NetworkImage(
+                              Urls.getImageURL(endPoint: vehicleImage),
+                            ),
+                            fit: BoxFit.cover,
+                          )
                         : null,
                   ),
                   child: vehicleImage == null || vehicleImage.isEmpty
-                      ? Icon(Icons.directions_car,
-                      size: 40, color: primaryRed.withOpacity(0.3))
+                      ? Icon(
+                          Icons.directions_car,
+                          size: 40,
+                          color: primaryRed.withOpacity(0.3),
+                        )
                       : null,
                 ),
                 const SizedBox(width: 16),
@@ -421,13 +435,15 @@ class _SingleHistoryTripDetailsPageState
                       const SizedBox(height: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: primaryRed.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          '${vehicleCapacity ?? "N/A"} Seats',
+                          '${vehicleCapacity ?? "N/A"} ${'seats'.tr}',
                           style: TextStyle(
                             fontSize: 14,
                             color: primaryRed,
@@ -473,7 +489,7 @@ class _SingleHistoryTripDetailsPageState
             child: Row(
               children: [
                 Icon(
-                  title == 'Driver Info'
+                  title == 'driver_info'
                       ? Icons.person_outline
                       : Icons.business_center,
                   color: primaryRed,
@@ -481,7 +497,7 @@ class _SingleHistoryTripDetailsPageState
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  title,
+                  title.tr,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -504,16 +520,19 @@ class _SingleHistoryTripDetailsPageState
                     color: Colors.grey.shade200,
                     image: imageUrl != null && imageUrl.isNotEmpty
                         ? DecorationImage(
-                      image: NetworkImage(
-                        Urls.getImageURL(endPoint: imageUrl),
-                      ),
-                      fit: BoxFit.cover,
-                    )
+                            image: NetworkImage(
+                              Urls.getImageURL(endPoint: imageUrl),
+                            ),
+                            fit: BoxFit.cover,
+                          )
                         : null,
                   ),
                   child: imageUrl == null || imageUrl.isEmpty
-                      ? Icon(Icons.person,
-                      size: 30, color: primaryRed.withOpacity(0.3))
+                      ? Icon(
+                          Icons.person,
+                          size: 30,
+                          color: primaryRed.withOpacity(0.3),
+                        )
                       : null,
                 ),
                 const SizedBox(width: 16),
@@ -532,10 +551,7 @@ class _SingleHistoryTripDetailsPageState
                       const SizedBox(height: 4),
                       Text(
                         phone,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: textSecondary,
-                        ),
+                        style: TextStyle(fontSize: 14, color: textSecondary),
                       ),
                     ],
                   ),
@@ -571,9 +587,7 @@ class _SingleHistoryTripDetailsPageState
     final amount = isNormalTrip
         ? _normalTripHistory?.amount?.toString()
         : _returnTripHistory?.amount;
-    final otp = isNormalTrip
-        ? _normalTripHistory?.otp?.toString()
-        : "N/A";
+    final otp = isNormalTrip ? _normalTripHistory?.otp?.toString() : "N/A";
 
     return Container(
       decoration: BoxDecoration(
@@ -596,7 +610,7 @@ class _SingleHistoryTripDetailsPageState
                 Icon(Icons.receipt_long, color: primaryRed, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Trip Summary',
+                  'trip_summary'.tr,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -611,18 +625,13 @@ class _SingleHistoryTripDetailsPageState
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                _buildDetailRow(
-                  'Otp',otp.toString(),
-                ),
+                _buildDetailRow('otp', otp.toString()),
+                const SizedBox(height: 12),
+                _buildDetailRow('round_trip', roundTripText),
                 const SizedBox(height: 12),
                 _buildDetailRow(
-                  'Round Trip',
-                  roundTripText,
-                ),
-                const SizedBox(height: 12),
-                _buildDetailRow(
-                  'Total Distance',
-                  '${calculateTotalDistance().toStringAsFixed(2)} km',
+                  'total_distance',
+                  '${calculateTotalDistance().toStringAsFixed(2)} ${"km".tr}',
                 ),
                 const SizedBox(height: 12),
                 _buildDetailRow(
@@ -656,17 +665,12 @@ class _SingleHistoryTripDetailsPageState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: textSecondary,
-                ),
-              ),
+              Text(label, style: TextStyle(fontSize: 12, color: textSecondary)),
               const SizedBox(height: 2),
               Text(
                 value,
-                style: valueStyle ??
+                style:
+                    valueStyle ??
                     TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -685,7 +689,7 @@ class _SingleHistoryTripDetailsPageState
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          title,
+          title.tr,
           style: TextStyle(
             fontSize: 14,
             color: textSecondary,
@@ -694,7 +698,8 @@ class _SingleHistoryTripDetailsPageState
         ),
         Text(
           value,
-          style: valueStyle ??
+          style:
+              valueStyle ??
               TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -728,12 +733,9 @@ class _SingleHistoryTripDetailsPageState
           children: [
             const Icon(Icons.download, size: 24),
             const SizedBox(width: 12),
-            const Text(
-              'Download PDF',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+            Text(
+              'download_pdf'.tr,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -748,11 +750,9 @@ class _SingleHistoryTripDetailsPageState
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text(
-          'Trip Details',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        title: Text(
+          'trip_details'.tr,
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: primaryRed,
@@ -765,11 +765,7 @@ class _SingleHistoryTripDetailsPageState
       ),
       body: Obx(() {
         if (_singleTripDetailsController.isLoading.value) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: primaryRed,
-            ),
-          );
+          return Center(child: CircularProgressIndicator(color: primaryRed));
         }
 
         if (isNormalTrip) {
@@ -801,17 +797,14 @@ class _SingleHistoryTripDetailsPageState
                   Column(
                     children: [
                       _buildContactCard(
-                        title: 'Partner Info',
+                        title: 'partner_info',
                         name: normalData.partner!.name ?? "N/A",
                         phone: normalData.partner!.phone ?? "N/A",
                         imageUrl: normalData.partner!.image,
                         onTap: () async {
                           final phone = normalData.partner!.phone;
                           if (phone != null && phone.isNotEmpty) {
-                            final Uri url = Uri(
-                              scheme: 'tel',
-                              path: phone,
-                            );
+                            final Uri url = Uri(scheme: 'tel', path: phone);
                             if (await canLaunchUrl(url)) {
                               await launchUrl(url);
                             }
@@ -830,17 +823,14 @@ class _SingleHistoryTripDetailsPageState
                   Column(
                     children: [
                       _buildContactCard(
-                        title: 'Driver Info',
+                        title: 'driver_info',
                         name: normalData.driver!.name ?? "N/A",
                         phone: normalData.driver!.phone ?? "N/A",
                         imageUrl: normalData.driver!.image,
                         onTap: () async {
                           final phone = normalData.driver!.phone;
                           if (phone != null && phone.isNotEmpty) {
-                            final Uri url = Uri(
-                              scheme: 'tel',
-                              path: phone,
-                            );
+                            final Uri url = Uri(scheme: 'tel', path: phone);
                             if (await canLaunchUrl(url)) {
                               await launchUrl(url);
                             }
@@ -856,8 +846,7 @@ class _SingleHistoryTripDetailsPageState
                 sizeH10,
                 _buildMedicalServicesCard(),
                 sizeH10,
-                if (widget.isComplete == true)
-                _buildReviewSection(),
+                if (widget.isComplete == true) _buildReviewSection(),
                 // PDF Download Button (if trip is complete)
                 if (widget.isComplete == true) _buildPdfButton(),
 
@@ -894,17 +883,14 @@ class _SingleHistoryTripDetailsPageState
                   Column(
                     children: [
                       _buildContactCard(
-                        title: 'Partner Info',
+                        title: 'partner_info',
                         name: returnData.partner!.name ?? "N/A",
                         phone: returnData.partner!.phone ?? "N/A",
                         imageUrl: returnData.partner!.image,
                         onTap: () async {
                           final phone = returnData.partner!.phone;
                           if (phone != null && phone.isNotEmpty) {
-                            final Uri url = Uri(
-                              scheme: 'tel',
-                              path: phone,
-                            );
+                            final Uri url = Uri(scheme: 'tel', path: phone);
                             if (await canLaunchUrl(url)) {
                               await launchUrl(url);
                             }
@@ -923,17 +909,14 @@ class _SingleHistoryTripDetailsPageState
                   Column(
                     children: [
                       _buildContactCard(
-                        title: 'Driver Info',
+                        title: 'driver_info',
                         name: returnData.driver!.name ?? "N/A",
                         phone: returnData.driver!.phone ?? "N/A",
                         imageUrl: returnData.driver!.image,
                         onTap: () async {
                           final phone = returnData.driver!.phone;
                           if (phone != null && phone.isNotEmpty) {
-                            final Uri url = Uri(
-                              scheme: 'tel',
-                              path: phone,
-                            );
+                            final Uri url = Uri(scheme: 'tel', path: phone);
                             if (await canLaunchUrl(url)) {
                               await launchUrl(url);
                             }
@@ -949,8 +932,7 @@ class _SingleHistoryTripDetailsPageState
                 sizeH10,
                 _buildMedicalServicesCard(),
                 sizeH10,
-                if (widget.isComplete == true)
-                  _buildReviewSection(),
+                if (widget.isComplete == true) _buildReviewSection(),
                 // PDF Download Button (if trip is complete)
                 if (widget.isComplete == true) _buildPdfButton(),
 
@@ -968,19 +950,21 @@ class _SingleHistoryTripDetailsPageState
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.error_outline, size: 64, color: primaryRed.withOpacity(0.5)),
+          Icon(
+            Icons.error_outline,
+            size: 64,
+            color: primaryRed.withOpacity(0.5),
+          ),
           const SizedBox(height: 16),
           Text(
-            'No trip data available',
-            style: TextStyle(
-              fontSize: 18,
-              color: textSecondary,
-            ),
+            'no_trip_data'.tr,
+            style: TextStyle(fontSize: 18, color: textSecondary),
           ),
         ],
       ),
     );
   }
+
   // Fixed calculateTotalDistance with separate handling
   double calculateTotalDistance() {
     try {
@@ -993,16 +977,25 @@ class _SingleHistoryTripDetailsPageState
         String? dropOffMap;
 
         // Check for dropoffMap in tripHistory
-        if (tripHistory.dropoffMap != null && tripHistory.dropoffMap.toString().isNotEmpty) {
+        if (tripHistory.dropoffMap != null &&
+            tripHistory.dropoffMap.toString().isNotEmpty) {
           dropOffMap = tripHistory.dropoffMap.toString().replaceAll(',', ' ');
         }
         // Check for dropoffMap in dropoffLocations
-        else if (tripHistory.dropoffLocations != null && tripHistory.dropoffLocations!.isNotEmpty) {
-          dropOffMap = tripHistory.dropoffLocations!.last.dropoffMap?.replaceAll(',', ' ');
+        else if (tripHistory.dropoffLocations != null &&
+            tripHistory.dropoffLocations!.isNotEmpty) {
+          dropOffMap = tripHistory.dropoffLocations!.last.dropoffMap
+              ?.replaceAll(',', ' ');
         }
 
-        if (map != null && dropOffMap != null && map.isNotEmpty && dropOffMap.isNotEmpty) {
-          return _singleTripDetailsController.calculateDistance(map, dropOffMap);
+        if (map != null &&
+            dropOffMap != null &&
+            map.isNotEmpty &&
+            dropOffMap.isNotEmpty) {
+          return _singleTripDetailsController.calculateDistance(
+            map,
+            dropOffMap,
+          );
         }
       } else {
         // Return trip calculation
@@ -1018,12 +1011,20 @@ class _SingleHistoryTripDetailsPageState
         }
 
         // Check for dropoffMap in dropoffLocations
-        if (tripHistory.dropoffLocations != null && tripHistory.dropoffLocations!.isNotEmpty) {
-          dropOffMap = tripHistory.dropoffLocations!.last.dropoffMap?.replaceAll(',', ' ');
+        if (tripHistory.dropoffLocations != null &&
+            tripHistory.dropoffLocations!.isNotEmpty) {
+          dropOffMap = tripHistory.dropoffLocations!.last.dropoffMap
+              ?.replaceAll(',', ' ');
         }
 
-        if (map != null && dropOffMap != null && map.isNotEmpty && dropOffMap.isNotEmpty) {
-          return _singleTripDetailsController.calculateDistance(map, dropOffMap);
+        if (map != null &&
+            dropOffMap != null &&
+            map.isNotEmpty &&
+            dropOffMap.isNotEmpty) {
+          return _singleTripDetailsController.calculateDistance(
+            map,
+            dropOffMap,
+          );
         }
       }
     } catch (e) {
@@ -1035,7 +1036,13 @@ class _SingleHistoryTripDetailsPageState
 
   Widget _buildMedicalServicesCard() {
     // Only show if category is medical (adjust the condition as needed)
-    if (_singleTripDetailsController.singleTripDetailsModel.value.data?.tripHistory?.categoryId != '6') {
+    if (_singleTripDetailsController
+            .singleTripDetailsModel
+            .value
+            .data
+            ?.tripHistory
+            ?.categoryId !=
+        '6') {
       return SizedBox.shrink();
     }
 
@@ -1087,14 +1094,21 @@ class _SingleHistoryTripDetailsPageState
           SizedBox(height: 16),
 
           // Medical Services List
-          ...?_singleTripDetailsController.singleTripDetailsModel.value.data?.tripHistory?.tripQuestionAnswers?.map((service) {
-            return buildMedicalServiceItem(
-              icon: Icons.local_hospital,
-              iconColor: Vx.randomPrimaryColor,
-              title: service.question??'N/A',
-              answer: service.answer??'N/A',
-            );
-          }).toList(),
+          ...?_singleTripDetailsController
+              .singleTripDetailsModel
+              .value
+              .data
+              ?.tripHistory
+              ?.tripQuestionAnswers
+              ?.map((service) {
+                return buildMedicalServiceItem(
+                  icon: Icons.local_hospital,
+                  iconColor: Vx.randomPrimaryColor,
+                  title: service.question ?? 'N/A',
+                  answer: service.answer ?? 'N/A',
+                );
+              })
+              .toList(),
         ],
       ),
     );
@@ -1102,7 +1116,14 @@ class _SingleHistoryTripDetailsPageState
 
   // New method to build review section
   Widget _buildReviewSection() {
-    return Container(
+    final isSubmit = widget.isReturn==true
+        ?
+        _returnTripHistory?.review_status:_normalTripHistory?.review_status;
+
+    return
+    isSubmit=='1'?
+        SizedBox.shrink():
+      Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.amber.withAlpha(20),
@@ -1117,7 +1138,7 @@ class _SingleHistoryTripDetailsPageState
               Icon(Icons.rate_review, size: 18, color: Colors.amber.shade700),
               SizedBox(width: 8),
               Text(
-                'Rate Your Trip Experience',
+                'rate_trip_experience'.tr,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -1129,15 +1150,16 @@ class _SingleHistoryTripDetailsPageState
           SizedBox(height: 12),
           // Rating Stars
           _buildRatingStars((int rating) {
-            print('Selected rating: $rating');
+            review=rating;
+            print('Selected rating: $review');
           }),
           SizedBox(height: 12),
 
           TextField(
             maxLines: 3,
-            maxLength: 500,
+            maxLength: 500,controller: comment,
             decoration: InputDecoration(
-              hintText: 'Share your experience with this trip...',
+              hintText: 'share_trip_experience'.tr,
               hintStyle: TextStyle(fontSize: 12, color: black),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -1151,7 +1173,10 @@ class _SingleHistoryTripDetailsPageState
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: primaryColor, width: 1.5),
               ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
               counterText: '',
             ),
           ),
@@ -1160,7 +1185,7 @@ class _SingleHistoryTripDetailsPageState
           // Submit Button
           InkWell(
             onTap: () {
-              _submitReview(widget.tripId.toString());
+              _submitReview();
             },
             child: Container(
               width: double.infinity,
@@ -1182,7 +1207,7 @@ class _SingleHistoryTripDetailsPageState
               ),
               child: Center(
                 child: Text(
-                  'Submit Review',
+                  'submit_review'.tr,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -1197,7 +1222,6 @@ class _SingleHistoryTripDetailsPageState
     );
   }
 
-
   Widget _buildRatingStars(Function(int) onRatingUpdate) {
     return RatingBar.builder(
       initialRating: 0,
@@ -1207,23 +1231,27 @@ class _SingleHistoryTripDetailsPageState
       itemCount: 5,
       itemSize: 28,
       unratedColor: Colors.grey.withOpacity(0.5),
-      itemBuilder: (context, _) => Icon(
-        Icons.star,
-        color: Colors.amber,
-      ),
+      itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
       onRatingUpdate: (rating) {
         onRatingUpdate(rating.toInt());
       },
     );
   }
 
-
-  void _submitReview(String tripId) {
-    Get.dialog(
+  Future<void> _submitReview() async {
+    var res = await _singleTripDetailsController.submitReview(
+      tripId: widget.tripId,
+      type: widget.type,
+      partnerID: widget.isReturn==true?_returnTripData?.partner?.id.toString():_normalTripData?.partner?.id.toString(),
+      review: comment.text,
+      rating: review.toString()
+    );
+if(res==true) {
+  Get.dialog(
       AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
-          'Submit Review',
+          'submit_review'.tr,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         content: Column(
@@ -1232,12 +1260,12 @@ class _SingleHistoryTripDetailsPageState
             Icon(Icons.thumb_up_alt, size: 50, color: primaryColor),
             SizedBox(height: 16),
             Text(
-              'Thank you for your feedback!',
+              'thank_feedback'.tr,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 8),
             Text(
-              'Your review helps us improve our service.',
+              'review_help_improve'.tr,
               style: TextStyle(fontSize: 12, color: grey),
               textAlign: TextAlign.center,
             ),
@@ -1246,16 +1274,15 @@ class _SingleHistoryTripDetailsPageState
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: Text(
-              'Close',
-              style: TextStyle(color: primaryColor),
-            ),
+            child: Text('close'.tr, style: TextStyle(color: primaryColor)),
           ),
         ],
       ),
     );
-
+  _singleTripDetailsController
+      .singleTripDetails(widget.tripId, widget.type);
+}else{
+  Get.snackbar("warning".tr, 'Something Went Wrong');
+}
   }
-
-
 }

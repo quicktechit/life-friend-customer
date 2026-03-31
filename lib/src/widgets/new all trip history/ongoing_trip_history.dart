@@ -378,7 +378,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                             color: textColor,
                                           ),
                                         ),
-                                      )).toList(),
+                                      )),
                                     if (item.rentalRelationships?.trip?.dropoffLocation != null)
                                       Padding(
                                         padding: EdgeInsets.only(left: 24),
@@ -604,7 +604,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'View Trip Details',
+                              'viewTripDetails'.tr,
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,

@@ -70,7 +70,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
           : _controller.allConfirmTripHistory.isEmpty
           ? Center(
         child: EmptyBoxWidget(
-          title: 'No confirmed trips available yet!',
+          title: 'noConfirmedTrips'.tr,
           truckImage: 'assets/images/empty.png',
 
         ),
@@ -191,7 +191,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                         SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Trip ID: ${item.trackingId}',
+                            '${"tripId".tr} ${item.trackingId}',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -212,7 +212,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                 Icon(Icons.autorenew, size: 12, color: Color(0xFF2196F3)),
                                 SizedBox(width: 4),
                                 Text(
-                                  'RETURN',
+                                  'return'.tr,
                                   style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
@@ -314,7 +314,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Pickup Location',
+                                            'pickupLocation'.tr,
                                             style: TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.w500,
@@ -369,7 +369,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                         Icon(Icons.location_on, size: 16, color: Colors.red),
                                         SizedBox(width: 8),
                                         Text(
-                                          'Dropoff Location${(item.rentalRelationships?.trip?.dropoffLocations?.length ?? 0) > 1 ? 's' : ''}',
+                                          '${"dropoffLocation".tr}${(item.rentalRelationships?.trip?.dropoffLocations?.length ?? 0) > 1 ? 's' : ''}',
                                           style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,
@@ -452,7 +452,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                   Icon(Icons.access_time, size: 14, color: subtitleColor),
                                   SizedBox(width: 8),
                                   Text(
-                                    'Trip Time:',
+                                    'tripTime'.tr,
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: subtitleColor,
@@ -538,7 +538,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                 Icon(Icons.map, size: 14, color: primaryColor),
                                 SizedBox(width: 6),
                                 Text(
-                                  'View Map',
+                                  'viewMap'.tr,
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
@@ -553,8 +553,8 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                         // Cancel Trip button
                         InkWell(
                           onTap: () {
-                            if(profileController.profileModel.value.data?.cancelButton == 0){
-                              kSnackBar(message: "Cancel is not Allowed", bgColor: Colors.red);
+                            if(profileController.profileModel.value.data?.cancelButton == '0'){
+                              kSnackBar(message: "cancel_not_allowed".tr, bgColor: Colors.red);
                             } else {
                               Get.bottomSheet(
                                 backgroundColor: Colors.white,
@@ -562,7 +562,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                   children: [
                                     10.heightBox,
                                     Text(
-                                      "Select cancel reason",
+                                      "cancel_reason".tr,
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -614,7 +614,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                 Icon(Icons.cancel, size: 14, color: Colors.red),
                                 SizedBox(width: 6),
                                 Text(
-                                  'Cancel Trip',
+                                  'cancelTrip'.tr,
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
@@ -648,7 +648,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                             child: Row(
                               children: [
                                 Text(
-                                  'Fare:',
+                                  'fare'.tr,
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -692,7 +692,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'View Trip Details',
+                              'viewTripDetails'.tr,
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,

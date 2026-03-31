@@ -20,7 +20,7 @@ class LangController extends GetxController {
   }
 
 
- void changeLang(Locale locale) async {
+ Future<void> changeLang(Locale locale) async {
     Get.updateLocale(locale);
     selectedLang.value = locale;
     fontLang.value = locale;

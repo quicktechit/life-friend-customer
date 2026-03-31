@@ -46,6 +46,7 @@ class Urls {
   static String service = "$baseUrl/partner/trip-services";
   static String range = "$baseUrl/customer/trip-range?vehicle_id=";
   static String typeCatList = "$baseUrl/partner/product-types";
+  static String reviewSubmit = "$baseUrl/customer/review-submit";
   static String singleReturnTripDetails =
       "$baseUrl/customer/return-single-history";
   static String singleTripDetails = "$baseUrl/customer/single-trip-history";

@@ -8,17 +8,7 @@ import 'package:pickup_load_update/src/controllers/car%20details%20controller/ca
 
 import '../../models/car_details_model.dart' as details;
 
-Widget _buildStarRating(int starCount) {
-  List<Widget> stars = List.generate(
-    5,
-        (index) => Icon(
-      index < starCount ? Icons.star : Icons.star_border,
-      color: Colors.amber,
-      size: 18,
-    ),
-  );
-  return Row(children: stars);
-}
+
 
 class CarDetailsPage extends StatefulWidget {
   final String tripId;
@@ -53,8 +43,31 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     if (vehicle?.vehicleBackPic != null && vehicle!.vehicleBackPic!.isNotEmpty) {
       images.add(vehicle.vehicleBackPic!);
     }
-    // Add more images if available from your model
     return images;
+  }
+
+  // Helper method to get star count from ratingCounts
+  int _getStarCount(int stars) {
+    final ratingCounts = _carDetailsController.carDetailsModel.value.data?.ratingCounts;
+    if (ratingCounts == null) return 0;
+
+    switch(stars) {
+      case 5: return ratingCounts.the5Star ?? 0;
+      case 4: return ratingCounts.the4Star ?? 0;
+      case 3: return ratingCounts.the3Star ?? 0;
+      case 2: return ratingCounts.the2Star ?? 0;
+      case 1: return ratingCounts.the1Star ?? 0;
+      default: return 0;
+    }
+  }
+
+  // Helper method to get average rating
+  double _getAverageRating() {
+    final data = _carDetailsController.carDetailsModel.value.data;
+    if (data?.ratingAvg != null) {
+      return (data?.ratingAvg ?? 0).toDouble();
+    }
+    return 0.0;
   }
 
   @override
@@ -62,7 +75,6 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        // backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
@@ -148,7 +160,6 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
 
                     // Navigation arrows (only if multiple images)
                     if (images.length > 1) ...[
-                      // Left arrow
                       Positioned(
                         left: 10,
                         top: 135,
@@ -170,8 +181,6 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                           ),
                         ),
                       ),
-
-                      // Right arrow
                       Positioned(
                         right: 10,
                         top: 135,
@@ -193,8 +202,6 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                           ),
                         ),
                       ),
-
-                      // Image counter
                       Positioned(
                         bottom: 15,
                         right: 15,
@@ -210,8 +217,6 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                           ),
                         ),
                       ),
-
-                      // Dot indicators
                       Positioned(
                         bottom: 15,
                         left: 15,
@@ -261,7 +266,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                         ],
                       ),
                     ),
-                    
+
                   ],
                 ),
 
@@ -421,7 +426,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
 
                 SizedBox(height: 16),
 
-                // Rating Overview
+                // Rating Overview - UPDATED FOR NEW MODEL
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16),
                   padding: EdgeInsets.all(20),
@@ -454,7 +459,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  double.parse(data?.averageStar ?? '0').toStringAsFixed(1),
+                                  _getAverageRating().toStringAsFixed(1),
                                   style: TextStyle(
                                     fontSize: 28,
                                     fontWeight: FontWeight.bold,
@@ -476,11 +481,11 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _buildRatingDistribution(5, data?.reviews ?? []),
-                                _buildRatingDistribution(4, data?.reviews ?? []),
-                                _buildRatingDistribution(3, data?.reviews ?? []),
-                                _buildRatingDistribution(2, data?.reviews ?? []),
-                                _buildRatingDistribution(1, data?.reviews ?? []),
+                                _buildRatingDistribution(5),
+                                _buildRatingDistribution(4),
+                                _buildRatingDistribution(3),
+                                _buildRatingDistribution(2),
+                                _buildRatingDistribution(1),
                               ],
                             ),
                           ),
@@ -488,7 +493,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        '${data?.reviewsCount ?? 0} total reviews',
+                        '${data?.totalReviews ?? 0} total reviews',
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 14,
@@ -497,116 +502,6 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                     ],
                   ),
                 ),
-
-                SizedBox(height: 16),
-
-                // Customer Reviews List
-                if (data?.reviews?.isNotEmpty ?? false)
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 4, bottom: 12),
-                          child: Text(
-                            'Recent Reviews',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: data!.reviews!.length > 3 ? 3 : data.reviews!.length,
-                          itemBuilder: (context, index) {
-                            final review = data.reviews![index];
-                            return Container(
-                              margin: EdgeInsets.only(bottom: 12),
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: Colors.grey[200]!),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 20,
-                                        backgroundColor: Colors.grey[200],
-                                        backgroundImage: review.getCustomer?.image != null
-                                            ? NetworkImage(Urls.getImageURL(endPoint: review.getCustomer!.image!))
-                                            : null,
-                                        child: review.getCustomer?.image == null
-                                            ? Icon(Icons.person, color: Colors.grey[600], size: 22)
-                                            : null,
-                                      ),
-                                      SizedBox(width: 12),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              review.getCustomer?.name ?? 'Anonymous',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                            SizedBox(height: 2),
-                                            _buildStarRating(int.parse(review.starReviews ?? '0')),
-                                          ],
-                                        ),
-                                      ),
-                                      Text(
-                                        _getTimeAgo(review.createdAt),
-                                        style: TextStyle(
-                                          color: Colors.grey[500],
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  if (review.comment?.isNotEmpty ?? false) ...[
-                                    SizedBox(height: 12),
-                                    Text(
-                                      review.comment!,
-                                      style: TextStyle(
-                                        color: Colors.grey[700],
-                                        fontSize: 14,
-                                        height: 1.4,
-                                      ),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        if (data.reviews!.length > 3)
-                          Center(
-                            child: TextButton(
-                              onPressed: () {
-                                // Navigate to all reviews page
-                              },
-                              child: Text(
-                                'See All ${data.reviews!.length} Reviews',
-                                style: TextStyle(
-                                  color: Colors.amber[800],
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
 
                 SizedBox(height: 30),
               ],
@@ -702,9 +597,11 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     );
   }
 
-  Widget _buildRatingDistribution(int stars, List<details.Review> reviews) {
-    int count = reviews.where((r) => int.parse(r.starReviews ?? '0') == stars).length;
-    double percentage = reviews.isEmpty ? 0 : (count / reviews.length) * 100;
+  // UPDATED Rating Distribution - Uses ratingCounts instead of reviews list
+  Widget _buildRatingDistribution(int stars) {
+    int count = _getStarCount(stars);
+    int totalReviews = _carDetailsController.carDetailsModel.value.data?.totalReviews ?? 0;
+    double percentage = totalReviews == 0 ? 0 : (count / totalReviews) * 100;
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2),
@@ -762,5 +659,17 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     } else {
       return 'Just now';
     }
+  }
+
+  Widget _buildStarRating(int starCount) {
+    List<Widget> stars = List.generate(
+      5,
+          (index) => Icon(
+        index < starCount ? Icons.star : Icons.star_border,
+        color: Colors.amber,
+        size: 18,
+      ),
+    );
+    return Row(children: stars);
   }
 }

@@ -34,8 +34,9 @@ class CarDetailsController extends GetxController {
       request.headers['Content-Type'] = 'application/json';
       request.headers['Authorization'] = 'Bearer $token';
 
-      request.body = jsonEncode({"trip_id": tripId, "bid_id": bidId});
 
+      request.body = jsonEncode({"trip_id": tripId, "bid_id": bidId});
+print(request.body);
       var response = await http.Client().send(request);
       var responseBody = await response.stream.bytesToString();
 

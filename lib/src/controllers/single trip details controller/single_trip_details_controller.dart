@@ -59,6 +59,48 @@ class SingleTripDetailsController extends GetxController {
     }
   }
 
+  Future<bool> submitReview({
+    String? tripId,
+    String? type,
+    String? partnerID,
+    String? review,
+    String? rating,
+  }) async {
+    SharedPreferencesManager prefsManager =
+        await SharedPreferencesManager.getInstance();
+    String? token = prefsManager.getToken();
+    var body = {
+      "trip_id": tripId,
+      "trip_type": type,
+      'partner_id': partnerID,
+      'rating': rating,
+      'review': review,
+    };
+    print(body);
+    print(Urls.reviewSubmit);
+    try {
+      var response = await http.post(
+        Uri.parse(Urls.reviewSubmit),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(body),
+      );
+      print('review dayaasdasd====');
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   /// calculate  distance formula
 
   double calculateDistance(String map, String dropOffMap) {

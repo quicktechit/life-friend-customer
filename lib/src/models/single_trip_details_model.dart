@@ -45,6 +45,7 @@ class TripHistory {
 
   final String? customerId;
   final String? categoryId;
+  final String? review_status;
   final String? sizecategoryId;
   final String? truckType;
   final String? vehicleId;
@@ -90,6 +91,7 @@ class TripHistory {
     this.id,
     this.customerId,
     this.categoryId,
+    this.review_status,
     this.sizecategoryId,
     this.truckType,
     this.vehicleId,
@@ -136,6 +138,7 @@ class TripHistory {
   TripHistory.fromJson(Map<String, dynamic> json)
     : id = json['id'] as int?,
       customerId = _toStr(json['customer_id']),
+        review_status = _toStr(json['review_status']),
       categoryId = _toStr(json['category_id']),
       sizecategoryId = _toStr(json['sizecategory_id']),
       truckType = _toStr(json['truck_type']),

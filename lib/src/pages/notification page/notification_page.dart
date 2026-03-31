@@ -28,7 +28,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Notifications',
+          'notifications'.tr,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -42,7 +42,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             IconButton(
               icon: Icon(Icons.delete_sweep, color: Colors.white),
               onPressed: () => _showDeleteConfirmation(context),
-              tooltip: 'Clear all',
+              tooltip: 'clear_all'.tr,
             ),
         ],
       ),
@@ -77,7 +77,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             CircularProgressIndicator(color: primaryColor),
             SizedBox(height: 16),
             Text(
-              'Loading notifications...',
+              'loading_notifications'.tr,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -99,7 +99,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               ),
               SizedBox(height: 20),
               Text(
-                'No notifications yet',
+                'thereIsNoNotifications'.tr,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -108,7 +108,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               ),
               SizedBox(height: 8),
               Text(
-                'We\'ll notify you when something arrives',
+                'notify_on_arrival'.tr,
                 style: TextStyle(
                   color: Colors.grey[500],
                 ),
@@ -117,13 +117,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
               ElevatedButton(
                 onPressed: _refreshNotifications,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF4A6EF6),
+                  backgroundColor: grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
-                child: Text('Refresh'),
+                child: Text('refresh'.tr,style: TextStyle(color: primaryColor),),
               ),
             ],
           ),
@@ -185,7 +185,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               ),
               SizedBox(height: 16),
               Text(
-                'Clear all notifications?',
+                'clear_all_notifications'.tr,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -193,7 +193,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               ),
               SizedBox(height: 12),
               Text(
-                'This action cannot be undone',
+                'action_cannot_undo'.tr,
                 style: TextStyle(
                   color: Colors.grey[600],
                 ),
@@ -212,7 +212,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         side: BorderSide(color: Colors.grey[300]!),
                       ),
                       child: Text(
-                        'Cancel',
+                        'cancel'.tr,
                         style: TextStyle(
                           color: Colors.grey[700],
                         ),
@@ -234,7 +234,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         ),
                       ),
                       child: Text(
-                        'Clear All',
+                        'clear_all'.tr,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
