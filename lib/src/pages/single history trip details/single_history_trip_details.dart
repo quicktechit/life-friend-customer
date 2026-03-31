@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
@@ -854,7 +855,9 @@ class _SingleHistoryTripDetailsPageState
                 _buildTripDetailsSection(true),
                 sizeH10,
                 _buildMedicalServicesCard(),
-
+                sizeH10,
+                if (widget.isComplete == true)
+                _buildReviewSection(),
                 // PDF Download Button (if trip is complete)
                 if (widget.isComplete == true) _buildPdfButton(),
 
@@ -945,6 +948,9 @@ class _SingleHistoryTripDetailsPageState
                 _buildTripDetailsSection(false),
                 sizeH10,
                 _buildMedicalServicesCard(),
+                sizeH10,
+                if (widget.isComplete == true)
+                  _buildReviewSection(),
                 // PDF Download Button (if trip is complete)
                 if (widget.isComplete == true) _buildPdfButton(),
 
@@ -1093,4 +1099,163 @@ class _SingleHistoryTripDetailsPageState
       ),
     );
   }
+
+  // New method to build review section
+  Widget _buildReviewSection() {
+    return Container(
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.amber.withAlpha(20),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.amber.withAlpha(60)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.rate_review, size: 18, color: Colors.amber.shade700),
+              SizedBox(width: 8),
+              Text(
+                'Rate Your Trip Experience',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: black54,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12),
+          // Rating Stars
+          _buildRatingStars((int rating) {
+            print('Selected rating: $rating');
+          }),
+          SizedBox(height: 12),
+
+          TextField(
+            maxLines: 3,
+            maxLength: 500,
+            decoration: InputDecoration(
+              hintText: 'Share your experience with this trip...',
+              hintStyle: TextStyle(fontSize: 12, color: black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: black),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: black),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: primaryColor, width: 1.5),
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              counterText: '',
+            ),
+          ),
+
+          SizedBox(height: 12),
+          // Submit Button
+          InkWell(
+            onTap: () {
+              _submitReview(widget.tripId.toString());
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 12),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [primaryColor, primaryColor.withRed(200)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryColor.withAlpha(80),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  'Submit Review',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildRatingStars(Function(int) onRatingUpdate) {
+    return RatingBar.builder(
+      initialRating: 0,
+      minRating: 1,
+      direction: Axis.horizontal,
+      allowHalfRating: false,
+      itemCount: 5,
+      itemSize: 28,
+      unratedColor: Colors.grey.withOpacity(0.5),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      onRatingUpdate: (rating) {
+        onRatingUpdate(rating.toInt());
+      },
+    );
+  }
+
+
+  void _submitReview(String tripId) {
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          'Submit Review',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.thumb_up_alt, size: 50, color: primaryColor),
+            SizedBox(height: 16),
+            Text(
+              'Thank you for your feedback!',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Your review helps us improve our service.',
+              style: TextStyle(fontSize: 12, color: grey),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text(
+              'Close',
+              style: TextStyle(color: primaryColor),
+            ),
+          ),
+        ],
+      ),
+    );
+
+  }
+
+
 }

@@ -45,6 +45,7 @@ dependencies:
   firebase_messaging: ^16.1.1
   get_storage: ^2.1.1
   badges: ^3.1.2
+  flutter_rating_bar: ^4.0.1
   flutter_local_notifications: ^20.0.0
   vibration: ^3.1.5
   flutter_animate: ^4.5.2
