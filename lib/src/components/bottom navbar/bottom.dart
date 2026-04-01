@@ -81,7 +81,7 @@ class _DashboardViewState extends State<DashboardView> {
       case 0:
         return const HomePage(key: ValueKey(0));
       case 1:
-        return const QuickTechAllTripScreen(key: ValueKey(1));
+        return  QuickTechAllTripScreen(key: ValueKey(1));
       case 2:
         return ProfilePage(key: ValueKey(2));
       default:

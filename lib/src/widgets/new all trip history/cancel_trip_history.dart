@@ -26,8 +26,7 @@ class CancelTripHistory extends StatefulWidget {
 }
 
 class _CancelTripHistoryState extends State<CancelTripHistory> {
-  final NewAllTripHistoryController _controller =
-  Get.put(NewAllTripHistoryController());
+  final NewAllTripHistoryController _controller =Get.find();
 
   final int maxWordsToShow = 4;
 
@@ -39,7 +38,10 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
   @override
   void initState() {
     super.initState();
-    _controller.getCancelTrip();
+    WidgetsBinding.instance.addPostFrameCallback((V){
+      _controller.getCancelTrip();
+      _controller.getCancelList();
+    });
   }
 
   @override

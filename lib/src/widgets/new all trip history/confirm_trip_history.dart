@@ -31,8 +31,7 @@ class AllConfirmTripHistory extends StatefulWidget {
 }
 
 class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
-  final NewAllTripHistoryController _controller =
-  Get.put(NewAllTripHistoryController());
+  final NewAllTripHistoryController _controller =Get.find();
   final CancelController cancelController = Get.put(CancelController());
   final ProfileController profileController = Get.put(ProfileController());
   final int maxWordsToShow = 4;
@@ -52,10 +51,10 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       profileController.getProfileData();
       _controller.getConfirmTrip();
-      _controller.getOngoingTrip();
-      _controller.getCompleteTrip();
-      _controller.getCancelTrip();
-      _controller.getCancelList();
+      // _controller.getOngoingTrip();
+      // _controller.getCompleteTrip();
+      // _controller.getCancelTrip();
+      // _controller.getCancelList();
     });
   }
 

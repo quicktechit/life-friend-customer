@@ -103,7 +103,13 @@ class _DateAndTimeState extends State<DateAndTime> {
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
+      lastDate: DateTime.now().add(
+        Duration(
+          days: int.parse(
+            vehicleController.selectedItem.value?.scheduleDay ?? '7',
+          )-1,
+        ),
+      ),
       selectableDayPredicate: (DateTime date) {
         // Allow all future dates
         return date.isAfter(DateTime.now().subtract(const Duration(days: 1)));

@@ -27,6 +27,7 @@ import 'package:pickup_load_update/src/widgets/divider_widget.dart';
 import 'package:pickup_load_update/src/widgets/slider/slider_widget.dart';
 import '../../controllers/rental trip request controllers/rental_trip_bid_confirm_controller.dart';
 import '../../controllers/vehicles categoris/quick_tech_vehicles_controller.dart';
+import '../../widgets/live_terms_conditions/live_terms_conditions.dart';
 import 'bidding_confirm_screen.dart';
 
 class LiveBiddingPage extends StatefulWidget {
@@ -69,8 +70,9 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
     SingleTripDetailsController(),
   );
 
-  final RentalTripSubmitController _rentalTripSubmitController =
-  Get.put(RentalTripSubmitController());
+  final RentalTripSubmitController _rentalTripSubmitController = Get.put(
+    RentalTripSubmitController(),
+  );
 
   final CancelController cancelController = Get.put(CancelController());
 
@@ -88,8 +90,9 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
     final savedSeconds = box.read<int>('remainingTime') ?? 0;
 
     // Default bidding time in minutes
-    final biddingTime =
-    int.parse(vehicleController.selectedItem.value?.biddingTime ?? '60');
+    final biddingTime = int.parse(
+      vehicleController.selectedItem.value?.biddingTime ?? '60',
+    );
 
     // Initialize remaining time
     _remainingTime = savedSeconds > 0
@@ -158,17 +161,15 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
         }
       },
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () async {
-          final Uri launchUri = Uri(
-            scheme: 'tel',
-            path: '01886720053',
-          );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final Uri launchUri = Uri(scheme: 'tel', path: '01886720053');
 
-          // if (await canLaunchUrl(launchUri)) {
-          await launchUrl(launchUri);
-
-        },
-        child: Icon(Icons.headset_mic_sharp,color: primaryColor,),),
+            // if (await canLaunchUrl(launchUri)) {
+            await launchUrl(launchUri);
+          },
+          child: Icon(Icons.headset_mic_sharp, color: primaryColor),
+        ),
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
@@ -315,7 +316,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
               decelerationDuration: Duration(milliseconds: 500),
               decelerationCurve: Curves.easeOut,
             ).h(50),
-            
+
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(8),
@@ -553,10 +554,8 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                           Get.to(
                                             () => CarDetailsPage(
                                               tripId:
-                                                  data.tripId?.toString() ??
-                                                  '',
-                                              bidId:
-                                                  data.id?.toString() ?? '',
+                                                  data.tripId?.toString() ?? '',
+                                              bidId: data.id?.toString() ?? '',
                                             ),
                                           );
                                         },
@@ -567,12 +566,11 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                           ),
                                           decoration: BoxDecoration(
                                             color: Colors.grey.shade300,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
                                             border: Border.all(
-                                              color: Colors.white.withAlpha(
-                                                60,
-                                              ),
+                                              color: Colors.white.withAlpha(60),
                                             ),
                                           ),
                                           child: Row(
@@ -710,7 +708,11 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                     ),
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        if (selectedCarIndex != null &&
+                                        var res = await showLiveTerms(context);
+
+                                        if (res =
+                                            true &&
+                                            selectedCarIndex != null &&
                                             selectedCarIndex! <
                                                 liveBiddingController
                                                     .filteredLiveBidData
@@ -733,6 +735,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                 .toString(),
                                           );
 
+                                          ///
                                           // if (confirmController
                                           //         .bidConfirmModel
                                           //         .value
@@ -907,8 +910,8 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                     //     ],
                     //   ),
                     // ),
-
-                    const SizedBox(height: 80), // Bottom padding
+                    const SizedBox(height: 80),
+                    // Bottom padding
                   ],
                 ),
               ),
@@ -925,7 +928,6 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
     int seconds = duration.inSeconds % 60;
     return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
-
 
   void cancelTripRequestReason(BuildContext context, String tripId) {
     isOther = false;

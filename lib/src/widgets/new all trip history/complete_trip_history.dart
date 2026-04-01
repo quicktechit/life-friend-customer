@@ -26,8 +26,7 @@ class CompleteTripHistory extends StatefulWidget {
 }
 
 class _CompleteTripHistory extends State<CompleteTripHistory> {
-  final NewAllTripHistoryController _controller =
-  Get.put(NewAllTripHistoryController());
+  final NewAllTripHistoryController _controller =Get.find();
 
   final int maxWordsToShow = 4;
 
@@ -42,7 +41,9 @@ class _CompleteTripHistory extends State<CompleteTripHistory> {
   @override
   void initState() {
     super.initState();
-    _controller.getCompleteTrip();
+    WidgetsBinding.instance.addPostFrameCallback((V){
+      _controller.getCompleteTrip();
+    });
   }
 
   @override
