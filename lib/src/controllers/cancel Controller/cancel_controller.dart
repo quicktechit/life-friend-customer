@@ -16,6 +16,7 @@ class CancelController extends GetxController{
   final ProfileController profileController=Get.put(ProfileController());
   RentalTripSubmitController rentalTripSubmitController = Get.find();
   var box=GetStorage();
+
   Future<void> sendBeforeCancel(String tripId, String cancelReasonId,
       {String type = 'n'}) async {
     SharedPreferencesManager _prefsManager =
@@ -75,7 +76,6 @@ class CancelController extends GetxController{
       print('Error: $e');
     }
   }
-
 
 
   Future<void> cancelTripConfirmation(String tripId, String cancelReasonId) async {

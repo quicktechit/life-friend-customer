@@ -80,6 +80,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   final Color primaryRed = primaryColor; // Deep Red
   final Color darkRed = primaryColor.withRed(200);
   final Color lightRed = const Color(0xFFFFEBEE);
+  final Color lightGreen = const Color(0xFFECFFEB);
   final Color accentGold = const Color(0xFFFFD700);
 
   @override
@@ -323,284 +324,265 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                 child: Column(
                   children: [
                     // Vehicle List Section
-                    Container(
-                      decoration: BoxDecoration(
-                        color: lightRed,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withAlpha(60),
-                            blurRadius: 15,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Obx(() {
-                          if (liveBiddingController.isLoading.value) {
-                            return SizedBox(
-                              height: 300,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    primaryRed,
-                                  ),
-                                ),
+                    Obx(() {
+                      if (liveBiddingController.isLoading.value) {
+                        return SizedBox(
+                          height: 300,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                primaryRed,
                               ),
-                            );
-                          }
+                            ),
+                          ),
+                        );
+                      }
 
-                          // ✅ FIRST CHECK THE MAIN LIST
-                          if (liveBiddingController
+                      // ✅ FIRST CHECK THE MAIN LIST
+                      if (liveBiddingController
+                          .filteredLiveBidData
+                          .isEmpty) {
+                        return EmptyBoxWidget(
+                          title: "noLiveMessage".tr,
+                          truckImage: widget.type == "Bike"
+                              ? "assets/images/motorcycle.png"
+                              : 'assets/images/empty.png',
+                        ).p12();
+                      }
+
+                      // ✅ SAFE ACCESS
+                      final tripBids =
+                          liveBiddingController
                               .filteredLiveBidData
-                              .isEmpty) {
-                            return EmptyBoxWidget(
-                              title: "noLiveMessage".tr,
-                              truckImage: widget.type == "Bike"
-                                  ? "assets/images/motorcycle.png"
-                                  : 'assets/images/empty.png',
-                            ).p12();
-                          }
+                              .first
+                              .tripBids ??
+                          [];
 
-                          // ✅ SAFE ACCESS
-                          final tripBids =
-                              liveBiddingController
-                                  .filteredLiveBidData
-                                  .first
-                                  .tripBids ??
-                              [];
+                      if (tripBids.isEmpty) {
+                        return EmptyBoxWidget(
+                          title: "noLiveMessage".tr,
+                          truckImage: widget.type == "Bike"
+                              ? "assets/images/motorcycle.png"
+                              : 'assets/images/empty.png',
+                        ).p12();
+                      }
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: liveBiddingController
+                            .filteredLiveBidData
+                            .first
+                            .tripBids
+                            ?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final data = tripBids[index];
+                          final isSelected = selectedCarIndex == index;
 
-                          if (tripBids.isEmpty) {
-                            return EmptyBoxWidget(
-                              title: "noLiveMessage".tr,
-                              truckImage: widget.type == "Bike"
-                                  ? "assets/images/motorcycle.png"
-                                  : 'assets/images/empty.png',
-                            ).p12();
-                          }
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: liveBiddingController
-                                .filteredLiveBidData
-                                .first
-                                .tripBids
-                                ?.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final data = tripBids[index];
-                              final isSelected = selectedCarIndex == index;
-
-                              return GestureDetector(
-                                onTap: () {
-                                  _singleTripC.singleTripDetails(
-                                    data.tripId.toString(),
-                                    'normal',
-                                  );
-                                  setState(() {
-                                    selectedCarIndex = index;
-                                  });
-                                },
-                                child: Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          // Vehicle Image
-                                          Container(
-                                            width: 70,
-                                            height: 70,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              color: Colors.grey[900],
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                  Urls.getImageURL(
-                                                    endPoint:
-                                                        data.getBrand?.image
-                                                            ?.toString() ??
-                                                        '',
-                                                  ),
+                          return Card(
+                            color: isSelected?lightGreen:lightRed,
+                            child: GestureDetector(
+                              onTap: () {
+                                _singleTripC.singleTripDetails(
+                                  data.tripId.toString(),
+                                  'normal',
+                                );
+                                setState(() {
+                                  selectedCarIndex = index;
+                                });
+                              },
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Vehicle Image
+                                        Container(
+                                          width: 70,
+                                          height: 70,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color: Colors.grey[900],
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                Urls.getImageURL(
+                                                  endPoint:
+                                                      data.getBrand?.image
+                                                          ?.toString() ??
+                                                      '',
                                                 ),
-                                                fit: BoxFit.cover,
                                               ),
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                          const SizedBox(width: 16),
+                                        ),
+                                        const SizedBox(width: 16),
 
-                                          // Vehicle Details
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      data.getBrand?.name
-                                                              ?.toString() ??
-                                                          data
-                                                              .getvehicle
-                                                              ?.model ??
-                                                          '',
+                                        // Vehicle Details
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    data.getBrand?.name
+                                                            ?.toString() ??
+                                                        data
+                                                            .getvehicle
+                                                            ?.model ??
+                                                        '',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                '${data.getBrand?.capacity?.toString() ?? ''} ${'seatCapacity'.tr}',
+                                                style: TextStyle(
+                                                  color: Colors.grey[400],
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 4,
+                                                        ),
+                                                    decoration: BoxDecoration(
+                                                      color: darkRed
+                                                          .withAlpha(60),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            8,
+                                                          ),
+                                                    ),
+                                                    child: Text(
+                                                      '${data.getvehicle?.metro?.toString() ?? ''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
                                                       style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
+                                                        color: primaryRed,
+                                                        fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
                                                     ),
-                                                    if (isSelected)
-                                                      Icon(
-                                                        Icons
-                                                            .check_circle_rounded,
-                                                        color: primaryRed,
-                                                        size: 24,
-                                                      ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  '${data.getBrand?.capacity?.toString() ?? ''} ${'seatCapacity'.tr}',
-                                                  style: TextStyle(
-                                                    color: Colors.grey[400],
-                                                    fontSize: 13,
                                                   ),
-                                                ),
-                                                const SizedBox(height: 8),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-                                                            horizontal: 8,
-                                                            vertical: 4,
-                                                          ),
-                                                      decoration: BoxDecoration(
-                                                        color: darkRed
-                                                            .withAlpha(60),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              8,
-                                                            ),
-                                                      ),
-                                                      child: Text(
-                                                        '${data.getvehicle?.metro?.toString() ?? ''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
-                                                        style: TextStyle(
-                                                          color: primaryRed,
-                                                          fontSize: 11,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    // Price Tag
-                                    Positioned(
-                                      right: 5,
-                                      top: 5,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 0,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [primaryRed, darkRed],
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            20,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: primaryRed.withAlpha(80),
-                                              blurRadius: 10,
-                                              spreadRadius: 1,
-                                            ),
-                                          ],
-                                        ),
-                                        child: Text(
-                                          '৳${data.amount?.toString() ?? '0'}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // View Details Button
-                                    Positioned(
-                                      right: 16,
-                                      bottom: 16,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Get.to(
-                                            () => CarDetailsPage(
-                                              tripId:
-                                                  data.tripId?.toString() ?? '',
-                                              bidId: data.id?.toString() ?? '',
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                            vertical: 6,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.shade300,
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
-                                            border: Border.all(
-                                              color: Colors.white.withAlpha(60),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                'details'.tr,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 4),
-                                              Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Colors.black,
-                                                size: 12,
+                                                ],
                                               ),
                                             ],
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Price Tag
+                                  Positioned(
+                                    right: 5,
+                                    top: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [primaryRed, darkRed],
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          20,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: primaryRed.withAlpha(80),
+                                            blurRadius: 10,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Text(
+                                        '৳${data.amount?.toString() ?? '0'}',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        }),
-                      ),
-                    ),
+                                  ),
+
+                                  // View Details Button
+                                  Positioned(
+                                    right: 16,
+                                    bottom: 16,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Get.to(
+                                          () => CarDetailsPage(
+                                            tripId:
+                                                data.tripId?.toString() ?? '',
+                                            bidId: data.id?.toString() ?? '',
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade300,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          border: Border.all(
+                                            color: Colors.white.withAlpha(60),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'details'.tr,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.black,
+                                              size: 12,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ).marginOnly(bottom: 5);
+                        },
+                      );
+                    }),
 
                     const SizedBox(height: 24),
 
@@ -728,7 +710,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                               ReturnBidConfirmController();
 
                                           await confirmController.bidConfirm(
-                                            amount: selectedBidData?.amount,
+                                            amount: selectedBidData?.advance,
                                             bidId: selectedBidData?.id
                                                 .toString(),
                                             tripId: selectedBidData?.tripId
@@ -910,6 +892,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                     //     ],
                     //   ),
                     // ),
+
                     const SizedBox(height: 80),
                     // Bottom padding
                   ],

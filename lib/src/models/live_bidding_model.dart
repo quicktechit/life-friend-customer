@@ -238,6 +238,7 @@ class TripBids {
   final String? vehicleId;
   final String? carId;
   final String? amount;
+  final String? advance;
   final String? extraPrice;
   final String? platformCharge;
   final String? status;
@@ -256,6 +257,7 @@ class TripBids {
     this.vehicleId,
     this.carId,
     this.amount,
+    this.advance,
     this.extraPrice,
     this.platformCharge,
     this.status,
@@ -276,6 +278,7 @@ class TripBids {
         vehicleCategory = _toStr(json['vehicle_category']),
         vehicleId = _toStr(json['vehicle_id']),
         carId = _toStr(json['car_id']),
+        advance = _toStr(json['advance']),
         amount = _toStr(json['amount']),
         extraPrice = _toStr(json['extra_price']),
         platformCharge = _toStr(json['platform_charge']),
