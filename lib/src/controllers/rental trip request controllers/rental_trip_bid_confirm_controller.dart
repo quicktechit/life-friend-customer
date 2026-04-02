@@ -9,6 +9,7 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/base_client.dart';
 import 'package:pickup_load_update/src/configs/local_storage.dart';
 import 'package:pickup_load_update/src/models/rental_bid_confirm_model.dart';
+import 'package:pickup_load_update/src/widgets/loader_util.dart';
 
 import '../../pages/live bidding/inapp_webview.dart';
 
@@ -16,30 +17,27 @@ class ReturnBidConfirmController extends GetxController {
   var isLoading = false.obs;
   var bidConfirmModel = RentalBidConfirmModel().obs;
   var trackingCode = ''.obs;
-  var otp="".obs;
-  var box=GetStorage();
+  var otp = "".obs;
+  var box = GetStorage();
+
   @override
   void onInit() {
     super.onInit();
-
   }
 
   Future<void> bidConfirm({
-     dynamic bidId,
-     dynamic tripId,
-     dynamic amount,
+    dynamic bidId,
+    dynamic tripId,
+    dynamic amount,
   }) async {
     try {
       isLoading.value = true;
-
+      LoaderUtils().showGetLoading();
       SharedPreferencesManager prefsManager =
           await SharedPreferencesManager.getInstance();
       String? token = prefsManager.getToken();
 
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(Urls.bidConfirm),
-      );
+      var request = http.MultipartRequest('POST', Uri.parse(Urls.bidConfirm));
       request.headers['Authorization'] = 'Bearer $token';
       request.fields['bid_id'] = bidId.toString();
       request.fields['trip_id'] = tripId.toString();
@@ -47,7 +45,7 @@ class ReturnBidConfirmController extends GetxController {
       // request.fields['amount'] = '5';
 
       var response = await http.Response.fromStream(await request.send());
-
+      Get.back();
       if (response.statusCode == 200) {
         dynamic responseBody = await BaseClient.handleResponse(response);
 
@@ -60,16 +58,21 @@ class ReturnBidConfirmController extends GetxController {
             //     bidConfirmModel.value.data!.tripConfirm!.trackingId.toString();
             // otp.value =
             //     bidConfirmModel.value.data!.tripConfirm!.otp.toString();
-            box.write("liveBidStart",false);
-            box.write("liveBidTruckStart",false);
-            Get.to(()=>WebViewScreen(urls: responseBody['payment_url'].toString(),));
+            box.write("liveBidStart", false);
+            box.write("liveBidTruckStart", false);
+            Get.to(
+              () => WebViewScreen(urls: responseBody['payment_url'].toString()),
+            );
 
-            Get.snackbar('Success', 'Bid Confirm Successfully',
-                colorText: white, backgroundColor: Colors.black);
+            Get.snackbar(
+              'Success',
+              'Bid Confirm Successfully',
+              colorText: white,
+              backgroundColor: Colors.black,
+            );
             print(
-                "Bid Confirm Data is============================$responseBody");
-
-
+              "Bid Confirm Data is============================$responseBody",
+            );
           } else {
             throw 'Failed: ${responseBody['message']}';
           }
@@ -81,11 +84,14 @@ class ReturnBidConfirmController extends GetxController {
       }
     } catch (e) {
       log('Error $e');
-      Get.snackbar('Sorry', 'Trip Request Failed $e',
-          colorText: white, backgroundColor: Colors.redAccent);
+      Get.snackbar(
+        'Sorry',
+        'Trip Request Failed $e',
+        colorText: white,
+        backgroundColor: Colors.redAccent,
+      );
     } finally {
       isLoading.value = false;
     }
   }
-
 }
