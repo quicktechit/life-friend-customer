@@ -67,6 +67,13 @@ class _AmbulancePageState extends State<AmbulancePage> {
   final LocationController locationController = Get.put(LocationController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.selectedAnswers.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
@@ -325,6 +332,19 @@ class _AmbulancePageState extends State<AmbulancePage> {
   /// Submit trip request method
   void _submitTripRequest() {
     final journeyDateTime = formatDateTime(selectedDate, selectedTime);
+
+
+    if(controller.selectedAnswers.isEmpty || controller.selectedAnswers.length!=widget.question.length){
+      Get.snackbar(
+        'Missing Information',
+        "Answer All the Question",
+        colorText: Colors.white,
+        backgroundColor: Colors.redAccent,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(16),
+      );
+      return;
+    }
 
 
     if (locationController.pickUpLocation.isEmpty ||

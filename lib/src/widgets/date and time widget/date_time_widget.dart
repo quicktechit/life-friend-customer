@@ -25,11 +25,11 @@ class _DateAndTimeState extends State<DateAndTime> {
   final dateFormat = DateFormat('d MMMM yyyy');
   final timeFormat = DateFormat('h:mm a');
   DateTime selectedDate = DateTime.now();
-  late TimeOfDay selectedTime; // Use helper function
+  late TimeOfDay selectedTime;
   bool isToday = true;
   DateTime now = DateTime.now();
 
-  // Helper function to get initial time (now + 3 hours)
+  // Helper function to get initial time (now + blockTime)
   TimeOfDay _getInitialTime() {
     final DateTime now = DateTime.now();
     final DateTime threeHoursLater = now.add(
@@ -46,6 +46,57 @@ class _DateAndTimeState extends State<DateAndTime> {
     );
   }
 
+  // Get minimum allowed time based on current time + blockTime
+  TimeOfDay _getMinimumAllowedTime(DateTime date) {
+    final now = DateTime.now();
+
+    // If selected date is today, return now + blockTime
+    if (_isSameDay(date, now)) {
+      final minimumDateTime = now.add(
+        Duration(
+          minutes: int.parse(
+            vehicleController.selectedItem.value?.blockTime ?? '60',
+          ),
+        ),
+      );
+      return TimeOfDay(
+        hour: minimumDateTime.hour,
+        minute: minimumDateTime.minute,
+      );
+    }
+
+    // For future dates, no time restriction
+    return const TimeOfDay(hour: 0, minute: 0);
+  }
+
+  // Check if time is valid (not before minimum allowed time)
+  bool _isTimeValid(DateTime date, TimeOfDay time) {
+    final now = DateTime.now();
+
+    // Only validate if it's today and timeConstraint is enabled
+    if (!_isSameDay(date, now) || !widget.enableTimeConstraint) {
+      return true;
+    }
+
+    final minimumTime = _getMinimumAllowedTime(date);
+
+    // Compare times
+    if (time.hour < minimumTime.hour) {
+      return false;
+    } else if (time.hour == minimumTime.hour && time.minute < minimumTime.minute) {
+      return false;
+    }
+
+    return true;
+  }
+
+  // Helper to check if two dates are the same day
+  bool _isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -59,10 +110,7 @@ class _DateAndTimeState extends State<DateAndTime> {
   }
 
   void _checkIfToday() {
-    isToday =
-        selectedDate.year == now.year &&
-        selectedDate.month == now.month &&
-        selectedDate.day == now.day;
+    isToday = _isSameDay(selectedDate, now);
 
     // If it's today and time is in the past, adjust it
     if (isToday && widget.enableTimeConstraint) {
@@ -76,7 +124,7 @@ class _DateAndTimeState extends State<DateAndTime> {
       );
 
       if (selectedDateTime.isBefore(currentDateTime)) {
-        // Add 3 hours to current time
+        // Add blockTime to current time
         final DateTime threeHoursLater = currentDateTime.add(
           Duration(
             minutes: int.parse(
@@ -107,11 +155,10 @@ class _DateAndTimeState extends State<DateAndTime> {
         Duration(
           days: int.parse(
             vehicleController.selectedItem.value?.scheduleDay ?? '7',
-          )-1,
+          ) - 1,
         ),
       ),
       selectableDayPredicate: (DateTime date) {
-        // Allow all future dates
         return date.isAfter(DateTime.now().subtract(const Duration(days: 1)));
       },
     );
@@ -123,47 +170,22 @@ class _DateAndTimeState extends State<DateAndTime> {
 
         // If selected date is today, ensure time is in the future
         if (isToday && widget.enableTimeConstraint) {
-          final nowTime = TimeOfDay.now();
-          if (selectedTime.hour < nowTime.hour ||
-              (selectedTime.hour == nowTime.hour &&
-                  selectedTime.minute <= nowTime.minute)) {
-            // Set to current time + 15 minutes
-            selectedTime = TimeOfDay(
-              hour: nowTime.hour + (nowTime.minute + 15) ~/ 60,
-              minute: (nowTime.minute + 15) % 60,
-            );
+          final minimumTime = _getMinimumAllowedTime(selectedDate);
+          if (!_isTimeValid(selectedDate, selectedTime)) {
+            selectedTime = minimumTime;
           }
         }
       });
 
       widget.onDateTimeSelected(selectedDate, selectedTime);
-      // Only show time picker if time is not already set
-      if (selectedTime == TimeOfDay.now()) {
-        await _selectTime();
-      }
+      await _selectTime();
     }
   }
 
   Future<void> _selectTime() async {
-    final now = DateTime.now();
+    final minimumTime = _getMinimumAllowedTime(selectedDate);
 
-    TimeOfDay initialTime;
-
-    if (isToday && widget.enableTimeConstraint) {
-      final threeHoursLater = now.add(
-        Duration(
-          minutes: int.parse(
-            vehicleController.selectedItem.value?.blockTime ?? '60',
-          ),
-        ),
-      );
-      initialTime = TimeOfDay(
-        hour: threeHoursLater.hour,
-        minute: threeHoursLater.minute,
-      );
-    } else {
-      initialTime = selectedTime;
-    }
+    TimeOfDay initialTime = selectedTime;
 
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -190,6 +212,21 @@ class _DateAndTimeState extends State<DateAndTime> {
     );
 
     if (picked != null) {
+      // Validate the selected time
+      if (!_isTimeValid(selectedDate, picked)) {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Cannot select time before ${minimumTime.format(context)}',
+            ),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        return;
+      }
+
       setState(() {
         selectedTime = picked;
       });
@@ -215,18 +252,31 @@ class _DateAndTimeState extends State<DateAndTime> {
   }
 
   String _getFormattedDate() {
-    if (selectedDate.isAtSameMomentAs(DateTime.now())) {
+    final now = DateTime.now();
+    if (_isSameDay(selectedDate, now)) {
       return 'today'.tr;
     }
 
-    final tomorrow = DateTime.now().add(const Duration(days: 1));
-    if (selectedDate.year == tomorrow.year &&
-        selectedDate.month == tomorrow.month &&
-        selectedDate.day == tomorrow.day) {
+    final tomorrow = now.add(const Duration(days: 1));
+    if (_isSameDay(selectedDate, tomorrow)) {
       return 'tomorrow'.tr;
     }
 
     return dateFormat.format(selectedDate);
+  }
+
+  // Get helper text for minimum time
+  String _getMinimumTimeText() {
+    if (!isToday || !widget.enableTimeConstraint) {
+      return '';
+    }
+
+    final minimumTime = _getMinimumAllowedTime(selectedDate);
+    final blockTime = int.parse(
+      vehicleController.selectedItem.value?.blockTime ?? '60',
+    );
+
+    return '${'fromNowTo'.tr} ${blockTime}M';
   }
 
   @override
@@ -347,11 +397,11 @@ class _DateAndTimeState extends State<DateAndTime> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      if (isToday && widget.enableTimeConstraint)
+                      if (_getMinimumTimeText().isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
-                            '${'fromNowTo'.tr} ${int.parse(vehicleController.selectedItem.value?.blockTime ?? '60')}M',
+                            _getMinimumTimeText(),
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.orange.shade700,
