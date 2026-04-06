@@ -86,6 +86,7 @@ class TripHistory {
   final List<DropoffLocations>? dropoffLocations;
   final List<TripQuestionAnswer>? tripQuestionAnswers;
   final Vehicle? vehicle;
+  final TripConfirm? tripConfirm;
 
   TripHistory({
     this.id,
@@ -131,6 +132,8 @@ class TripHistory {
     this.dropoffLocations,
     this.vehicle,
     this.tripQuestionAnswers,
+    this.tripConfirm,
+
   });
 
   /// helper to safely convert any value -> String
@@ -180,12 +183,14 @@ class TripHistory {
       dropoffLocations = (json['dropoff_locations'] as List?)
           ?.map((e) => DropoffLocations.fromJson(e))
           .toList(),
+        tripConfirm= json["trip_confirm"] == null ? null : TripConfirm.fromJson(json["trip_confirm"]),
       tripQuestionAnswers = (json['trip_question_answers'] as List?)
           ?.map((e) => TripQuestionAnswer.fromJson(e))
           .toList(),
       vehicle = json['vehicle'] != null
           ? Vehicle.fromJson(json['vehicle'])
           : null;
+
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -231,6 +236,100 @@ class TripHistory {
     'vehicle': vehicle?.toJson(),
   };
 }
+
+class TripConfirm {
+  TripConfirm({
+    required this.id,
+    required this.tripId,
+    required this.bidId,
+    required this.vehicleCategory,
+    required this.vehicleId,
+    required this.customerId,
+    required this.partnerId,
+    required this.amount,
+    required this.extraPrice,
+    required this.platformCharge,
+    required this.advance,
+    required this.drivercollectamount,
+    required this.drivercredit,
+    required this.otp,
+    required this.trackingId,
+    required this.assignedDriverId,
+    required this.assignedVehicleId,
+    required this.status,
+    required this.cancelType,
+    required this.cancelledBy,
+    required this.cancelledStatus,
+    required this.cancelreasonId,
+    required this.cancelReason,
+    required this.cancelCreatedAt,
+    required this.tripStarted,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  final int? id;
+  final String? tripId;
+  final String? bidId;
+  final String? vehicleCategory;
+  final String? vehicleId;
+  final String? customerId;
+  final String? partnerId;
+  final int? amount;
+  final String? extraPrice;
+  final String? platformCharge;
+  final int? advance;
+  final int? drivercollectamount;
+  final int? drivercredit;
+  final String? otp;
+  final String? trackingId;
+  final dynamic assignedDriverId;
+  final String? assignedVehicleId;
+  final String? status;
+  final dynamic cancelType;
+  final dynamic cancelledBy;
+  final dynamic cancelledStatus;
+  final dynamic cancelreasonId;
+  final dynamic cancelReason;
+  final dynamic cancelCreatedAt;
+  final String? tripStarted;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  factory TripConfirm.fromJson(Map<String, dynamic> json){
+    return TripConfirm(
+      id: json["id"],
+      tripId: json["trip_id"],
+      bidId: json["bid_id"],
+      vehicleCategory: json["vehicle_category"],
+      vehicleId: json["vehicle_id"],
+      customerId: json["customer_id"],
+      partnerId: json["partner_id"],
+      amount: json["amount"],
+      extraPrice: json["extra_price"],
+      platformCharge: json["platform_charge"],
+      advance: json["advance"],
+      drivercollectamount: json["drivercollectamount"],
+      drivercredit: json["drivercredit"],
+      otp: json["otp"],
+      trackingId: json["tracking_id"],
+      assignedDriverId: json["assigned_driver_id"],
+      assignedVehicleId: json["assigned_vehicle_id"],
+      status: json["status"],
+      cancelType: json["cancel_type"],
+      cancelledBy: json["cancelled_by"],
+      cancelledStatus: json["cancelled_status"],
+      cancelreasonId: json["cancelreason_id"],
+      cancelReason: json["cancel_reason"],
+      cancelCreatedAt: json["cancel_created_at"],
+      tripStarted: json["trip_started"],
+      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+    );
+  }
+
+}
+
 
 class DropoffLocations {
   final int? id;

@@ -313,7 +313,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                             item.rentalRelationships != null
                                                 ? "${item.rentalRelationships?.trip?.pickupLocation}"
                                                 : "${item.returnRelationships?.returnTrip?.location}",
-                                            maxLines: 2,
+                                            maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: 13,
@@ -371,7 +371,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                         padding: EdgeInsets.only(left: 24, bottom: 2),
                                         child: Text(
                                           "• ${location.dropoffLocation}",
-                                          maxLines: 1,
+                                          maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -385,7 +385,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                         padding: EdgeInsets.only(left: 24),
                                         child: Text(
                                           "• ${item.rentalRelationships?.trip?.dropoffLocation}",
-                                          maxLines: 1,
+                                          maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -401,7 +401,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                           truncateTextIfNeeded(
                                               "${item.returnRelationships?.returnTrip?.destination}",
                                               maxWordsToShow),
-                                          maxLines: 2,
+                                          maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -419,7 +419,79 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                       ],
                     ),
                   ),
-
+                  //otp
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(8, 0, 8, 12),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: borderColor,
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.security,
+                            size: 18,
+                            color: primaryColor,
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'OTP Code',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: subtitleColor,
+                                  ),
+                                ),
+                                SizedBox(height: 2),
+                                Text(
+                                  (item.otp=='1'?"Verify":item.otp) ?? 'N/A',
+                                  // Replace with your actual OTP field
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: textColor,
+                                    letterSpacing: 2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: primaryColor.withAlpha(20),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              'COPY',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   // Trip details and timing
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -455,10 +527,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                 padding: EdgeInsets.only(left: 30),
                                 child: Text(
                                   item.rentalRelationships != null
-                                      ? DateFormat("hh:mma dd-MM-yyyy").format(
-                                      DateFormat("yyyy-MM-dd hh:mm a").parse(
-                                          "${item.rentalRelationships?.trip?.datetime}")).toLowerCase()
-                                      : "${item.returnRelationships?.returnTrip?.timedate}",
+                                      ?'${item.rentalRelationships?.trip?.datetime}': "${item.returnRelationships?.returnTrip?.timedate}",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,

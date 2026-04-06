@@ -28,6 +28,7 @@ class Urls {
   static String promoCode = "$baseUrl/customer/promos";
   static String singleTripAmount = "$baseUrl/customer/trip-amount-single";
   static String cancelList = "$baseUrl/customer/cancel-reasons";
+  static String livePolicy = "$domain/policies";
   static String returnTripHistory = "$baseUrl/customer/return-trip-status";
   static String rentalTripFormCheckSubmit = "$baseUrl/customer/trip-form-check";
   static String rentalTripSubmit = "$baseUrl/customer/trip-form-submit";

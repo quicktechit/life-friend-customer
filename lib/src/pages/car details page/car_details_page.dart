@@ -43,6 +43,12 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     if (vehicle?.vehicleBackPic != null && vehicle!.vehicleBackPic!.isNotEmpty) {
       images.add(vehicle.vehicleBackPic!);
     }
+    if (vehicle?.vehicleInsidePic1 != null && vehicle!.vehicleInsidePic1!.isNotEmpty) {
+      images.add(vehicle.vehicleInsidePic1!);
+    }
+    if (vehicle?.vehicleInsidePic2 != null && vehicle!.vehicleInsidePic2!.isNotEmpty) {
+      images.add(vehicle.vehicleInsidePic2!);
+    }
     return images;
   }
 

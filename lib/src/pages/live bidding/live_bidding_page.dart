@@ -690,24 +690,24 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                     ),
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        var res = await showLiveTerms(context);
+                                        var res = await showLiveTerms(context, liveBiddingController.liveTermsModel.value.data);
 
-                                        if (res =
-                                            true &&
+                                        // FIX: Use == for comparison, not =
+                                        if (res == true &&
                                             selectedCarIndex != null &&
                                             selectedCarIndex! <
                                                 liveBiddingController
                                                     .filteredLiveBidData
                                                     .length) {
                                           var selectedBidData =
-                                              liveBiddingController
-                                                  .filteredLiveBidData
-                                                  .first
-                                                  .tripBids?[selectedCarIndex!];
+                                          liveBiddingController
+                                              .filteredLiveBidData
+                                              .first
+                                              .tripBids?[selectedCarIndex!];
 
                                           final ReturnBidConfirmController
                                           confirmController =
-                                              ReturnBidConfirmController();
+                                          ReturnBidConfirmController();
 
                                           await confirmController.bidConfirm(
                                             amount: selectedBidData?.advance,
@@ -744,14 +744,11 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                         backgroundColor: Colors.transparent,
                                         shadowColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Icon(
                                             Icons.check_circle,

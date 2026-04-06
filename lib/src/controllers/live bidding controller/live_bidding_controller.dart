@@ -5,9 +5,12 @@ import 'package:pickup_load_update/src/configs/base_client.dart';
 import 'package:pickup_load_update/src/models/cancel_model.dart';
 import 'package:pickup_load_update/src/models/live_bidding_model.dart';
 
+import '../../models/LiveTermsModel.dart';
+
 class LiveBiddingController extends GetxController {
   var isLoading = false.obs;
   var cancelModel=CancelModel().obs;
+  var liveTermsModel=LiveTermsModel().obs;
   var beforeCancelList=<CustomerBoforeData>[].obs;
   var afterCancelList=<CustomerAfterData>[].obs;
   var liveBidData = <TripList>[].obs;
@@ -18,6 +21,7 @@ class LiveBiddingController extends GetxController {
   void onInit() async {
     getLiveBid();
     getCancelList();
+    getTerms();
     super.onInit();
   }
 
@@ -78,6 +82,30 @@ class LiveBiddingController extends GetxController {
         } else {
           throw 'Cancel data is empty!';
         }
+      } else {
+        throw 'Unable to load cancel data!';
+      }
+    } catch (e) {
+      log("Error: $e");
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void getTerms() async {
+    try {
+      isLoading(true);
+
+      dynamic responseBody = await BaseClient.handleResponse(
+        await BaseClient.getRequest(api: Urls.livePolicy),
+      );
+
+      if (responseBody != null) {
+
+          liveTermsModel.value =
+              LiveTermsModel.fromJson(responseBody);
+
+
       } else {
         throw 'Unable to load cancel data!';
       }

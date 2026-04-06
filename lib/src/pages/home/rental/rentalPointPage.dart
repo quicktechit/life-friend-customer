@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/appUtils.dart';
@@ -1070,11 +1071,12 @@ class _RentalPointPageState extends State<RentalPointPage> {
   }
 
   FormData _prepareFormData() {
-    final journeyDateTime = _formatDateTime(selectedDate, selectedTime);
-    final returnDateTime = _formatDateTime(
+    final journeyDateTime = formatDateTime(selectedDate, selectedTime);
+    final returnDateTime = formatDateTime(
       selectedReturnDate,
       selectedReturnTime,
     );
+
 
     final isAirportTrip = widget.isAirport == true;
     final isFromAirport = airportController.selectedLocation.value == 'Airport';
@@ -1105,12 +1107,16 @@ class _RentalPointPageState extends State<RentalPointPage> {
     );
   }
 
-  String _formatDateTime(DateTime date, TimeOfDay time) {
-    final hour = time.hourOfPeriod == 0 ? '12' : '${time.hourOfPeriod}';
-    final minute = '${time.minute}'.padLeft(2, '0');
-    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+  String formatDateTime(DateTime date, TimeOfDay time) {
+    final dateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
 
-    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} $hour:$minute $period';
+    return DateFormat('dd-MMM-yyyy h:mm a').format(dateTime);
   }
 }
 

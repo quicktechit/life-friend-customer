@@ -450,9 +450,7 @@ class _CompleteTripHistory extends State<CompleteTripHistory> {
                                 padding: EdgeInsets.only(left: 30),
                                 child: Text(
                                   item.rentalRelationships != null
-                                      ? DateFormat("hh:mma dd-MM-yyyy").format(
-                                      DateFormat("yyyy-MM-dd hh:mm a").parse(
-                                          "${item.rentalRelationships?.trip?.datetime}")).toLowerCase()
+                                      ? "${item.rentalRelationships?.trip?.datetime}"
                                       : "${item.returnRelationships?.returnTrip?.timedate}",
                                   style: TextStyle(
                                     fontSize: 12,

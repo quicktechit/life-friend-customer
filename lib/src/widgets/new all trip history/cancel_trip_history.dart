@@ -302,7 +302,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                                             item.rentalRelationships != null
                                                 ? "${item.rentalRelationships?.trip?.pickupLocation}"
                                                 : "${item.returnRelationships?.returnTrip?.location}",
-                                            maxLines: 2,
+                                            maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: 13,
@@ -360,7 +360,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                                         padding: EdgeInsets.only(left: 24, bottom: 2),
                                         child: Text(
                                           "• ${location.dropoffLocation}",
-                                          maxLines: 1,
+                                          maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -374,7 +374,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                                         padding: EdgeInsets.only(left: 24),
                                         child: Text(
                                           "• ${item.rentalRelationships?.trip?.dropoffLocation}",
-                                          maxLines: 1,
+                                          maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -388,7 +388,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                                         padding: EdgeInsets.only(left: 24),
                                         child: Text(
                                           "${item.returnRelationships?.returnTrip?.destination}",
-                                          maxLines: 2,
+                                          maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -434,9 +434,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                             SizedBox(width: 4),
                             Text(
                               item.rentalRelationships != null
-                                  ? DateFormat("hh:mma dd-MM-yyyy").format(
-                                  DateFormat("yyyy-MM-dd hh:mm a").parse(
-                                      "${item.rentalRelationships?.trip?.datetime}")).toLowerCase()
+                                  ? "${item.rentalRelationships?.trip?.datetime}"
                                   : "${item.returnRelationships?.returnTrip?.timedate}",
                               style: TextStyle(
                                 fontSize: 12,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../configs/appColors.dart';
 import '../../../controllers/division controller/division_controller.dart';
 import '../../../controllers/live location controller/live_location_controller.dart';
@@ -310,17 +311,21 @@ class _AmbulancePageState extends State<AmbulancePage> {
       ),
     );
   }
+  String formatDateTime(DateTime date, TimeOfDay time) {
+    final dateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
 
+    return DateFormat('dd-MMM-yyyy h:mm a').format(dateTime);
+  }
   /// Submit trip request method
   void _submitTripRequest() {
-    String hour = selectedTime.hourOfPeriod == 0
-        ? '12'
-        : '${selectedTime.hourOfPeriod}';
-    String minute = '${selectedTime.minute}'.padLeft(2, '0');
-    String period = selectedTime.period == DayPeriod.am ? 'AM' : 'PM';
+    final journeyDateTime = formatDateTime(selectedDate, selectedTime);
 
-    String journeyTimeAndDate =
-        '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')} ${hour}:${minute} $period';
 
     if (locationController.pickUpLocation.isEmpty ||
         locationController.dropLocation.isEmpty) {
@@ -339,7 +344,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
       pickUpLocation: locationController.pickUpLocation.toString(),
       viaLocation: locationController.viaLocation.toString(),
       dropLocation: locationController.dropLocation.toString(),
-      dateTime: journeyTimeAndDate,
+      dateTime: journeyDateTime,
       map:
           '${locationController.selectedPickUpLat.value},${locationController.selectedPickUpLng.value}',
       roundTrip: roundTripValue.toString(),
@@ -359,7 +364,7 @@ class _AmbulancePageState extends State<AmbulancePage> {
         dropPoint: locationController.dropLocation.toString(),
         viaPoint: locationController.viaLocation.toString(),
         note: noteController.text,
-        tripDetailsJourney: journeyTimeAndDate,
+        tripDetailsJourney: journeyDateTime,
         roundTrip: roundTripValue.toString(),
         map:
             '${locationController.selectedPickUpLat.value} ${locationController.selectedPickUpLng.value}',

@@ -51,7 +51,8 @@ class RegistrationController extends GetxController {
            otp.value= responseBody['otp'];
            debugPrint('OTP Gettng :: ${otp.value}');
             /// show snakbar msg
-            Get.snackbar('Success OTP: ${otp.value}', 'OTP Send Successfully',
+            // Get.snackbar('Success OTP: ${otp.value}', 'OTP Send Successfully',
+            Get.snackbar('Success', 'OTP Send Successfully',
                 duration: Duration(seconds: 10),
                 colorText: white, backgroundColor: Colors.black);
             VxToast.show(Get.context!, msg: 'OTP Send Successfully');

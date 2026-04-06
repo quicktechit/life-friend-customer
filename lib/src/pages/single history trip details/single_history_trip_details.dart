@@ -583,71 +583,148 @@ class _SingleHistoryTripDetailsPageState
     final roundTripText = isNormalTrip
         ? (_normalTripHistory?.roundTrip == '1' ? "Yes" : "No")
         : "No";
-
+    final note = isNormalTrip ? _normalTripData?.tripHistory?.note ?? "N/A" : "N/A";
     final amount = isNormalTrip
         ? _normalTripHistory?.amount?.toString()
         : _returnTripHistory?.amount;
     final otp = isNormalTrip ? _normalTripHistory?.otp?.toString() : "N/A";
+    final advancePay = isNormalTrip ? _normalTripData?.tripHistory?.tripConfirm?.advance??"N/A" : "N/A";
+    final driverGet = isNormalTrip ? _normalTripData?.tripHistory?.tripConfirm?.drivercollectamount??"N/A" : "N/A";
 
-    return Container(
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+    return Column(
+      children: [
+        // Main Trip Summary Card
+        Container(
+          decoration: BoxDecoration(
+            color: cardColor,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Icon(Icons.receipt_long, color: primaryRed, size: 20),
-                const SizedBox(width: 8),
-                Text(
-                  'trip_summary'.tr,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: textPrimary,
-                  ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.receipt_long, color: primaryRed, size: 20),
+                    const SizedBox(width: 8),
+                    Text(
+                      'trip_summary'.tr,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(color: dividerColor, height: 1),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    _buildDetailRow('otp', otp.toString()),
+                    const SizedBox(height: 12),
+                    _buildDetailRow('round_trip', roundTripText),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(
+                      'total_distance',
+                      '${calculateTotalDistance().toStringAsFixed(2)} ${"km".tr}',
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(
+                      'Total Fare',
+                      amount != null ? "$amount ৳" : "N/A",
+                      valueStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: primaryRed,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(
+                      'Advance Booking Money',
+                      advancePay != "N/A" ? "$advancePay ৳" : "N/A",
+                      valueStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: primaryRed,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(
+                      'Driver Get',
+                      driverGet != "N/A" ? "$driverGet ৳" : "N/A",
+                      valueStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: primaryRed,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+          Container(
+            decoration: BoxDecoration(
+              color: cardColor,
+              borderRadius: BorderRadius.circular(12),
+              // border: Border.all(color: primaryRed.withOpacity(0.3)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
-          ),
-          Divider(color: dividerColor, height: 1),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                _buildDetailRow('otp', otp.toString()),
-                const SizedBox(height: 12),
-                _buildDetailRow('round_trip', roundTripText),
-                const SizedBox(height: 12),
-                _buildDetailRow(
-                  'total_distance',
-                  '${calculateTotalDistance().toStringAsFixed(2)} ${"km".tr}',
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.note_alt, color: primaryRed, size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Note',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 12),
-                _buildDetailRow(
-                  'Total Fare',
-                  amount != null ? "$amount ৳" : "N/A",
-                  valueStyle: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: primaryRed,
+                Divider(color: dividerColor, height: 1),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    note,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: textSecondary,
+                      height: 1.5,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
+      ],
     );
   }
 

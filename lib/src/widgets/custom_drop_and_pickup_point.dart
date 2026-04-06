@@ -114,8 +114,8 @@ class _DropAndPickupWidgetState extends State<DropAndPickupWidget> {
               SizedBox(height: 2),
               KText(
                 text: location,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,maxLines: 3,
               ),
               if (!isLast) SizedBox(height: 12),
             ],

@@ -7,6 +7,7 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../components/bottom navbar/bottom.dart';
 import '../../configs/local_storage.dart';
+import '../auth/AuthStartVerifyPage.dart';
 import 'onboard_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     log(token.toString());
     Timer(Duration(seconds: 2), () {
       if (token == null) {
-        Get.to(() => OnboardPage());
+        Get.to(() => AuthStartPage());
       } else {
         Get.offAll(() => DashboardView());
       }

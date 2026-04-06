@@ -86,7 +86,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 100,
+            width: 140,
             child: KText(
               text: label,
               fontSize: 13,
@@ -381,6 +381,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                     Divider(height: 1, color: Colors.grey[200]),
                     _buildInfoRow('Return'.tr, widget.roundTripDetailsJourney),
                   ],
+                  _buildInfoRow('additionalNotes'.tr, widget.note??'N/A'),
                 ],
               ),
             ),
