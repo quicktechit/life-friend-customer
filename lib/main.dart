@@ -9,7 +9,6 @@ import 'package:pickup_load_update/firebase_options.dart';
 import 'package:pickup_load_update/src/controllers/language/langController.dart';
 import 'package:pickup_load_update/src/pages/Trip%20History/trip_history_page.dart';
 import 'package:pickup_load_update/src/service/hiveService.dart';
-
 import 'src/app.dart';
 import 'package:vibration/vibration.dart';
 

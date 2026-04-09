@@ -33,11 +33,12 @@ import 'bidding_confirm_screen.dart';
 class LiveBiddingPage extends StatefulWidget {
   final String createdAt;
   final String type;
+  final bool isReset;
 
   const LiveBiddingPage({
     super.key,
     required this.createdAt,
-    required this.type,
+    required this.type, required this.isReset,
   });
 
   @override
@@ -86,27 +87,38 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   @override
   void initState() {
     super.initState();
-    log("${vehicleController.selectedItem.value?.biddingTime}");
 
     final savedSeconds = box.read<int>('remainingTime') ?? 0;
 
-    // Default bidding time in minutes
     final biddingTime = int.parse(
       vehicleController.selectedItem.value?.biddingTime ?? '60',
     );
 
-    // Initialize remaining time
-    _remainingTime = savedSeconds > 0
-        ? Duration(seconds: savedSeconds)
-        : Duration(minutes: biddingTime);
+    // 👉 Reset logic
+    if (widget.isReset) {
+      _remainingTime = Duration(minutes: biddingTime);
 
+      // reset stored timer
+      box.remove('remainingTime');
+
+      // 👉 put it HERE
+      _rentalTripSubmitController.liveBidStart.value = true;
+      box.write("liveBidStart", true);
+
+    } else {
+      _remainingTime = savedSeconds > 0
+          ? Duration(seconds: savedSeconds)
+          : Duration(minutes: biddingTime);
+    }
+
+    // animation + timers
     _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5))
-          ..addListener(() {
-            if (mounted) {
-              setState(() {});
-            }
-          });
+    AnimationController(vsync: this, duration: const Duration(seconds: 5))
+      ..addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
     _controller!.repeat();
 
     _startDataRefreshTimer();

@@ -93,7 +93,7 @@ class _AmbulanceTripTripHistoryState extends State<AmbulanceTripTripHistory> {
                           item.status == 0 && item.biding == 1
                               ? GestureDetector(
                             onTap: (){
-                              Get.to(()=> LiveBiddingPage(createdAt: item.createdAt.toString(), type: 'amb',));
+                              Get.to(()=> LiveBiddingPage(createdAt: item.createdAt.toString(), type: 'amb',isReset: true,));
                             },
                             child: Row(
                               children: [

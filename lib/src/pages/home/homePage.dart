@@ -31,13 +31,12 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // Controllers and dependencies...
   final RentalTripSubmitController _rentalTripSubmitController = Get.put(
-    RentalTripSubmitController()
+    RentalTripSubmitController(),
   );
   final vehicleController = Get.put(QuickTechVehiclesController());
   final ReturnTripFilter returnTripFilter = Get.put(ReturnTripFilter());
   final TruckController truckController = Get.put(TruckController());
   var box = GetStorage();
-
 
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -45,6 +44,11 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+
+    setState(() {
+      _rentalTripSubmitController.getLive();
+    });
+
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1000),
@@ -71,7 +75,7 @@ class _HomePageState extends State<HomePage>
         opacity: _fadeAnimation,
         child: RefreshIndicator(
           onRefresh: () async {
-            // Add refresh logic
+            _rentalTripSubmitController.getLive();
             await Future.delayed(Duration(seconds: 1));
           },
           color: Color(0xFF3B82F6),
@@ -81,7 +85,6 @@ class _HomePageState extends State<HomePage>
             child: CustomScrollView(
               physics: BouncingScrollPhysics(),
               slivers: [
-
                 SliverToBoxAdapter(child: _buildActiveTripBanner()),
 
                 _buildSearchBar(),
@@ -213,6 +216,7 @@ class _HomePageState extends State<HomePage>
                       () => LiveBiddingPage(
                         createdAt: DateTime.now().toString(),
                         type: box.read("type"),
+                        isReset: false,
                       ),
                     );
                   },
@@ -355,7 +359,6 @@ class _HomePageState extends State<HomePage>
         ),
         SizedBox(height: 20.h),
         _buildServicesSection(context),
-
       ],
     );
   }
@@ -461,9 +464,12 @@ class _HomePageState extends State<HomePage>
           await returnTripFilter.returnTripFilterList();
         } else if (feature.type == 'airport') {
           await vehicleController.getVehicles(id: '2');
-
           Get.to(() => SearchWidgets(tripType: 'car'));
-        }else{
+        }else if(feature.type=='ambulance'){
+          await vehicleController.getVehicles(id: '6');
+          Get.to(() => SearchWidgets(tripType: 'Ambulance'));
+        }
+        else {
           Get.to(() => SearchWidgets(tripType: 'car'));
         }
       },
@@ -619,92 +625,6 @@ class _HomePageState extends State<HomePage>
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildPromotionsSection() {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.h),
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF8B5CF6), Color(0xFFEC4899)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFF8B5CF6).withOpacity(0.4),
-            blurRadius: 25,
-            offset: Offset(2, 5),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: KText(
-                    text: "special_offer".tr,
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 12),
-                KText(
-                  text: "Get 30% off\non your first trip!",
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                SizedBox(height: 8),
-                KText(
-                  text: "Use code: FIRST30",
-                  fontSize: 14.sp,
-                  color: Colors.white.withOpacity(0.9),
-                ),
-                SizedBox(height: 16),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: KText(
-                    text: "Claim Offer",
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF8B5CF6),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(width: 20),
-          Container(
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.confirmation_number,
-              size: 40,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
     );
   }

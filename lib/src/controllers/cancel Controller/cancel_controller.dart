@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:pickup_load_update/src/components/bottom%20navbar/bottom.dart';
 import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/controllers/profile%20controllers/profile_get_controller.dart';
+import 'package:pickup_load_update/src/widgets/snack_bar/snack_bar.dart';
 
 import '../../configs/appColors.dart';
 import '../../configs/local_storage.dart';
@@ -107,7 +108,8 @@ class CancelController extends GetxController{
       if (response.statusCode == 200) {
 
         print('Cancel Successful: $responseBody');
-        Get.offAll(()=>DashboardView());
+        kSnackBar(message: 'Cancel Successful', bgColor: Colors.green);
+       Get.offAll(()=>DashboardView());
       } else {
         print('Error: ${response.statusCode} - ${response.reasonPhrase}');
         print('Cancel Successful: $responseBody');

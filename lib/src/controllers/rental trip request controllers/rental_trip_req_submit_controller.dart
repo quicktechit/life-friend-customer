@@ -21,12 +21,16 @@ class RentalTripSubmitController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getLive();
+
+  }
+
+  void getLive(){
     liveBidStart.value = box.read("liveBidStart") == true ? true : false;
     liveBidTruckStart.value = box.read("liveBidTruckStart") == true
         ? true
         : false;
   }
-
   var selectedAnswers = <int, String>{}.obs;
 
   void setAnswer(int questionId, String answer) {

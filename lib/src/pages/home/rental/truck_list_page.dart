@@ -211,7 +211,7 @@ class _TruckListPageState extends State<TruckListPage> {
                                 );
                                 Get.to(() => LiveBiddingPage(
                                       createdAt:
-                                          DateTime.now().toLocal().toString(), type: 'Truck',
+                                          DateTime.now().toLocal().toString(), type: 'Truck', isReset: true,
                                     ));
                               }
                             : null,

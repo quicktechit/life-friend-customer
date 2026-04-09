@@ -14,6 +14,7 @@ import 'package:pickup_load_update/src/pages/home/rental/tripHistoryPage.dart';
 import 'package:pickup_load_update/src/pages/single%20history%20trip%20details/single_history_trip_details.dart';
 import 'package:pickup_load_update/src/widgets/snack_bar/snack_bar.dart';
 import 'package:pickup_load_update/src/widgets/text/kText.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../controllers/cancel Controller/cancel_controller.dart';
@@ -52,7 +53,7 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
       // _controller.getOngoingTrip();
       // _controller.getCompleteTrip();
       // _controller.getCancelTrip();
-      // _controller.getCancelList();
+      _controller.getCancelList();
     });
   }
 
@@ -690,86 +691,145 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                 bottom: BorderSide(color: borderColor),
                               ),
                             ),
-                            child: Row(
+                            child: Column(
                               children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
+                                // Existing trip time row
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Icon(
-                                            Icons.access_time,
-                                            size: 14,
-                                            color: subtitleColor,
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.access_time,
+                                                size: 14,
+                                                color: subtitleColor,
+                                              ),
+                                              SizedBox(width: 8),
+                                              Text(
+                                                'tripTime'.tr,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: subtitleColor,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            'tripTime'.tr,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: subtitleColor,
-                                              fontWeight: FontWeight.w500,
+                                          SizedBox(height: 4),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 30),
+                                            child: Text(
+                                              item.rentalRelationships != null
+                                                  ? '${item.rentalRelationships?.trip?.datetime}'
+                                                  : "${item.returnRelationships?.returnTrip?.timedate}",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color: textColor,
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 4),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 30),
-                                        child: Text(
-                                          item.rentalRelationships != null
-                                              ?"${item.rentalRelationships?.trip?.datetime}"
-                                              : "${item.returnRelationships?.returnTrip?.timedate}",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: textColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                if (item.rentalRelationships != null &&
-                                    item.rentalRelationships!.trip!.roundTrip !=
-                                        null)
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFFF9800).withAlpha(50),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: Color(0xFFFF9800).withAlpha(70),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.autorenew,
-                                          size: 12,
-                                          color: Color(0xFFFF9800),
+
+                                SizedBox(height: 5),
+
+                                // Driver & Vehicle Info with Call Button
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8,
+                                          horizontal: 12,
                                         ),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          item
-                                                  .rentalRelationships
-                                                  ?.trip
-                                                  ?.roundTrip ??
-                                              'NO',
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w600,
-                                            color: Color(0xFFFF9800),
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue.shade50,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
                                           ),
                                         ),
-                                      ],
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.person,
+                                                  size: 14,
+                                                  color: Colors.blue.shade700,
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text(
+                                                  '${item.rentalRelationships?.partner?.phone ?? item.returnRelationships?.returnPartner?.phone}',
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 4),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.directions_car,
+                                                  size: 14,
+                                                  color: Colors.blue.shade700,
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text(
+                                                  '${item.getCar?.metro ?? ''}${item.getCar?.getMetroType?.nameBn ?? ''}${item.getCar?.metroNo ?? ''}',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    SizedBox(width: 8),
+                                    InkWell(
+                                      onTap: () async {
+                                        final Uri launchUri = Uri(
+                                          scheme: 'tel',
+                                          path: '${item.rentalRelationships?.partner?.phone ?? item.returnRelationships?.returnPartner?.phone}',
+                                        );
+
+                                        // if (await canLaunchUrl(launchUri)) {
+                                        await launchUrl(launchUri);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.phone,
+                                          size: 20,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),

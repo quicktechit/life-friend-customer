@@ -92,7 +92,7 @@ class _BikeTripTripHistoryState extends State<BikeTripTripHistory> {
                           item.status == 0 && item.biding == 1
                               ? GestureDetector(
                             onTap: (){
-                              Get.to(()=> LiveBiddingPage(createdAt: item.createdAt.toString(), type: 'Bike',));
+                              Get.to(()=> LiveBiddingPage(createdAt: item.createdAt.toString(), type: 'Bike',isReset: true,));
                             },
                             child: Row(
                               children: [

@@ -90,7 +90,7 @@ class _AirportTripTripHistoryState extends State<AirportTripTripHistory> {
                           item.status == 0 && item.biding == 1
                               ? GestureDetector(
                             onTap: (){
-                              Get.to(()=> LiveBiddingPage(createdAt: item.createdAt.toString(), type: 'air',));
+                              Get.to(()=> LiveBiddingPage(createdAt: item.createdAt.toString(), type: 'air', isReset: true,));
                             },
                             child: Row(
                               children: [

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:ionicons/ionicons.dart';
 
 final List<ServiceItem> quickServices = [
   ServiceItem(
@@ -58,6 +59,32 @@ final List<ServiceItem> quickServices = [
 // Enhanced Featured Services
 final List<FeatureCard> featuredServices = [
   FeatureCard(
+    name: 'ambulance'.tr,
+    tagline: 'emergencyService'.tr,
+    icon: Icons.medical_services,
+    color: Color(0xFFF63B3B),
+    type: 'ambulance', image: 'assets/new_image/ambulance.jpeg',
+  ),
+
+  FeatureCard(
+    name: 'luxury'.tr,
+    tagline: 'premiumExperience'.tr,
+    image: 'assets/images/luxury.jpeg',
+    type: 'luxury',
+    icon: Icons.directions_car_filled,
+    color: Color(0xFF8B5CF6),
+    rating: 4.9,
+  ),
+  FeatureCard(
+    name: 'airports'.tr,
+    tagline: 'pickupDrop'.tr,
+    image: 'assets/new_image/airport_image.jpg',
+    type: 'airport',
+    icon: Icons.airplanemode_active,
+    color: Color(0xFFFFA500),
+    rating: 4.8,
+  ),
+  FeatureCard(
     name: 'truckRental'.tr,
     tagline: 'heavyLoads'.tr,
     image: 'assets/new_image/truck.jpg',
@@ -75,24 +102,8 @@ final List<FeatureCard> featuredServices = [
     color: Color(0xFF10B981),
     rating: 4.8,
   ),
-  FeatureCard(
-    name: 'airports'.tr,
-    tagline: 'pickupDrop'.tr,
-    image: 'assets/new_image/airport_image.jpg',
-    type: 'airport',
-    icon: Icons.airplanemode_active,
-    color: Color(0xFFFFA500),
-    rating: 4.8,
-  ),
-  FeatureCard(
-    name: 'luxury'.tr,
-    tagline: 'premiumExperience'.tr,
-    image: 'assets/images/luxury.jpeg',
-    type: 'luxury',
-    icon: Icons.directions_car_filled,
-    color: Color(0xFF8B5CF6),
-    rating: 4.9,
-  ),
+
+
 ];
 
 class FeatureCard {

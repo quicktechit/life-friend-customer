@@ -149,7 +149,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                 box.write("type", widget.categoryID == '4' ? 'Bike' : '');
                 Get.to(() => LiveBiddingPage(
                   createdAt: DateTime.now().toLocal().toString(),
-                  type: widget.categoryID == '4' ? 'Bike' : '',
+                  type: widget.categoryID == '4' ? 'Bike' : '', isReset: true,
                 ));
               });
             },

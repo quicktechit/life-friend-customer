@@ -43,7 +43,7 @@ class SortedTrips {
   final String? createdAt;
   final String? updatedAt;
   final String? source;
-
+  final GetCar? getCar;
   final ReturnRelationships? returnRelationships;
   final RentalRelationships? rentalRelationships;
 
@@ -72,6 +72,7 @@ class SortedTrips {
     this.source,
     this.returnRelationships,
     this.rentalRelationships,
+    required this.getCar,
   });
 
   /// SAFE parsing (handles int/double/null automatically)
@@ -100,6 +101,7 @@ class SortedTrips {
       createdAt = _toStr(json['created_at']),
       updatedAt = _toStr(json['updated_at']),
       source = _toStr(json['source']),
+        getCar= json["get_car"] == null ? null : GetCar.fromJson(json["get_car"]),
       returnRelationships = json['return_relationships'] is Map<String, dynamic>
           ? ReturnRelationships.fromJson(
               json['return_relationships'] as Map<String, dynamic>,
@@ -139,6 +141,143 @@ class SortedTrips {
   };
 }
 
+class GetCar {
+  GetCar({
+    required this.id,
+    required this.partnerId,
+    required this.vehicleCategory,
+    required this.brand,
+    required this.sizecategoryId,
+    required this.truckType,
+    required this.metro,
+    required this.metroType,
+    required this.metroNo,
+    required this.model,
+    required this.modelYear,
+    required this.vehicleColor,
+    required this.aircondition,
+    required this.brandName,
+    required this.fuelType,
+    required this.vehicleFrontPic,
+    required this.vehicleBackPic,
+    required this.vehicleInsidePic1,
+    required this.vehicleInsidePic2,
+    required this.vehiclePlateNo,
+    required this.vehicleRegPic,
+    required this.vehicleRootPic,
+    required this.vehicleFitnessPic,
+    required this.vehicleTaxPic,
+    required this.vehicleInsurancePic,
+    required this.vehicleDrivingFront,
+    required this.vehicleDrivingBack,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.getMetroType,
+  });
+
+  final int? id;
+  final String? partnerId;
+  final String? vehicleCategory;
+  final String? brand;
+  final dynamic sizecategoryId;
+  final dynamic truckType;
+  final String? metro;
+  final String? metroType;
+  final String? metroNo;
+  final String? model;
+  final String? modelYear;
+  final String? vehicleColor;
+  final String? aircondition;
+  final String? brandName;
+  final String? fuelType;
+  final String? vehicleFrontPic;
+  final String? vehicleBackPic;
+  final dynamic vehicleInsidePic1;
+  final dynamic vehicleInsidePic2;
+  final String? vehiclePlateNo;
+  final String? vehicleRegPic;
+  final dynamic vehicleRootPic;
+  final dynamic vehicleFitnessPic;
+  final dynamic vehicleTaxPic;
+  final dynamic vehicleInsurancePic;
+  final String? vehicleDrivingFront;
+  final String? vehicleDrivingBack;
+  final String? status;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final GetMetroType? getMetroType;
+
+  factory GetCar.fromJson(Map<String, dynamic> json){
+    return GetCar(
+      id: json["id"],
+      partnerId: json["partner_id"],
+      vehicleCategory: json["vehicle_category"],
+      brand: json["brand"],
+      sizecategoryId: json["sizecategory_id"],
+      truckType: json["truck_type"],
+      metro: json["metro"],
+      metroType: json["metro_type"],
+      metroNo: json["metro_no"],
+      model: json["model"],
+      modelYear: json["model_year"],
+      vehicleColor: json["vehicle_color"],
+      aircondition: json["aircondition"],
+      brandName: json["brand_name"],
+      fuelType: json["fuel_type"],
+      vehicleFrontPic: json["vehicle_front_pic"],
+      vehicleBackPic: json["vehicle_back_pic"],
+      vehicleInsidePic1: json["vehicle_inside_pic1"],
+      vehicleInsidePic2: json["vehicle_inside_pic2"],
+      vehiclePlateNo: json["vehicle_plate_no"],
+      vehicleRegPic: json["vehicle_reg_pic"],
+      vehicleRootPic: json["vehicle_root_pic"],
+      vehicleFitnessPic: json["vehicle_fitness_pic"],
+      vehicleTaxPic: json["vehicle_tax_pic"],
+      vehicleInsurancePic: json["vehicle_insurance_pic"],
+      vehicleDrivingFront: json["vehicle_driving_front"],
+      vehicleDrivingBack: json["vehicle_driving_back"],
+      status: json["status"],
+      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+      getMetroType: json["get_metro_type"] == null ? null : GetMetroType.fromJson(json["get_metro_type"]),
+    );
+  }
+
+}
+
+class GetMetroType {
+  GetMetroType({
+    required this.id,
+    required this.metroSubName,
+    required this.status,
+    required this.nameBn,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  final int? id;
+  final String? metroSubName;
+  final String? status;
+  final String? nameBn;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  factory GetMetroType.fromJson(Map<String, dynamic> json){
+    return GetMetroType(
+      id: json["id"],
+      metroSubName: json["metro_sub_name"],
+      status: json["status"],
+      nameBn: json["name_bn"],
+      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+    );
+  }
+
+}
+
+
+
 class ReturnRelationships {
   final ReturnPartner? returnPartner;
   final ReturnTrip? returnTrip;
@@ -146,6 +285,7 @@ class ReturnRelationships {
   final RetrunCategory? retrunCategory;
   final ReturnVehicle? returnVehicle;
   final CustomerBidDetails? customerBidDetails;
+
 
   ReturnRelationships({
     this.returnPartner,

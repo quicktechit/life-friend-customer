@@ -98,7 +98,7 @@ class _TruckTripTripHistoryState extends State<TruckTripTripHistory> {
                                               Get.to(() => LiveBiddingPage(
                                                     createdAt: item.createdAt
                                                         .toString(),
-                                                    type: 'truck',
+                                                    type: 'truck',isReset: true,
                                                   ));
                                             },
                             child: Row(
