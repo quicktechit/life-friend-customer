@@ -23,7 +23,7 @@ import 'bidding_confirm_screen.dart';
 class TripWiseBidList extends StatefulWidget {
   final String id;
   final String amount;
-  final List<TripBids> data;
+  final List<TripBid> data;
   const TripWiseBidList({super.key, required this.data, required this.id, required this.amount});
 
   @override
@@ -167,7 +167,7 @@ class _TripWiseBidListState extends State<TripWiseBidList> {
                   itemCount: widget.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     bool isSelected = selectedCarIndex == index;
-                    final TripBids data = widget.data[index];
+                    final TripBid data = widget.data[index];
 
                     return GestureDetector(
                       onTap: () {

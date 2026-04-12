@@ -385,7 +385,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                             .filteredLiveBidData
                             .first
                             .tripBids
-                            ?.length,
+                            .length,
                         itemBuilder: (BuildContext context, int index) {
                           final data = tripBids[index];
                           final isSelected = selectedCarIndex == index;
@@ -487,7 +487,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                                           ),
                                                     ),
                                                     child: Text(
-                                                      '${data.getvehicle?.metro?.toString() ?? ''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
+                                                      '${data.getvehicle?.metro?.toString() ?? ''} ${data.getCar?.getMetroType?.metroSubName??''} ${data.getvehicle?.metroNo?.toString() ?? ''}',
                                                       style: TextStyle(
                                                         color: primaryRed,
                                                         fontSize: 11,
@@ -715,17 +715,17 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                           liveBiddingController
                                               .filteredLiveBidData
                                               .first
-                                              .tripBids?[selectedCarIndex!];
+                                              .tripBids[selectedCarIndex!];
 
                                           final ReturnBidConfirmController
                                           confirmController =
                                           ReturnBidConfirmController();
 
                                           await confirmController.bidConfirm(
-                                            amount: selectedBidData?.advance,
-                                            bidId: selectedBidData?.id
+                                            amount: int.parse(selectedBidData.advance??'0').round(),
+                                            bidId: selectedBidData.id
                                                 .toString(),
-                                            tripId: selectedBidData?.tripId
+                                            tripId: selectedBidData.tripId
                                                 .toString(),
                                           );
 

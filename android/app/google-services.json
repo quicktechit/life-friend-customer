@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:823258685691:android:593618b4bfa25d9efa105e",
+        "mobilesdk_app_id": "1:823258685691:android:4ede81e32e395a19fa105e",
         "android_client_info": {
-          "package_name": "com.quicktech.riderr_customer"
+          "package_name": "com.quicktech.riderr_user"
         }
       },
       "oauth_client": [],
