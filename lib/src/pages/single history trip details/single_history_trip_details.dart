@@ -59,19 +59,19 @@ class _SingleHistoryTripDetailsPageState
     _singleTripDetailsController
         .singleTripDetails(widget.tripId, widget.type)
         .then((value) {
-          if (widget.isComplete == true) {
-            if (widget.isReturn == true) {
-              pdfController.generatePdf(
-                tripId: widget.tripId,
-                tripType: "return_trip",
-              );
-            } else {
-              pdfController.generatePdf(
-                tripId: widget.tripId,
-                tripType: "rental_trip",
-              );
-            }
-          }
+          // if (widget.isComplete == true) {
+          //   if (widget.isReturn == true) {
+          //     pdfController.generatePdf(
+          //       tripId: widget.tripId,
+          //       tripType: "return_trip",
+          //     );
+          //   } else {
+          //     pdfController.generatePdf(
+          //       tripId: widget.tripId,
+          //       tripType: "rental_trip",
+          //     );
+          //   }
+          // }
         });
   }
 
@@ -925,7 +925,7 @@ class _SingleHistoryTripDetailsPageState
                 sizeH10,
                 if (widget.isComplete == true) _buildReviewSection(),
                 // PDF Download Button (if trip is complete)
-                if (widget.isComplete == true) _buildPdfButton(),
+                // if (widget.isComplete == true) _buildPdfButton(),
 
                 const SizedBox(height: 30),
               ],
@@ -1011,7 +1011,7 @@ class _SingleHistoryTripDetailsPageState
                 sizeH10,
                 if (widget.isComplete == true) _buildReviewSection(),
                 // PDF Download Button (if trip is complete)
-                if (widget.isComplete == true) _buildPdfButton(),
+                // if (widget.isComplete == true) _buildPdfButton(),
 
                 const SizedBox(height: 30),
               ],
