@@ -33,7 +33,15 @@ class HelpPage extends StatelessWidget {
                 title: 'callCenter'.tr,
                 icon: Icons.phone_in_talk,
                 iconColor: Colors.green,
-                onTap: () => _makePhoneCall(_aboutUsController.call.toString()),
+                onTap: () => _makePhoneCall(
+                  _aboutUsController
+                          .aboutUS
+                          .value
+                          .data
+                          ?.guide
+                          ?.emergencyHelpline ??
+                      '',
+                ),
               ),
               HelpItem(
                 title: 'call999'.tr,
@@ -51,7 +59,8 @@ class HelpPage extends StatelessWidget {
                 title: 'visitUS'.tr,
                 icon: Icons.public,
                 iconColor: Colors.purple,
-                onTap: () => _openWebsite(_aboutUsController.website.toString()),
+                onTap: () =>
+                    _openWebsite(_aboutUsController.website.toString()),
               ),
             ],
           ),
@@ -64,13 +73,13 @@ class HelpPage extends StatelessWidget {
                 title: 'faq'.tr,
                 icon: Icons.help_outline,
                 iconColor: Colors.orange,
-                onTap: () => Get.to(() =>  FaqPage()),
+                onTap: () => Get.to(() => FaqPage()),
               ),
               HelpItem(
                 title: 'howToUse'.tr,
                 icon: Icons.smartphone,
                 iconColor: Colors.teal,
-                onTap: () => Get.to(() =>  HowToUseAppPage()),
+                onTap: () => Get.to(() => HowToUseAppPage()),
               ),
             ],
           ),
@@ -83,13 +92,13 @@ class HelpPage extends StatelessWidget {
                 title: 'terms'.tr,
                 icon: Icons.description,
                 iconColor: Colors.indigo,
-                onTap: () => Get.to(() =>  TermsAndCondition()),
+                onTap: () => Get.to(() => TermsAndCondition()),
               ),
               HelpItem(
                 title: 'privacy'.tr,
                 icon: Icons.privacy_tip,
                 iconColor: Colors.deepPurple,
-                onTap: () => Get.to(() =>  PrivacyPolicy()),
+                onTap: () => Get.to(() => PrivacyPolicy()),
               ),
             ],
           ),
@@ -100,29 +109,29 @@ class HelpPage extends StatelessWidget {
 
   Future<void> _makePhoneCall(String number) async {
     final Uri url = Uri(scheme: 'tel', path: number);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      Get.snackbar('Error'.tr, 'Could not launch $number'.tr);
-    }
+    // if (await canLaunchUrl(url)) {
+    await launchUrl(url);
+    // } else {
+    //   Get.snackbar('Error'.tr, 'Could not launch $number'.tr);
+    // }
   }
 
   Future<void> _sendEmail(String email) async {
     final Uri url = Uri(scheme: 'mailto', path: email);
-    if (await canLaunchUrl(url)) {
+    // if (await canLaunchUrl(url)) {
       await launchUrl(url);
-    } else {
-      Get.snackbar('Error'.tr, 'Could not send email'.tr);
-    }
+    // } else {
+    //   Get.snackbar('Error'.tr, 'Could not send email'.tr);
+    // }
   }
 
   Future<void> _openWebsite(String website) async {
     final Uri url = Uri(scheme: 'https', path: website);
-    if (await canLaunchUrl(url)) {
+    // if (await canLaunchUrl(url)) {
       await launchUrl(url);
-    } else {
-      Get.snackbar('Error'.tr, 'Could not open website'.tr);
-    }
+    // } else {
+    //   Get.snackbar('Error'.tr, 'Could not open website'.tr);
+    // }
   }
 }
 
@@ -176,7 +185,11 @@ class _HelpSection extends StatelessWidget {
                   children: [
                     _HelpTile(item: item),
                     if (index != items.length - 1)
-                      Divider(height: 0, indent: 56, color: Colors.grey.shade200),
+                      Divider(
+                        height: 0,
+                        indent: 56,
+                        color: Colors.grey.shade200,
+                      ),
                   ],
                 );
               }).toList(),
@@ -222,11 +235,7 @@ class _HelpTile extends StatelessWidget {
                   ),
                 ),
               ),
-              Icon(
-                Icons.chevron_right,
-                color: Colors.grey.shade400,
-                size: 20,
-              ),
+              Icon(Icons.chevron_right, color: Colors.grey.shade400, size: 20),
             ],
           ),
         ),

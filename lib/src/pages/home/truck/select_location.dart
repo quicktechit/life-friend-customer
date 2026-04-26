@@ -724,7 +724,7 @@ class _SelectLocationState extends State<SelectLocation> {
                             return Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   debugPrint('Testing ::: ');
                                   locationController.dropC.text =
                                       suggestion.address??'';

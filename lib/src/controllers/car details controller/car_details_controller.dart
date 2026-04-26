@@ -13,7 +13,7 @@ class CarDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    carDetails();
+    // carDetails();
   }
 
   Future<void> carDetails({

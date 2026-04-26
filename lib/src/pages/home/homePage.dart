@@ -460,8 +460,9 @@ class _HomePageState extends State<HomePage>
         if (feature.type == 'returnTruck') {
           Get.to(() => ReturnTripListFilterPage());
         } else if (feature.type == 'truckRental') {
-          Get.to(() => SelectLocation());
-          await returnTripFilter.returnTripFilterList();
+          Get.snackbar('Coming Soon','This Feature will come soon');
+          // Get.to(() => SelectLocation());
+          // await returnTripFilter.returnTripFilterList();
         } else if (feature.type == 'airport') {
           await vehicleController.getVehicles(id: '2');
           Get.to(() => SearchWidgets(tripType: 'car'));

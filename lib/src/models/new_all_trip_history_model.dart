@@ -211,13 +211,13 @@ class GetCar {
   factory GetCar.fromJson(Map<String, dynamic> json){
     return GetCar(
       id: json["id"],
-      partnerId: json["partner_id"],
-      vehicleCategory: json["vehicle_category"],
-      brand: json["brand"],
+      partnerId: json["partner_id"].toString(),
+      vehicleCategory: json["vehicle_category"].toString(),
+      brand: json["brand"].toString(),
       sizecategoryId: json["sizecategory_id"],
       truckType: json["truck_type"],
       metro: json["metro"],
-      metroType: json["metro_type"],
+      metroType: json["metro_type"].toString(),
       metroNo: json["metro_no"],
       model: json["model"],
       modelYear: json["model_year"],
@@ -267,7 +267,7 @@ class GetMetroType {
     return GetMetroType(
       id: json["id"],
       metroSubName: json["metro_sub_name"],
-      status: json["status"],
+      status: json["status"].toString(),
       nameBn: json["name_bn"],
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),

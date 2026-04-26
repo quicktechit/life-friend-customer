@@ -1,3 +1,5 @@
+import 'live_bidding_model.dart';
+
 class CarDetailsModel {
   CarDetailsModel({
      this.status,
@@ -92,30 +94,48 @@ class Biddata {
   final GetBrand? getBrand;
   final Get? getCar;
 
-  factory Biddata.fromJson(Map<String, dynamic> json){
+  factory Biddata.fromJson(Map<String, dynamic> json) {
     return Biddata(
-      id: json["id"],
-      tripId: json["trip_id"],
-      customerId: json["customer_id"],
-      partnerId: json["partner_id"],
-      vehicleCategory: json["vehicle_category"],
-      vehicleId: json["vehicle_id"],
-      assignedDriverId: json["assigned_driver_id"],
-      carId: json["car_id"],
-      amount: json["amount"],
-      extraPrice: json["extra_price"],
-      platformCharge: json["platform_charge"],
-      advance: json["advance"],
-      drivercollectamount: json["drivercollectamount"],
-      drivercredit: json["drivercredit"],
-      promoAmount: json["promo_amount"],
-      status: json["status"],
-      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
-      getvehicle: json["getvehicle"] == null ? null : Get.fromJson(json["getvehicle"]),
-      getpartner: json["getpartner"] == null ? null : Getpartner.fromJson(json["getpartner"]),
-      getBrand: json["get_brand"] == null ? null : GetBrand.fromJson(json["get_brand"]),
-      getCar: json["get_car"] == null ? null : Get.fromJson(json["get_car"]),
+      id: parseInt(json["id"]),
+
+      tripId: parseString(json["trip_id"]),
+      customerId: parseString(json["customer_id"]),
+      partnerId: parseString(json["partner_id"]),
+      vehicleCategory: parseString(json["vehicle_category"]),
+      vehicleId: parseString(json["vehicle_id"]),
+
+      assignedDriverId: parseInt(json["assigned_driver_id"]),
+      carId: parseString(json["car_id"]),
+
+      amount: parseInt(json["amount"]),
+      extraPrice: parseString(json["extra_price"]),
+      platformCharge: parseString(json["platform_charge"]),
+
+      advance: parseInt(json["advance"]),
+      drivercollectamount: parseInt(json["drivercollectamount"]),
+      drivercredit: parseInt(json["drivercredit"]),
+      promoAmount: parseInt(json["promo_amount"]),
+
+      status: parseString(json["status"]),
+
+      createdAt: DateTime.tryParse(json["created_at"]?.toString() ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"]?.toString() ?? ""),
+
+      getvehicle: json["getvehicle"] != null
+          ? Get.fromJson(json["getvehicle"])
+          : null,
+
+      getpartner: json["getpartner"] != null
+          ? Getpartner.fromJson(json["getpartner"])
+          : null,
+
+      getBrand: json["get_brand"] != null
+          ? GetBrand.fromJson(json["get_brand"])
+          : null,
+
+      getCar: json["get_car"] != null
+          ? Get.fromJson(json["get_car"])
+          : null,
     );
   }
 
@@ -164,27 +184,33 @@ class GetBrand {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  factory GetBrand.fromJson(Map<String, dynamic> json){
+  factory GetBrand.fromJson(Map<String, dynamic> json) {
     return GetBrand(
-      id: json["id"],
-      vehicleCategory: json["vehicle_category"],
-      sizecategoryId: json["sizecategory_id"],
-      truckType: json["truck_type"],
-      name: json["name"],
-      nameBn: json["name_bn"],
-      slug: json["slug"],
-      capacity: json["capacity"],
-      biddingTime: json["bidding_time"],
-      blockTime: json["block_time"],
-      scheduleDay: json["schedule_day"],
-      lowValue: json["low_value"],
-      highValue: json["high_value"],
-      bookingPercentage: json["booking_percentage"],
-      image: json["image"],
-      description: json["description"],
-      status: json["status"],
-      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+      id: parseInt(json["id"]),
+      vehicleCategory: parseString(json["vehicle_category"]),
+
+      sizecategoryId: parseInt(json["sizecategory_id"]),
+      truckType: parseString(json["truck_type"]),
+
+      name: parseString(json["name"]),
+      nameBn: parseString(json["name_bn"]),
+      slug: parseString(json["slug"]),
+
+      capacity: parseString(json["capacity"]),
+      biddingTime: parseString(json["bidding_time"]),
+      blockTime: parseString(json["block_time"]),
+      scheduleDay: parseString(json["schedule_day"]),
+
+      lowValue: parseString(json["low_value"]),
+      highValue: parseString(json["high_value"]),
+      bookingPercentage: parseString(json["booking_percentage"]),
+
+      image: parseString(json["image"]),
+      description: parseString(json["description"]),
+      status: parseString(json["status"]),
+
+      createdAt: DateTime.tryParse(json["created_at"]?.toString() ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"]?.toString() ?? ""),
     );
   }
 
@@ -255,38 +281,47 @@ class Get {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  factory Get.fromJson(Map<String, dynamic> json){
+  factory Get.fromJson(Map<String, dynamic> json) {
     return Get(
-      id: json["id"],
-      partnerId: json["partner_id"],
-      vehicleCategory: json["vehicle_category"],
-      brand: json["brand"],
-      sizecategoryId: json["sizecategory_id"],
-      truckType: json["truck_type"],
-      metro: json["metro"],
-      metroType: json["metro_type"],
-      metroNo: json["metro_no"],
-      model: json["model"],
-      modelYear: json["model_year"],
-      vehicleColor: json["vehicle_color"],
-      aircondition: json["aircondition"],
-      brandName: json["brand_name"],
-      fuelType: json["fuel_type"],
-      vehicleFrontPic: json["vehicle_front_pic"],
-      vehicleBackPic: json["vehicle_back_pic"],
-      vehicleInsidePic1: json["vehicle_inside_pic1"],
-      vehicleInsidePic2: json["vehicle_inside_pic2"],
-      vehiclePlateNo: json["vehicle_plate_no"],
-      vehicleRegPic: json["vehicle_reg_pic"],
-      vehicleRootPic: json["vehicle_root_pic"],
-      vehicleFitnessPic: json["vehicle_fitness_pic"],
-      vehicleTaxPic: json["vehicle_tax_pic"],
-      vehicleInsurancePic: json["vehicle_insurance_pic"],
-      vehicleDrivingFront: json["vehicle_driving_front"],
-      vehicleDrivingBack: json["vehicle_driving_back"],
-      status: json["status"],
-      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+      id: parseInt(json["id"]),
+
+      partnerId: parseString(json["partner_id"]),
+      vehicleCategory: parseString(json["vehicle_category"]),
+      brand: parseString(json["brand"]),
+
+      sizecategoryId: parseInt(json["sizecategory_id"]),
+      truckType: parseString(json["truck_type"]),
+
+      metro: parseString(json["metro"]),
+      metroType: parseString(json["metro_type"]),
+      metroNo: parseString(json["metro_no"]),
+
+      model: parseString(json["model"]),
+      modelYear: parseString(json["model_year"]),
+      vehicleColor: parseString(json["vehicle_color"]),
+      aircondition: parseString(json["aircondition"]),
+      brandName: parseString(json["brand_name"]),
+      fuelType: parseString(json["fuel_type"]),
+
+      vehicleFrontPic: parseString(json["vehicle_front_pic"]),
+      vehicleBackPic: parseString(json["vehicle_back_pic"]),
+      vehicleInsidePic1: parseString(json["vehicle_inside_pic1"]),
+      vehicleInsidePic2: parseString(json["vehicle_inside_pic2"]),
+      vehiclePlateNo: parseString(json["vehicle_plate_no"]),
+
+      vehicleRegPic: parseString(json["vehicle_reg_pic"]),
+      vehicleRootPic: parseString(json["vehicle_root_pic"]),
+      vehicleFitnessPic: parseString(json["vehicle_fitness_pic"]),
+      vehicleTaxPic: parseString(json["vehicle_tax_pic"]),
+      vehicleInsurancePic: parseString(json["vehicle_insurance_pic"]),
+
+      vehicleDrivingFront: parseString(json["vehicle_driving_front"]),
+      vehicleDrivingBack: parseString(json["vehicle_driving_back"]),
+
+      status: parseString(json["status"]),
+
+      createdAt: DateTime.tryParse(json["created_at"]?.toString() ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"]?.toString() ?? ""),
     );
   }
 
@@ -377,48 +412,61 @@ class Getpartner {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  factory Getpartner.fromJson(Map<String, dynamic> json){
+  factory Getpartner.fromJson(Map<String, dynamic> json) {
     return Getpartner(
-      id: json["id"],
-      name: json["name"],
-      rating: json["rating"],
-      phone: json["phone"],
-      email: json["email"],
-      image: json["image"],
-      categoryId: json["category_id"],
-      sizecategoryId: json["sizecategory_id"],
-      vehicleId: json["vehicle_id"],
-      truckType: json["truck_type"],
-      docType: json["doc_type"],
-      docNumber: json["doc_number"],
-      drivingLicenseNo: json["driving_license_no"],
-      docFront: json["doc_front"],
-      docBack: json["doc_back"],
-      drivingLicenseFront: json["driving_license_front"],
-      drivingLicenseBack: json["driving_license_back"],
-      divisionId: json["division_id"],
-      districtId: json["district_id"],
-      thanaId: json["thana_id"],
-      address: json["address"],
-      gender: json["gender"],
-      referCode: json["refer_code"],
-      myreferKey: json["myrefer_key"],
-      verify: json["verify"],
-      forgotCode: json["forgot_code"],
-      credit: json["credit"],
-      debit: json["debit"],
-      deviceToken: json["device_token"],
-      packageId: json["package_id"],
-      packageStatus: json["package_status"],
-      enableDate: DateTime.tryParse(json["enable_date"] ?? ""),
-      expireDate: DateTime.tryParse(json["expire_date"] ?? ""),
-      currentMap: json["current_map"],
-      cancelButton: json["cancel_button"],
-      cancelCount: json["cancel_count"],
+      id: parseInt(json["id"]),
+      name: parseString(json["name"]),
+      rating: parseDouble(json["rating"]),
+
+      phone: parseString(json["phone"]),
+      email: parseString(json["email"]),
+      image: parseString(json["image"]),
+
+      categoryId: parseString(json["category_id"]),
+      sizecategoryId: parseInt(json["sizecategory_id"]),
+      vehicleId: parseInt(json["vehicle_id"]),
+      truckType: parseString(json["truck_type"]),
+
+      docType: parseString(json["doc_type"]),
+      docNumber: parseString(json["doc_number"]),
+      drivingLicenseNo: parseString(json["driving_license_no"]),
+
+      docFront: parseString(json["doc_front"]),
+      docBack: parseString(json["doc_back"]),
+      drivingLicenseFront: parseString(json["driving_license_front"]),
+      drivingLicenseBack: parseString(json["driving_license_back"]),
+
+      divisionId: parseString(json["division_id"]),
+      districtId: parseString(json["district_id"]),
+      thanaId: parseString(json["thana_id"]),
+
+      address: parseString(json["address"]),
+      gender: parseString(json["gender"]),
+
+      referCode: parseString(json["refer_code"]),
+      myreferKey: parseString(json["myrefer_key"]),
+      verify: parseString(json["verify"]),
+
+      forgotCode: parseString(json["forgot_code"]),
+      credit: parseString(json["credit"]),
+      debit: parseString(json["debit"]),
+
+      deviceToken: parseString(json["device_token"]),
+      packageId: parseString(json["package_id"]),
+      packageStatus: parseString(json["package_status"]),
+
+      enableDate: DateTime.tryParse(json["enable_date"]?.toString() ?? ""),
+      expireDate: DateTime.tryParse(json["expire_date"]?.toString() ?? ""),
+
+      currentMap: parseString(json["current_map"]),
+      cancelButton: parseString(json["cancel_button"]),
+      cancelCount: parseString(json["cancel_count"]),
+
       suspendExpiredAt: json["suspend_expired_at"],
-      status: json["status"],
-      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+      status: parseString(json["status"]),
+
+      createdAt: DateTime.tryParse(json["created_at"]?.toString() ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"]?.toString() ?? ""),
     );
   }
 

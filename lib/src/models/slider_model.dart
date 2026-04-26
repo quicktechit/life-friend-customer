@@ -41,7 +41,7 @@ class SliderData {
       title: json["title"],
       description: json["description"],
       image: json["image"],
-      status: json["status"],
+      status: json["status"].toString(),
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
     );

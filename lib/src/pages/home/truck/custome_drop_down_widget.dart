@@ -54,6 +54,7 @@ class _CustomDropWidget extends State<CustomDropWidget> {
             controller: widget.controller,
             focusNode: _focusNode,
             onChanged: (value) {
+
               value.isEmpty
                   ? locationController.fetchDropSuggestions("Bangladesh")
                   : locationController.fetchDropSuggestions(value);

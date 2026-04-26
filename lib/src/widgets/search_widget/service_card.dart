@@ -26,8 +26,9 @@ Widget buildQuickServiceCard(
           Get.to(() => ReturnTripListFilterPage());
           return;
         case 'truckRental':
-          Get.to(() => SelectLocation());
-          await returnTripFilter.returnTripFilterList();
+          Get.snackbar('Coming Soon','This Feature will come soon');
+          // Get.to(() => SelectLocation());
+          // await returnTripFilter.returnTripFilterList();
           return;
         case 'ambulance':
           await vehicleController.getVehicles(id: '6');
