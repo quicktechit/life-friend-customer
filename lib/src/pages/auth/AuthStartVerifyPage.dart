@@ -13,6 +13,7 @@ import 'package:pickup_load_update/src/pages/auth/quicktech_registration_rules.d
 
 import 'package:pickup_load_update/src/widgets/button/primaryButton.dart';
 import 'package:pickup_load_update/src/widgets/text/custom_text_filed_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AuthStartPage extends StatefulWidget {
   const AuthStartPage({super.key});
@@ -110,7 +111,6 @@ class _AuthStartPageState extends State<AuthStartPage> {
                 //     ],
                 //   ),
                 // ),
-
                 SizedBox(height: 40.0.h),
 
                 // Input Section
@@ -258,8 +258,6 @@ class _AuthStartPageState extends State<AuthStartPage> {
                 //     ],
                 //   ),
                 // ),
-
-
                 Column(
                   children: [
                     // Mobile Number Field
@@ -270,7 +268,6 @@ class _AuthStartPageState extends State<AuthStartPage> {
                       keyboardType: TextInputType.number,
                       controller: mobileController,
                       hinttext: '০১xxxxxxxxx',
-
                     ),
 
                     SizedBox(height: 25.0.h),
@@ -284,7 +281,7 @@ class _AuthStartPageState extends State<AuthStartPage> {
                             color: primaryColor.withAlpha(10),
                           ),
                           child: Obx(
-                                () => Checkbox(
+                            () => Checkbox(
                               value: _controller.isChecked.value,
                               onChanged: (v) {
                                 _controller.isChecked.value = v!;
@@ -315,12 +312,18 @@ class _AuthStartPageState extends State<AuthStartPage> {
                                     decoration: TextDecoration.underline,
                                   ),
                                   recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Get.to(
-                                            () => QuickTechRegistrationRules(),
-                                        transition: Transition.rightToLeft,
-                                        duration: Duration(milliseconds: 400),
+                                    ..onTap = () async {
+                                      await launchUrl(
+                                        Uri.parse(
+                                          'https://docs.google.com/document/d/1dR0F8bozADOh8qssebSBEEqjWe-iwM0Ky89C4IXHacM/edit?tab=t.0#heading=h.tmm1c2jwj8nc',
+                                        ),
+                                        mode: LaunchMode.externalApplication,
                                       );
+                                      // Get.to(
+                                      //       () => QuickTechRegistrationRules(),
+                                      //   transition: Transition.rightToLeft,
+                                      //   duration: Duration(milliseconds: 400),
+                                      // );
                                     },
                                 ),
                                 TextSpan(text: 'সম্মতি দিচ্ছি'),
@@ -348,45 +351,47 @@ class _AuthStartPageState extends State<AuthStartPage> {
                       child: _controller.isLoading.value
                           ? Center(child: loader())
                           : primaryButton(
-                        icon: Icons.arrow_forward,
+                              icon: Icons.arrow_forward,
 
-                        buttonName: 'লগইন করুন',
+                              buttonName: 'লগইন করুন',
 
-                        onTap: () {
-                          if (mobileController.text.isEmpty) {
-                            Get.snackbar(
-                              'Sorry',
-                              'Mobile Number is Required',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.redAccent,
-                              snackPosition: SnackPosition.BOTTOM,
-                            );
-                          } else if (mobileController.text.length != 11) {
-                            Get.snackbar(
-                              'Sorry',
-                              'Mobile Number must be 11 digits',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.redAccent,
-                              snackPosition: SnackPosition.BOTTOM,
-                            );
-                          } else if (_controller.isChecked.value == false) {
-                            Get.snackbar(
-                              'Sorry',
-                              'শর্তাবলি টিক দিন!',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.redAccent,
-                              snackPosition: SnackPosition.BOTTOM,
-                            );
-                          } else {
-                            _controller.registerMethod(
-                              customerPhone: mobileController.text.trim(),
-                            );
-                          }
-                        },
-                      ),
+                              onTap: () {
+                                if (mobileController.text.isEmpty) {
+                                  Get.snackbar(
+                                    'Sorry',
+                                    'Mobile Number is Required',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.redAccent,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
+                                } else if (mobileController.text.length != 11) {
+                                  Get.snackbar(
+                                    'Sorry',
+                                    'Mobile Number must be 11 digits',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.redAccent,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
+                                } else if (_controller.isChecked.value ==
+                                    false) {
+                                  Get.snackbar(
+                                    'Sorry',
+                                    'শর্তাবলি টিক দিন!',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.redAccent,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
+                                } else {
+                                  _controller.registerMethod(
+                                    customerPhone: mobileController.text.trim(),
+                                  );
+                                }
+                              },
+                            ),
                     ),
                   ],
                 ),
+
                 // SizedBox(height: 25.0.h),
 
                 // Benefits Button
@@ -401,7 +406,6 @@ class _AuthStartPageState extends State<AuthStartPage> {
                 //     );
                 //   },
                 // ),
-
                 SizedBox(height: 30.0.h),
 
                 // Footer Note

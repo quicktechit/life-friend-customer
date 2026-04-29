@@ -138,6 +138,8 @@ class _OtpInputPageState extends State<OtpInputPage> {
                     _start == 0
                         ? GestureDetector(
                       onTap: () {
+                         _start = 120;
+                        startTimer();
                         RegistrationController().registerMethod(
                           customerPhone: widget.customerPhone,
                         );

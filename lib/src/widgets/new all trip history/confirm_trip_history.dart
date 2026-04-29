@@ -1,26 +1,21 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/appUtils.dart';
 import 'package:pickup_load_update/src/configs/empty_box_widget.dart';
 import 'package:pickup_load_update/src/configs/loader.dart';
 import 'package:pickup_load_update/src/models/new_all_trip_history_model.dart';
-import 'package:pickup_load_update/src/pages/home/rental/tripHistoryPage.dart';
 import 'package:pickup_load_update/src/pages/single%20history%20trip%20details/single_history_trip_details.dart';
 import 'package:pickup_load_update/src/widgets/snack_bar/snack_bar.dart';
-import 'package:pickup_load_update/src/widgets/text/kText.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../controllers/cancel Controller/cancel_controller.dart';
 import '../../controllers/new all trip history/all_trip_history_controller.dart';
 import '../../controllers/profile controllers/profile_get_controller.dart';
-import '../../pages/map_page/map_page_view.dart';
 
 class AllConfirmTripHistory extends StatefulWidget {
   const AllConfirmTripHistory({super.key});

@@ -43,7 +43,7 @@ class ReturnBidConfirmController extends GetxController {
       request.fields['trip_id'] = tripId.toString();
       request.fields['amount'] = amount.toString();
       // request.fields['amount'] = '5';
-
+      print("FIELDS: ${request.fields}");
       var response = await http.Response.fromStream(await request.send());
       Get.back();
       if (response.statusCode == 200) {
@@ -65,8 +65,7 @@ class ReturnBidConfirmController extends GetxController {
             );
 
             Get.snackbar(
-              'Success',
-              'Bid Confirm Successfully',
+              'Success','Redirect To Payment Getaway',
               colorText: white,
               backgroundColor: Colors.black,
             );

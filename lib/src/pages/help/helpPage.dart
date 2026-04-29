@@ -33,15 +33,7 @@ class HelpPage extends StatelessWidget {
                 title: 'callCenter'.tr,
                 icon: Icons.phone_in_talk,
                 iconColor: Colors.green,
-                onTap: () => _makePhoneCall(
-                  _aboutUsController
-                          .aboutUS
-                          .value
-                          .data
-                          ?.guide
-                          ?.emergencyHelpline ??
-                      '',
-                ),
+                onTap: () => _makePhoneCall('01886720053'),
               ),
               HelpItem(
                 title: 'call999'.tr,
@@ -53,15 +45,15 @@ class HelpPage extends StatelessWidget {
                 title: 'emailUs'.tr,
                 icon: Icons.email,
                 iconColor: Colors.blue,
-                onTap: () => _sendEmail(_aboutUsController.mail.toString()),
+                onTap: () => _sendEmail('customercare@riderrapp.com'),
               ),
-              HelpItem(
-                title: 'visitUS'.tr,
-                icon: Icons.public,
-                iconColor: Colors.purple,
-                onTap: () =>
-                    _openWebsite(_aboutUsController.website.toString()),
-              ),
+              // HelpItem(
+              //   title: 'visitUS'.tr,
+              //   icon: Icons.public,
+              //   iconColor: Colors.purple,
+              //   onTap: () =>
+              //       _openWebsite(_aboutUsController.website.toString()),
+              // ),
             ],
           ),
           const SizedBox(height: 20),
@@ -92,13 +84,29 @@ class HelpPage extends StatelessWidget {
                 title: 'terms'.tr,
                 icon: Icons.description,
                 iconColor: Colors.indigo,
-                onTap: () => Get.to(() => TermsAndCondition()),
+                // onTap: () => Get.to(() => TermsAndCondition()),
+                onTap: () async {
+                  await launchUrl(
+                  Uri.parse(
+                    'https://docs.google.com/document/d/1dR0F8bozADOh8qssebSBEEqjWe-iwM0Ky89C4IXHacM/edit?tab=t.0#heading=h.tmm1c2jwj8nc',
+                  ),
+                  mode: LaunchMode.externalApplication,
+                  );
+                },
               ),
               HelpItem(
                 title: 'privacy'.tr,
                 icon: Icons.privacy_tip,
                 iconColor: Colors.deepPurple,
-                onTap: () => Get.to(() => PrivacyPolicy()),
+                onTap: () async {
+                  await launchUrl(
+                  Uri.parse(
+                    'https://docs.google.com/document/d/1wpFfQHU94IBdbOpnfmyIEYnh0egcn7oT3_OrDGWCvpE/edit?tab=t.0#heading=h.nmx0kmzdbaz4',
+                  ),
+                  mode: LaunchMode.externalApplication,
+                  );
+                },
+                // onTap: () => Get.to(() => PrivacyPolicy()),
               ),
             ],
           ),
@@ -119,7 +127,7 @@ class HelpPage extends StatelessWidget {
   Future<void> _sendEmail(String email) async {
     final Uri url = Uri(scheme: 'mailto', path: email);
     // if (await canLaunchUrl(url)) {
-      await launchUrl(url);
+    await launchUrl(url);
     // } else {
     //   Get.snackbar('Error'.tr, 'Could not send email'.tr);
     // }
@@ -128,7 +136,7 @@ class HelpPage extends StatelessWidget {
   Future<void> _openWebsite(String website) async {
     final Uri url = Uri(scheme: 'https', path: website);
     // if (await canLaunchUrl(url)) {
-      await launchUrl(url);
+    await launchUrl(url);
     // } else {
     //   Get.snackbar('Error'.tr, 'Could not open website'.tr);
     // }

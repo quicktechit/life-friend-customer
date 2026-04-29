@@ -373,9 +373,9 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
               padding: EdgeInsets.all(16),
               child: Column(
                 children: [
-                  _buildInfoRow('roundTrip'.tr, widget.roundTrip == "0" ? 'No' : 'Yes',
-                      valueColor: widget.roundTrip == "0" ? Colors.grey : Colors.green),
-                  Divider(height: 1, color: Colors.grey[200]),
+                  // _buildInfoRow('roundTrip'.tr, widget.roundTrip == "0" ? 'No' : 'Yes',
+                  //     valueColor: widget.roundTrip == "0" ? Colors.grey : Colors.green),
+                  // Divider(height: 1, color: Colors.grey[200]),
                   _buildInfoRow('TRIPDATETIME'.tr, widget.tripDetailsJourney),
                   if (widget.roundTrip != "0") ...[
                     Divider(height: 1, color: Colors.grey[200]),
@@ -387,108 +387,108 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
             ),
           ),
 
-          // Promo Code Card
-          Container(
-            margin: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: 'promoCode'.tr,
-                          fontSize: 13,
-                          color: Colors.grey[600]!,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        sizeH5,
-                        KText(
-                          text: promoCode.isEmpty ? 'noPromoAdded'.tr : promoCode,
-                          fontSize: 15,
-                          color: promoCode.isEmpty ? Colors.grey : Colors.green,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('addPromoCode'.tr),
-                            content: SizedBox(
-                              width: 300,
-                              child: CustomTextFieldWithIcon(
-                                label: 'add code'.tr,
-                                icon: Icons.card_giftcard,
-                                controller: addPromoController,
-                                hinttext: "promoCode".tr,
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text('close'.tr),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    promoCode = addPromoController.text;
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Apply'.tr),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.blue, Colors.blue.shade700],
-                        ),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.add, size: 18, color: Colors.white),
-                            SizedBox(width: 4),
-                            KText(
-                              text: 'addPromoCode',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+          // // Promo Code Card
+          // Container(
+          //   margin: EdgeInsets.all(12),
+          //   decoration: BoxDecoration(
+          //     color: white,
+          //     borderRadius: BorderRadius.circular(16),
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Colors.black.withOpacity(0.05),
+          //         blurRadius: 10,
+          //         offset: Offset(0, 2),
+          //       ),
+          //     ],
+          //   ),
+          //   child: Padding(
+          //     padding: EdgeInsets.all(16),
+          //     child: Row(
+          //       children: [
+          //         Expanded(
+          //           child: Column(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             children: [
+          //               KText(
+          //                 text: 'promoCode'.tr,
+          //                 fontSize: 13,
+          //                 color: Colors.grey[600]!,
+          //                 fontWeight: FontWeight.w500,
+          //               ),
+          //               sizeH5,
+          //               KText(
+          //                 text: promoCode.isEmpty ? 'noPromoAdded'.tr : promoCode,
+          //                 fontSize: 15,
+          //                 color: promoCode.isEmpty ? Colors.grey : Colors.green,
+          //                 fontWeight: FontWeight.w600,
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //         GestureDetector(
+          //           onTap: () {
+          //             showDialog(
+          //               context: context,
+          //               builder: (BuildContext context) {
+          //                 return AlertDialog(
+          //                   title: Text('addPromoCode'.tr),
+          //                   content: SizedBox(
+          //                     width: 300,
+          //                     child: CustomTextFieldWithIcon(
+          //                       label: 'add code'.tr,
+          //                       icon: Icons.card_giftcard,
+          //                       controller: addPromoController,
+          //                       hinttext: "promoCode".tr,
+          //                     ),
+          //                   ),
+          //                   actions: [
+          //                     TextButton(
+          //                       onPressed: () => Navigator.pop(context),
+          //                       child: Text('close'.tr),
+          //                     ),
+          //                     ElevatedButton(
+          //                       onPressed: () {
+          //                         setState(() {
+          //                           promoCode = addPromoController.text;
+          //                         });
+          //                         Navigator.pop(context);
+          //                       },
+          //                       child: Text('Apply'.tr),
+          //                     ),
+          //                   ],
+          //                 );
+          //               },
+          //             );
+          //           },
+          //           child: Container(
+          //             decoration: BoxDecoration(
+          //               gradient: LinearGradient(
+          //                 colors: [Colors.blue, Colors.blue.shade700],
+          //               ),
+          //               borderRadius: BorderRadius.circular(30),
+          //             ),
+          //             child: Padding(
+          //               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          //               child: Row(
+          //                 mainAxisSize: MainAxisSize.min,
+          //                 children: [
+          //                   Icon(Icons.add, size: 18, color: Colors.white),
+          //                   SizedBox(width: 4),
+          //                   KText(
+          //                     text: 'addPromoCode',
+          //                     fontWeight: FontWeight.w600,
+          //                     fontSize: 13,
+          //                     color: Colors.white,
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
           sizeH20
         ],
       ),

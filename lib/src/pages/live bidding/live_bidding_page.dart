@@ -390,18 +390,18 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                           final data = tripBids[index];
                           final isSelected = selectedCarIndex == index;
 
-                          return Card(
-                            color: isSelected?lightGreen:lightRed,
-                            child: GestureDetector(
-                              onTap: () {
-                                _singleTripC.singleTripDetails(
-                                  data.tripId.toString(),
-                                  'normal',
-                                );
-                                setState(() {
-                                  selectedCarIndex = index;
-                                });
-                              },
+                          return GestureDetector(
+                            onTap: () {
+                              _singleTripC.singleTripDetails(
+                                data.tripId.toString(),
+                                'normal',
+                              );
+                              setState(() {
+                                selectedCarIndex = index;
+                              });
+                            },
+                            child: Card(
+                              color: isSelected?lightGreen:lightRed,
                               child: Stack(
                                 children: [
                                   Padding(

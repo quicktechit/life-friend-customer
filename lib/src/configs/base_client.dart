@@ -11,7 +11,7 @@ import 'package:pickup_load_update/src/pages/auth/AuthStartVerifyPage.dart';
 class BaseClient {
   static var noInternetMessage = "Please check your connection!";
 
-  static getRequest({required String api, params}) async {
+  static Future<http.Response> getRequest({required String api, params}) async {
     SharedPreferencesManager _prefsManager =
         await SharedPreferencesManager.getInstance();
     String? token = _prefsManager.getToken();
@@ -32,7 +32,7 @@ log(token.toString());
     return response;
   }
 
-  static postRequest({required String api, body}) async {
+  static Future<http.Response> postRequest({required String api, body}) async {
     SharedPreferencesManager _prefsManager =
         await SharedPreferencesManager.getInstance();
     String? token = _prefsManager.getToken();
@@ -53,7 +53,7 @@ log(token.toString());
     return response;
   }
 
-  static deleteRequest({required String api, body}) async {
+  static Future<http.Response> deleteRequest({required String api, body}) async {
     debugPrint('\nYou hit: $api');
     debugPrint('Request Body: ${jsonEncode(body)}');
 
@@ -67,7 +67,7 @@ log(token.toString());
     return response;
   }
 
-  static multipartAddRequest({
+  static Future<http.Response> multipartAddRequest({
     required String api,
     required Map<String, String> body,
     required String fileKeyName,
@@ -96,7 +96,7 @@ log(token.toString());
     return response;
   }
 
-  static handleResponse(http.Response response) async {
+  static Future<dynamic> handleResponse(http.Response response) async {
     try {
       if (response.statusCode >= 200 && response.statusCode <= 210) {
         debugPrint('SuccessCode: ${response.statusCode}');

@@ -116,7 +116,7 @@ class Translation extends Translations {
       'logOutMessage': "Are you sure you want to logout from Customer App?",
       'hourlyMessage':
           'The drop-off and pick-up districts are the same. Do You Want to switch to hourly service?',
-      'callCenter': "Call Center (7am  - 11:59pm)",
+      'callCenter': "Call Center (10am  - 8pm)",
       'call999': "Call 999",
       'emailUs': "Email Us",
       'visitUS': "Visit Us",
@@ -462,7 +462,7 @@ class Translation extends Translations {
       "terms": "শর্তাবলী",
       'emailUs': "আমাদের ইমেইল করুন",
       'call999': "কল ৯৯৯",
-      'callCenter': "কল সেন্টার (সকাল 7টা - 11:59টা)",
+      'callCenter': "কল সেন্টার (সকাল ১০ টা - রাত ৮ টা)",
       'language': 'ভাষা',
       "pickImageMessage": "আপনার ছবি নিতে ক্লিক করুন",
       "notification": "নোটিফিকেশন",

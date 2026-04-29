@@ -21,13 +21,11 @@ class ProfileController extends GetxController {
 
   @override
   void onInit() {
-    getProfileData(
-        token:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2NhcmJvb2suY3V0aWFpZGNvcnBvcmF0aW9uLmNvbS9hcGkvdjEvY3VzdG9tZXIvbG9naW4iLCJpYXQiOjE3MDk0NjEwNzcsImV4cCI6MTcwOTQ2NDY3NywibmJmIjoxNzA5NDYxMDc3LCJqdGkiOiIzYXFIbUFBc1BCZDZtanBHIiwic3ViIjoiMzUiLCJwcnYiOiIxZDBhMDIwYWNmNWM0YjZjNDk3OTg5ZGYxYWJmMGZiZDRlOGM4ZDYzIn0.jjLvB_KCooG_e3jUYWX66AkFQ_jwyRZYMXQk3lbFr7I");
+    getProfileData();
     super.onInit();
   }
 
-  void getProfileData({String? token}) async {
+  void getProfileData() async {
     try {
       isLoading(true);
 

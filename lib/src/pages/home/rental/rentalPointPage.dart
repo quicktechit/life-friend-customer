@@ -144,7 +144,7 @@ class _RentalPointPageState extends State<RentalPointPage> {
                       _buildDateTimeSection(),
 
                       // Round Trip or Hour Selection (Conditional)
-                      _buildTripOptionsSection(),
+                      // _buildTripOptionsSection(),
                     ],
                   ),
                 ),

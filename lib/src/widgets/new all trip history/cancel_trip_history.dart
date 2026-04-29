@@ -126,7 +126,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withAlpha(15),
                     blurRadius: 8,
                     offset: Offset(0, 2),
                   ),
@@ -140,7 +140,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.05),
+                      color: primaryColor.withAlpha(15),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16),
@@ -154,9 +154,9 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: primaryColor.withOpacity(0.1),
+                            color: primaryColor.withAlpha(50),
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: primaryColor.withOpacity(0.3), width: 1),
+                            border: Border.all(color: primaryColor.withAlpha(100), width: 1),
                           ),
                           child: Text(
                             'cancelled'.tr,
@@ -276,9 +276,9 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                               Container(
                                 padding: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.05),
+                                  color: Colors.green.withAlpha(15),
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.green.withOpacity(0.2)),
+                                  border: Border.all(color: Colors.green.withAlpha(70)),
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +324,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                                   child: Container(
                                     width: 30,
                                     height: 1,
-                                    color: primaryColor.withOpacity(0.3),
+                                    color: primaryColor.withAlpha(100),
                                   ),
                                 ),
                               ),
@@ -333,9 +333,9 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                               Container(
                                 padding: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.red.withOpacity(0.05),
+                                  color: Colors.red.withAlpha(15),
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.red.withOpacity(0.2)),
+                                  border: Border.all(color: Colors.red.withAlpha(70)),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -529,7 +529,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: primaryColor.withOpacity(0.3),
+                                  color: primaryColor.withAlpha(100),
                                   blurRadius: 4,
                                   offset: Offset(0, 2),
                                 ),
@@ -542,7 +542,7 @@ class _CancelTripHistoryState extends State<CancelTripHistory> {
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white.withOpacity(0.9),
+                                    color: Colors.white,
                                   ),
                                 ),
                                 SizedBox(width: 4),

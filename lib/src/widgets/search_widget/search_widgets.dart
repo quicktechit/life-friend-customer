@@ -311,39 +311,40 @@ class _SearchWidgetsState extends State<SearchWidgets> {
                                 ),
                               ),
                               // Add/Remove via point button
-                              Align(
-                                alignment: AlignmentGeometry.centerRight,
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      showViaLocation = !showViaLocation;
-                                    });
-                                  },
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Row(mainAxisAlignment: .end,
-                                    children: [
-                                      KText(text: "Via Point"),sizeW5,
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            3,
-                                          ),
-                                          color: showViaLocation
-                                              ? Colors.red
-                                              : Colors.green,
-                                        ),
-                                        child: Icon(
-                                          showViaLocation
-                                              ? Icons.remove
-                                              : Icons.add,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // Align(
+                              //   alignment: AlignmentGeometry.centerRight,
+                              //   child: InkWell(
+                              //     onTap: () {
+                              //       setState(() {
+                              //         showViaLocation = !showViaLocation;
+                              //       });
+                              //     },
+                              //     borderRadius: BorderRadius.circular(20),
+                              //     child: Row(mainAxisAlignment: .end,
+                              //       children: [
+                              //         KText(text: "Via Point"),sizeW5,
+                              //         Container(
+                              //           decoration: BoxDecoration(
+                              //             borderRadius: BorderRadius.circular(
+                              //               3,
+                              //             ),
+                              //             color: showViaLocation
+                              //                 ? Colors.red
+                              //                 : Colors.green,
+                              //           ),
+                              //           child: Icon(
+                              //             showViaLocation
+                              //                 ? Icons.remove
+                              //                 : Icons.add,
+                              //             color: Colors.white,
+                              //             size: 20,
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                              sizeH10,
                               sizeH10,
                               // Via location (conditional)
                               if (showViaLocation)

@@ -1,23 +1,16 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import '../../configs/appBaseUrls.dart';
 import '../../configs/appColors.dart';
-import '../../configs/appUtils.dart';
 import '../../configs/empty_box_widget.dart';
 import '../../configs/loader.dart';
 import '../../controllers/new all trip history/all_trip_history_controller.dart';
 import '../../models/new_all_trip_history_model.dart';
-import '../../pages/home/rental/tripHistoryPage.dart';
-import '../../pages/map_page/map_page_view.dart';
 import '../../pages/single history trip details/single_history_trip_details.dart';
-import '../text/kText.dart';
 
 class OngoingTripHistory extends StatefulWidget {
   const OngoingTripHistory({super.key});
@@ -176,7 +169,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withAlpha(15),
                             blurRadius: 8,
                             offset: Offset(0, 2),
                           ),
@@ -193,7 +186,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                               vertical: 12,
                             ),
                             decoration: BoxDecoration(
-                              color: ongoingColor.withOpacity(0.08),
+                              color: ongoingColor.withAlpha(20),
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(16),
                                 topRight: Radius.circular(16),
@@ -210,10 +203,10 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: ongoingColor.withOpacity(0.15),
+                                    color: ongoingColor.withAlpha(60),
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                      color: ongoingColor.withOpacity(0.4),
+                                      color: ongoingColor.withAlpha(120),
                                       width: 1,
                                     ),
                                   ),
@@ -255,12 +248,12 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                       vertical: 5,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Color(0xFF2196F3).withOpacity(0.1),
+                                      color: Color(0xFF2196F3).withAlpha(50),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
                                         color: Color(
                                           0xFF2196F3,
-                                        ).withOpacity(0.3),
+                                        ).withAlpha(100),
                                       ),
                                     ),
                                     child: Row(
@@ -388,14 +381,12 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                       Container(
                                         padding: EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: Colors.green.withOpacity(0.05),
+                                          color: Colors.green.withAlpha(15),
                                           borderRadius: BorderRadius.circular(
                                             8,
                                           ),
                                           border: Border.all(
-                                            color: Colors.green.withOpacity(
-                                              0.2,
-                                            ),
+                                            color: Colors.green.withAlpha(50),
                                           ),
                                         ),
                                         child: Row(
@@ -454,8 +445,8 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                           child: Container(
                                             width: 30,
                                             height: 1,
-                                            color: primaryColor.withOpacity(
-                                              0.3,
+                                            color: primaryColor.withAlpha(
+                                              100,
                                             ),
                                           ),
                                         ),
@@ -465,12 +456,12 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                       Container(
                                         padding: EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.05),
+                                          color: Colors.red.withAlpha(15),
                                           borderRadius: BorderRadius.circular(
                                             8,
                                           ),
                                           border: Border.all(
-                                            color: Colors.red.withOpacity(0.2),
+                                            color: Colors.red.withAlpha(50),
                                           ),
                                         ),
                                         child: Column(
@@ -889,7 +880,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: primaryColor.withOpacity(0.3),
+                                          color: primaryColor.withAlpha(100),
                                           blurRadius: 4,
                                           offset: Offset(0, 2),
                                         ),
@@ -902,9 +893,7 @@ class _OngoingTripHistory extends State<OngoingTripHistory> {
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors.white.withOpacity(
-                                              0.9,
-                                            ),
+                                            color: Colors.white
                                           ),
                                         ),
                                         SizedBox(width: 4),

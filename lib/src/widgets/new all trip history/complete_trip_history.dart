@@ -1,22 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:velocity_x/velocity_x.dart';
-
 import '../../configs/appBaseUrls.dart';
 import '../../configs/appColors.dart';
-import '../../configs/appUtils.dart';
 import '../../configs/empty_box_widget.dart';
 import '../../configs/loader.dart';
 import '../../controllers/new all trip history/all_trip_history_controller.dart';
 import '../../models/new_all_trip_history_model.dart';
-import '../../pages/home/rental/tripHistoryPage.dart';
-import '../../pages/map_page/map_page_view.dart';
 import '../../pages/single history trip details/single_history_trip_details.dart';
-import '../text/kText.dart';
 
 class CompleteTripHistory extends StatefulWidget {
   const CompleteTripHistory({super.key});

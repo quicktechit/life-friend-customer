@@ -45,7 +45,7 @@ class LocationController extends GetxController {
   var apiKey = "bkoi_029d49cbee063aac30a15bf669de3027eae2c84ca9f06666b7cebfb7b24c9bc3";
 
   Future<void> fetchPickSuggestions(String input) async {
-    if (input.length < 15) {
+    if (input.length < 4) {
       suggestionsPickUp.clear();
       return;
     }
@@ -77,7 +77,7 @@ class LocationController extends GetxController {
   }
 
   Future<void> fetchDropSuggestions(String input) async {
-    if (input.length < 15) {
+    if (input.length < 4) {
       suggestionsPickUp.clear();
       return;
     }
@@ -109,7 +109,7 @@ class LocationController extends GetxController {
   }
 
   Future<void> fetchViaSuggestions(String input) async {
-    if (input.length < 15) {
+    if (input.length < 4) {
       suggestionsPickUp.clear();
       return;
     }
