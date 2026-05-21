@@ -25,37 +25,11 @@ class OtpInputPage extends StatefulWidget {
 class _OtpInputPageState extends State<OtpInputPage> {
   final otpController = TextEditingController();
   final OTPController _controller = Get.put(OTPController());
-  Timer? _timer;
-  int _start = 120;
-
-  void startTimer() {
-    if (_timer != null) {
-      _timer!.cancel();
-      _timer = null;
-    } else {
-      _timer = Timer.periodic(
-        Duration(seconds: 1),
-        (Timer timer) => setState(() {
-          if (_start < 1) {
-            timer.cancel();
-          } else {
-            _start = _start - 1;
-          }
-        }),
-      );
-    }
-  }
 
   @override
   void initState() {
-    startTimer();
+    _controller.startTimer();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _timer!.cancel();
-    super.dispose();
   }
 
   @override
@@ -66,7 +40,8 @@ class _OtpInputPageState extends State<OtpInputPage> {
         child: Padding(
           padding: EdgeInsets.all(15.0.h),
           child: Obx(() {
-            return Column(crossAxisAlignment: CrossAxisAlignment.start,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 60.h),
                 // Image.asset('assets/images/otp.png', width: 500),
@@ -135,44 +110,46 @@ class _OtpInputPageState extends State<OtpInputPage> {
                       textAlign: TextAlign.center,
                     ),
                     sizeW5,
-                    _start == 0
-                        ? GestureDetector(
-                      onTap: () {
-                         _start = 120;
-                        startTimer();
-                        RegistrationController().registerMethod(
-                          customerPhone: widget.customerPhone,
-                        );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: KText(
-                          text: 'Click to Resend',
-                          color: primaryColor,fontSize: 13,
+                    Obx(() {
+                      return _controller.start.value == 0
+                          ? GestureDetector(
+                        onTap: () {
+                          _controller.restartTimer();
+
+                          RegistrationController().registerMethod(
+                            customerPhone: widget.customerPhone,
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: KText(
+                            text: 'Click to Resend',
+                            color: primaryColor,
+                            fontSize: 13,
+                          ),
                         ),
-                      ),
-                    )
-                        : Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        KText(
-                          text: '$_start',
-                          fontSize: 16,
-                          color: primaryColor,
-                          textAlign: TextAlign.center,
-                        ),
-                        sizeW5,
-                        KText(
-                          text: 'sec',
-                          fontSize: 16,
-                          color: primaryColor,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
+                      )
+                          : Row(
+                        children: [
+                          KText(
+                            text: '${_controller.start.value}',
+                            fontSize: 16,
+                            color: primaryColor,
+                            textAlign: TextAlign.center,
+                          ),
+                          sizeW5,
+                          KText(
+                            text: 'sec',
+                            fontSize: 16,
+                            color: primaryColor,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      );
+                    })
                   ],
-                ),   SizedBox(height: 5.h),
+                ),
+                SizedBox(height: 5.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,10 +162,9 @@ class _OtpInputPageState extends State<OtpInputPage> {
                     ),
                     Spacer(),
                   ],
-                ).onTap((){
+                ).onTap(() {
                   Get.back();
                 }),
-
               ],
             );
           }),

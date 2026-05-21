@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -11,7 +12,41 @@ import 'package:pickup_load_update/src/configs/local_storage.dart';
 
 class OTPController extends GetxController {
   late SharedPreferencesManager _prefsManager;
+
   var isLoading = false.obs;
+
+  /// Timer Variables
+  var start = 120.obs;
+  Timer? _timer;
+
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
+  }
+
+  /// Start Timer
+  void startTimer() {
+    _timer?.cancel();
+
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+          (timer) {
+        if (start.value > 0) {
+          start.value--;
+        } else {
+          timer.cancel();
+        }
+      },
+    );
+  }
+
+  /// Restart Timer
+  void restartTimer() {
+    start.value = 120;
+    startTimer();
+  }
 
   Future<void> oTPMethod({
     required String phone,
@@ -19,38 +54,63 @@ class OTPController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
+
       _prefsManager = await SharedPreferencesManager.getInstance();
 
       var response = await _loginRequest(phone, otp);
 
       var responseBody = json.decode(response.body);
+
       print('Response Body: $responseBody');
+
       if (responseBody != null) {
         if (responseBody['status'] == 'success' &&
             responseBody['token'] != null) {
-          await _prefsManager.setToken(apiToken: responseBody['token']);
+          await _prefsManager.setToken(
+            apiToken: responseBody['token'],
+          );
 
-          print('Token  SharedPreferencesManager ${responseBody['token']}');
-          Get.snackbar('Success', 'Verification Successfully',
-              colorText: white, backgroundColor: Colors.black);
+          print(
+            'Token SharedPreferencesManager ${responseBody['token']}',
+          );
+
+          Get.snackbar(
+            'Success',
+            'Verification Successfully',
+            colorText: white,
+            backgroundColor: Colors.black,
+          );
+
           Get.offAll(() => DashboardView());
         } else if (responseBody['status'] == 'failed') {
-          Get.snackbar('Sorry', '${responseBody['message']}',
-              colorText: white, backgroundColor: Colors.redAccent);
+          Get.snackbar(
+            'Sorry',
+            '${responseBody['message']}',
+            colorText: white,
+            backgroundColor: Colors.redAccent,
+          );
 
           print('Error: ${responseBody['message']}');
         }
       }
     } catch (e) {
       print('Error: $e');
-      Get.snackbar('Sorry', 'Verification Failed, try again',
-          colorText: white, backgroundColor: Colors.redAccent);
+
+      Get.snackbar(
+        'Sorry',
+        'Verification Failed, try again',
+        colorText: white,
+        backgroundColor: Colors.redAccent,
+      );
     } finally {
       isLoading.value = false;
     }
   }
 
-  Future<http.Response> _loginRequest(String phone, String otp) async {
+  Future<http.Response> _loginRequest(
+      String phone,
+      String otp,
+      ) async {
     final GetStorage _storage = GetStorage();
 
     String? fcmToken = _storage.read('fcm_token');
@@ -59,10 +119,13 @@ class OTPController extends GetxController {
       'POST',
       Uri.parse(Urls.otpSubmit),
     );
+
     request.fields['phone'] = phone;
     request.fields['verify'] = otp;
     request.fields['device_token'] = fcmToken ?? " ";
 
-    return await http.Response.fromStream(await request.send());
+    return await http.Response.fromStream(
+      await request.send(),
+    );
   }
 }
