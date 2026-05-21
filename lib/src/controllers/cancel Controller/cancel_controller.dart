@@ -109,7 +109,9 @@ class CancelController extends GetxController{
 
         print('Cancel Successful: $responseBody');
         kSnackBar(message: 'Cancel Successful', bgColor: Colors.green);
-       Get.offAll(()=>DashboardView());
+       // Get.offAll(()=>DashboardView());
+        Get.back();
+        Get.back();
       } else {
         print('Error: ${response.statusCode} - ${response.reasonPhrase}');
         print('Cancel Successful: $responseBody');

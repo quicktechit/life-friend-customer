@@ -381,11 +381,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: liveBiddingController
-                            .filteredLiveBidData
-                            .first
-                            .tripBids
-                            .length,
+                        itemCount: tripBids.length,
                         itemBuilder: (BuildContext context, int index) {
                           final data = tripBids[index];
                           final isSelected = selectedCarIndex == index;
@@ -710,7 +706,8 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                             selectedCarIndex! <
                                                 liveBiddingController
                                                     .filteredLiveBidData
-                                                    .length) {
+                                                    .first
+                                                    .tripBids.length) {
                                           var selectedBidData =
                                           liveBiddingController
                                               .filteredLiveBidData
@@ -750,6 +747,13 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                                           //     ),
                                           //   );
                                           // }
+                                        }else{
+                                          print(res);
+                                          print(selectedCarIndex);
+                                          print(liveBiddingController
+                                              .filteredLiveBidData
+                                              .first
+                                              .tripBids.length);
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
