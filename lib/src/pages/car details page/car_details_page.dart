@@ -6,7 +6,6 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/loader.dart';
 import 'package:pickup_load_update/src/controllers/car%20details%20controller/car_details_controller.dart';
 
-import '../../models/car_details_model.dart' as details;
 
 
 
@@ -24,7 +23,6 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
   final CarDetailsController _carDetailsController =
   Get.put(CarDetailsController());
 
-  final PageController _pageController = PageController();
   int _currentImageIndex = 0;
 
   @override
@@ -651,31 +649,5 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     return Divider(color: Colors.grey[200], height: 1);
   }
 
-  String _getTimeAgo(DateTime? dateTime) {
-    if (dateTime == null) return '';
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
 
-    if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
-    } else {
-      return 'Just now';
-    }
-  }
-
-  Widget _buildStarRating(int starCount) {
-    List<Widget> stars = List.generate(
-      5,
-          (index) => Icon(
-        index < starCount ? Icons.star : Icons.star_border,
-        color: Colors.amber,
-        size: 18,
-      ),
-    );
-    return Row(children: stars);
-  }
 }
