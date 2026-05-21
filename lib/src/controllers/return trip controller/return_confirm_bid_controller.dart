@@ -69,8 +69,8 @@ class ReturnTripConfirmController extends GetxController {
         if (responseData['status'] == 'success') {
             isLoading.value = false;
             LoaderUtils().hideGetLoading();
-            Get.snackbar('Congress', 'Trip Request Submit',
-                colorText: white, backgroundColor: Colors.black);
+            // Get.snackbar('Congress', 'Trip Request Submit',
+            //     colorText: white, backgroundColor: Colors.black);
           Get.offAll(DashboardView());
         } else {
           isLoading.value = false;

@@ -58,8 +58,8 @@ class RentalFormCheckController extends GetxController {
 
         if (responseBody != null) {
           if (responseBody['status'] == 'success') {
-            Get.snackbar('Success', 'Rental Trip Request Form Checkout',
-                colorText: white, backgroundColor: Colors.black);
+            // Get.snackbar('Success', 'Rental Trip Request Form Checkout',
+            //     colorText: white, backgroundColor: Colors.black);
           } else {
             throw 'Registration Failed: ${responseBody['message']}';
           }

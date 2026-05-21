@@ -374,8 +374,8 @@ print(id);
           final id = responseData['data']['id'];
           box.write("BUIDID", id.toString());
           LoaderUtils().hideGetLoading();
-          Get.snackbar('Congress', 'Trip Request Submit',
-              colorText: white, backgroundColor: Colors.black);
+          // Get.snackbar('Congress', 'Trip Request Submit',
+          //     colorText: white, backgroundColor: Colors.black);
           Get.put(RentalTripSubmitController()).liveBidTruckStart.value=true;
 
           box.write("liveBidTruckStart", true);
