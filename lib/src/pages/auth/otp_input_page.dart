@@ -28,7 +28,9 @@ class _OtpInputPageState extends State<OtpInputPage> {
 
   @override
   void initState() {
-    _controller.startTimer();
+    WidgetsBinding.instance.addPostFrameCallback((v) {
+      _controller.startTimer();
+    });
     super.initState();
   }
 
@@ -113,40 +115,40 @@ class _OtpInputPageState extends State<OtpInputPage> {
                     Obx(() {
                       return _controller.start.value == 0
                           ? GestureDetector(
-                        onTap: () {
-                          _controller.restartTimer();
+                              onTap: () {
+                                _controller.restartTimer();
 
-                          RegistrationController().registerMethod(
-                            customerPhone: widget.customerPhone,
-                          );
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: KText(
-                            text: 'Click to Resend',
-                            color: primaryColor,
-                            fontSize: 13,
-                          ),
-                        ),
-                      )
+                                RegistrationController().registerMethod(
+                                  customerPhone: widget.customerPhone,
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: KText(
+                                  text: 'Click to Resend',
+                                  color: primaryColor,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            )
                           : Row(
-                        children: [
-                          KText(
-                            text: '${_controller.start.value}',
-                            fontSize: 16,
-                            color: primaryColor,
-                            textAlign: TextAlign.center,
-                          ),
-                          sizeW5,
-                          KText(
-                            text: 'sec',
-                            fontSize: 16,
-                            color: primaryColor,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      );
-                    })
+                              children: [
+                                KText(
+                                  text: '${_controller.start.value}',
+                                  fontSize: 16,
+                                  color: primaryColor,
+                                  textAlign: TextAlign.center,
+                                ),
+                                sizeW5,
+                                KText(
+                                  text: 'sec',
+                                  fontSize: 16,
+                                  color: primaryColor,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            );
+                    }),
                   ],
                 ),
                 SizedBox(height: 5.h),
