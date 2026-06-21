@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -9,6 +10,7 @@ import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/base_client.dart';
 import 'package:pickup_load_update/src/configs/local_storage.dart';
+import 'package:pickup_load_update/src/models/trip_status_model.dart';
 
 class RentalTripSubmitController extends GetxController {
   var isLoading = false.obs;
@@ -18,11 +20,62 @@ class RentalTripSubmitController extends GetxController {
   var liveBidTruckStart = false.obs;
   var box = GetStorage();
 
+  Rxn<TripStatusModel> tripStatusData = Rxn<TripStatusModel>();
+  Timer? _timer;
+
   @override
   void onInit() {
     super.onInit();
     getLive();
+    getTripStatus();
+  }
 
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  Future<void> getTripStatus() async {
+    try {
+      SharedPreferencesManager _prefsManager =
+          await SharedPreferencesManager.getInstance();
+      String? token = _prefsManager.getToken();
+
+      if (token == null) return;
+
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      var response = await http.get(
+        Uri.parse(Urls.tripStatus),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        log('trip status chack');
+        var responseBody = jsonDecode(response.body);
+        if (responseBody['status'] == 'success') {
+          tripStatusData.value = TripStatusModel.fromJson(responseBody);
+
+          // Update liveBidStart and liveBidTruckStart based on API response
+          if (tripStatusData.value?.data != null &&
+              tripStatusData.value?.data?.isExpired == "False") {
+            // Assuming if trip_id exists and not expired, it's a live bid
+            // You might need to distinguish between Truck and Car/Ambulance here
+            // For now, let's use the API to drive the visibility
+            liveBidStart.value = true;
+            // liveBidTruckStart.value = true; // Need clarification if API distinguishes types
+          } else {
+            liveBidStart.value = false;
+            liveBidTruckStart.value = false;
+          }
+        }
+      }
+    } catch (e) {
+      log('Error fetching trip status: $e');
+    }
   }
 
   void getLive(){

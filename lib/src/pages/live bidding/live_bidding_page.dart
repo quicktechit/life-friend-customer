@@ -1,44 +1,36 @@
 import 'dart:async';
-import 'dart:developer';
-import 'package:flutter/widgets.dart';
 import 'package:marquee/marquee.dart';
 import 'package:pickup_load_update/src/configs/appUtils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pickup_load_update/src/components/bottom%20navbar/bottom.dart';
 import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/empty_box_widget.dart';
-import 'package:pickup_load_update/src/configs/loader.dart';
 import 'package:pickup_load_update/src/controllers/cancel%20Controller/cancel_controller.dart';
 import 'package:pickup_load_update/src/controllers/live%20bidding%20controller/live_bidding_controller.dart';
 import 'package:pickup_load_update/src/controllers/rental%20trip%20request%20controllers/rental_trip_req_submit_controller.dart';
 import 'package:pickup_load_update/src/controllers/single%20trip%20details%20controller/single_trip_details_controller.dart';
-import 'package:pickup_load_update/src/models/live_bidding_model.dart';
 import 'package:pickup_load_update/src/pages/car%20details%20page/car_details_page.dart';
-import 'package:pickup_load_update/src/pages/splash%20page/splash_page.dart';
-import 'package:pickup_load_update/src/widgets/button/primaryButton.dart';
-import 'package:pickup_load_update/src/widgets/car_live_bidding_widget.dart';
-import 'package:pickup_load_update/src/widgets/divider_widget.dart';
-import 'package:pickup_load_update/src/widgets/slider/slider_widget.dart';
 import '../../controllers/rental trip request controllers/rental_trip_bid_confirm_controller.dart';
 import '../../controllers/vehicles categoris/quick_tech_vehicles_controller.dart';
 import '../../widgets/live_terms_conditions/live_terms_conditions.dart';
-import 'bidding_confirm_screen.dart';
 
 class LiveBiddingPage extends StatefulWidget {
   final String createdAt;
   final String type;
   final bool isReset;
+  final int? remainingSeconds;
 
   const LiveBiddingPage({
     super.key,
     required this.createdAt,
-    required this.type, required this.isReset,
+    required this.type,
+    required this.isReset,
+    this.remainingSeconds,
   });
 
   @override
@@ -104,7 +96,10 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
       // 👉 put it HERE
       _rentalTripSubmitController.liveBidStart.value = true;
       box.write("liveBidStart", true);
-
+    } else if (widget.remainingSeconds != null) {
+      _remainingTime = Duration(
+        seconds: widget.remainingSeconds!,
+      );
     } else {
       _remainingTime = savedSeconds > 0
           ? Duration(seconds: savedSeconds)

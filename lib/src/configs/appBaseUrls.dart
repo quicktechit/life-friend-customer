@@ -58,4 +58,7 @@ class Urls {
   static String notificationDelete = "$baseUrl/customer/notification-history-clear";
   static String notificationListDelete =
       "$baseUrl/customer/notifcation/delete-all";
+
+
+  static String tripStatus = "$baseUrl/customer/latest-trip";
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +18,7 @@ import '../../widgets/slider/slider_widget.dart';
 import '../../widgets/text/kText.dart';
 import '../live bidding/live_bidding_page.dart';
 import '../live bidding/live_biding_page_truck.dart';
+import '../../models/trip_status_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,6 +40,7 @@ class _HomePageState extends State<HomePage>
   final TruckController truckController = Get.put(TruckController());
   var box = GetStorage();
 
+  Timer? _tripStatusTimer;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -45,9 +48,10 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
 
-    setState(() {
-      _rentalTripSubmitController.getLive();
-    });
+    _rentalTripSubmitController.getLive();
+    _rentalTripSubmitController.getTripStatus();
+
+    _startTripStatusTimer();
 
     _animationController = AnimationController(
       vsync: this,
@@ -59,8 +63,16 @@ class _HomePageState extends State<HomePage>
     _animationController.forward();
   }
 
+  void _startTripStatusTimer() {
+    _tripStatusTimer?.cancel();
+    _tripStatusTimer = Timer.periodic(Duration(seconds: 8), (timer) {
+      _rentalTripSubmitController.getTripStatus();
+    });
+  }
+
   @override
   void dispose() {
+    _tripStatusTimer?.cancel();
     _animationController.dispose();
     super.dispose();
   }
@@ -76,6 +88,7 @@ class _HomePageState extends State<HomePage>
         child: RefreshIndicator(
           onRefresh: () async {
             _rentalTripSubmitController.getLive();
+            _rentalTripSubmitController.getTripStatus();
             await Future.delayed(Duration(seconds: 1));
           },
           color: Color(0xFF3B82F6),
@@ -177,50 +190,36 @@ class _HomePageState extends State<HomePage>
 
   Widget _buildActiveTripBanner() {
     return Obx(() {
-      if (_rentalTripSubmitController.liveBidStart.value ||
-          _rentalTripSubmitController.liveBidTruckStart.value) {
-        log(_rentalTripSubmitController.liveBidTruckStart.value.toString());
-        log(_rentalTripSubmitController.liveBidStart.value.toString());
+      final tripStatus = _rentalTripSubmitController.tripStatusData.value;
+      final hasLiveTrip = tripStatus != null &&
+          tripStatus.data != null &&
+          tripStatus.data!.isExpired == "False";
+
+      if (hasLiveTrip) {
+        // Only show the Car/Ambulance banner as requested
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h),
           child: Column(
             children: [
-              if (_rentalTripSubmitController.liveBidTruckStart.value)
-                _buildTripBanner(
-                  title: "trip_progress".tr,
-                  subtitle: "view_track".tr,
-                  icon: Icons.local_shipping,
-                  iconColor: Color(0xFF3B82F6),
-                  gradient: [Color(0xFFE0F2FE), Color(0xFFBAE6FD)],
-                  onTap: () {
-                    Get.to(
-                      () => LiveBiddingPageTruck(
-                        createdAt: DateTime.now().toLocal().toString(),
-                        id: box.read("BUIDID").toString(),
-                      ),
-                    );
-                  },
-                ),
-              if (_rentalTripSubmitController.liveBidTruckStart.value &&
-                  _rentalTripSubmitController.liveBidStart.value)
-                SizedBox(height: 12.h),
-              if (_rentalTripSubmitController.liveBidStart.value)
-                _buildTripBanner(
-                  title: "trip_progress_car".tr,
-                  subtitle: "view_track".tr,
-                  icon: Icons.directions_car,
-                  iconColor: Color(0xFF10B981),
-                  gradient: [Color(0xFFD1FAE5), Color(0xFFA7F3D0)],
-                  onTap: () {
-                    Get.to(
-                      () => LiveBiddingPage(
-                        createdAt: DateTime.now().toString(),
-                        type: box.read("type"),
-                        isReset: false,
-                      ),
-                    );
-                  },
-                ),
+              _buildTripBanner(
+                title: "trip_progress_car".tr,
+                subtitle: "view_track".tr,
+                icon: Icons.directions_car,
+                iconColor: Color(0xFF10B981),
+                gradient: [Color(0xFFD1FAE5), Color(0xFFA7F3D0)],
+                onTap: () async {
+                  _tripStatusTimer?.cancel();
+                  await Get.to(
+                    () => LiveBiddingPage(
+                      createdAt: DateTime.now().toString(),
+                      type: box.read("type") ?? "",
+                      isReset: false,
+                      remainingSeconds: tripStatus.data!.remainingSeconds,
+                    ),
+                  );
+                  _startTripStatusTimer();
+                },
+              ),
             ],
           ),
         );

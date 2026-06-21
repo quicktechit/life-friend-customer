@@ -21,7 +21,7 @@ FlutterLocalNotificationsPlugin();
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
-  if (await Vibration.hasVibrator() ?? false) {
+  if (await Vibration.hasVibrator()) {
     Vibration.vibrate();
   }
 

@@ -21,11 +21,13 @@ import '../../components/bottom navbar/bottom.dart';
 class LiveBiddingPageTruck extends StatefulWidget {
   final String createdAt;
   final String id;
+  final int? remainingSeconds;
 
   const LiveBiddingPageTruck({
     super.key,
     required this.createdAt,
     required this.id,
+    this.remainingSeconds,
   });
 
   @override
@@ -61,10 +63,16 @@ class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
 
     log(widget.id);
 
-    // Initialize the remaining time based on a 1-hour countdown
-    _remainingTime =
-        Duration(hours: 1) -
-        DateTime.now().difference(DateTime.parse(widget.createdAt));
+    // Initialize the remaining time based on API values if provided, otherwise fallback to 1-hour countdown
+    if (widget.remainingSeconds != null) {
+      _remainingTime = Duration(
+        seconds: widget.remainingSeconds!,
+      );
+    } else {
+      _remainingTime =
+          Duration(hours: 1) -
+          DateTime.now().difference(DateTime.parse(widget.createdAt));
+    }
 
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2))
@@ -87,6 +95,11 @@ class _LiveBiddingPageTruckState extends State<LiveBiddingPageTruck>
   }
 
   void _loadStartTime() async {
+    if (widget.remainingSeconds != null) {
+      _timerStreamController.add(_remainingTime);
+      _startTimer();
+      return;
+    }
     final prefs = await SharedPreferences.getInstance();
     final storedStartTime = prefs.getInt('timer_start_time');
 
