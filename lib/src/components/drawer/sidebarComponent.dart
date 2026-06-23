@@ -238,8 +238,8 @@ class _ExampleSidebarXState extends State<ExampleSidebarX> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                _handleLogout();
+              onPressed: () async {
+               await _profileController.logout();
               },
               child: Text(
                 'yes'.tr,
@@ -253,10 +253,5 @@ class _ExampleSidebarXState extends State<ExampleSidebarX> {
     );
   }
 
-  void _handleLogout() {
-    SharedPreferencesManager.getInstance().then((manager) {
-      manager.clearAll();
-    });
-    Get.offAll(() => AuthStartPage());
-  }
+
 }

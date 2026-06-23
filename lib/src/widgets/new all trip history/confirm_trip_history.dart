@@ -905,63 +905,144 @@ class _AllConfirmTripHistoryState extends State<AllConfirmTripHistory> {
                                       );
                                     } else {
                                       Get.bottomSheet(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20),
+                                          ),
+                                        ),
                                         backgroundColor: Colors.white,
-                                        Column(
-                                          children: [
-                                            10.heightBox,
-                                            Text(
-                                              "cancel_reason".tr,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: textColor,
+                                        isScrollControlled: true,
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 10),
+                                          height: Get.height * 0.6,
+                                          child: Column(
+                                            children: [
+                                              10.heightBox,
+                                              Container(
+                                                width: 40,
+                                                height: 4,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey[300],
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
                                               ),
-                                            ),
-                                            20.heightBox,
-                                            Expanded(
-                                              child: ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: _controller
-                                                    .beforeCancelList
-                                                    .length,
-                                                itemBuilder: (context, index) {
-                                                  var items = _controller
-                                                      .beforeCancelList[index];
-                                                  return ListTile(
-                                                    leading: Icon(
-                                                      Icons.cancel,
-                                                      color: primaryColor,
-                                                    ),
-                                                    title: Text(
-                                                      items.title.toString(),
-                                                    ),
-                                                    onTap: () {
-                                                      Get.back();
-                                                      if (item.rentalRelationships !=
-                                                          null) {
-                                                        cancelController
-                                                            .cancelTripConfirmation(
-                                                              item.id
-                                                                  .toString(),
-                                                              items.id
-                                                                  .toString(),
-                                                            );
-                                                      } else {
-                                                        cancelController
-                                                            .cancelReturnTripConfirmation(
-                                                              item.id
-                                                                  .toString(),
-                                                              items.id
-                                                                  .toString(),
-                                                            );
-                                                      }
-                                                    },
-                                                  );
-                                                },
+                                              20.heightBox,
+                                              Text(
+                                                "cancel_reason".tr,
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: textColor,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ).box.p8.make(),
+                                              20.heightBox,
+                                              Expanded(
+                                                child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: _controller
+                                                      .afterCancelList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    var items = _controller
+                                                        .afterCancelList[index];
+                                                    return Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 12),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey[50],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        border: Border.all(
+                                                            color: Colors
+                                                                .grey.shade200),
+                                                      ),
+                                                      child: ListTile(
+                                                        leading: Container(
+                                                          padding:
+                                                              EdgeInsets.all(8),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.red
+                                                                .withOpacity(0.1),
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          child: Icon(
+                                                            Icons
+                                                                .cancel_outlined,
+                                                            color: Colors.red,
+                                                            size: 20,
+                                                          ),
+                                                        ),
+                                                        title: Text(
+                                                          items.title
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: textColor,
+                                                          ),
+                                                        ),
+                                                        trailing: Icon(
+                                                          Icons.chevron_right,
+                                                          color: Colors.grey,
+                                                          size: 20,
+                                                        ),
+                                                        onTap: () {
+                                                          Get.back();
+                                                          if (item.rentalRelationships !=
+                                                              null) {
+                                                            cancelController
+                                                                .cancelTripConfirmation(
+                                                                    item.id
+                                                                        .toString(),
+                                                                    items.id
+                                                                        .toString());
+                                                          } else {
+                                                            cancelController
+                                                                .cancelReturnTripConfirmation(
+                                                                    item.id
+                                                                        .toString(),
+                                                                    items.id
+                                                                        .toString());
+                                                          }
+                                                        },
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                              20.heightBox,
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Colors.grey[200],
+                                                    foregroundColor: textColor,
+                                                    elevation: 0,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(12),
+                                                    ),
+                                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                                  ),
+                                                  onPressed: () => Get.back(),
+                                                  child: Text(
+                                                    "close".tr,
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              10.heightBox,
+                                            ],
+                                          ),
+                                        ),
                                       );
                                     }
                                   },

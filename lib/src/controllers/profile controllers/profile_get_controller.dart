@@ -5,11 +5,14 @@ import 'package:pickup_load_update/src/configs/appBaseUrls.dart';
 import 'package:pickup_load_update/src/configs/base_client.dart';
 import 'package:pickup_load_update/src/models/customer_model.dart';
 
+import '../../configs/local_storage.dart';
+import '../../pages/auth/AuthStartVerifyPage.dart';
+
 class ProfileController extends GetxController {
   var isLoading = false.obs;
   var customerData = CustomerDatas().obs;
   var customerName = ''.obs;
-  var profileModel=CustomerProfileModel().obs;
+  var profileModel = CustomerProfileModel().obs;
   var email = ''.obs;
   var id = ''.obs;
   var phone = ''.obs;
@@ -30,13 +33,11 @@ class ProfileController extends GetxController {
       isLoading(true);
 
       dynamic responseBody = await BaseClient.handleResponse(
-        await BaseClient.getRequest(
-            api: Urls.profile()),
+        await BaseClient.getRequest(api: Urls.profile()),
       );
 
       if (responseBody != null) {
-         profileModel.value =
-            CustomerProfileModel.fromJson(responseBody);
+        profileModel.value = CustomerProfileModel.fromJson(responseBody);
         id.value = profileModel.value.data?.id.toString() ?? '';
         customerName.value = profileModel.value.data?.name ?? '';
         email.value = profileModel.value.data?.email ?? '';
@@ -53,6 +54,23 @@ class ProfileController extends GetxController {
       log("Error: $e");
     } finally {
       isLoading(false);
+    }
+  }
+
+  Future<void> logout() async {
+    dynamic response = await BaseClient.handleResponse(
+      await BaseClient.postRequest(api: Urls.logOut),
+    );
+
+    if (response!=null) {
+      SharedPreferencesManager.getInstance().then((manager) {
+        manager.clearAll();
+      });
+      Get.back();
+      Get.offAll(() => AuthStartPage());
+      print("Logout success: $response");
+    } else {
+      print("Logout failed: $response");
     }
   }
 }

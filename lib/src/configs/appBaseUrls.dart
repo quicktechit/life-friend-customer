@@ -61,4 +61,5 @@ class Urls {
 
 
   static String tripStatus = "$baseUrl/customer/latest-trip";
+  static String logOut = "$baseUrl/customer/logout";
 }

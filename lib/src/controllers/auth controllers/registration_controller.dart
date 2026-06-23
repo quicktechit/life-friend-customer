@@ -7,6 +7,8 @@ import 'package:pickup_load_update/src/configs/appColors.dart';
 import 'package:pickup_load_update/src/configs/base_client.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../configs/local_storage.dart';
+import '../../pages/auth/AuthStartVerifyPage.dart';
 import '../../pages/auth/otp_input_page.dart';
 import 'otp_submit_controllers.dart';
 
@@ -14,20 +16,11 @@ class RegistrationController extends GetxController {
   var isLoading = false.obs;
   RxBool isChecked = RxBool(false);
   var otp = 'otp store'.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  Future<void> registerMethod({
-    required String customerPhone,
-  }) async {
+  Future<void> registerMethod({required String customerPhone}) async {
     try {
       isLoading.value = true;
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(Urls.registration),
-      );
+      var request = http.MultipartRequest('POST', Uri.parse(Urls.registration));
 
       request.fields['phone'] = customerPhone;
 
@@ -39,22 +32,28 @@ class RegistrationController extends GetxController {
         if (responseBody != null) {
           log(responseBody['message']);
           if (responseBody['status'] == 'success') {
-            if(customerPhone!='01641634899'){
-
-              Get.to(() => OtpInputPage(
-                  customerPhone:customerPhone ));
-            }else{
-              Get.put(OTPController()).oTPMethod(phone:customerPhone , otp: responseBody['otp'].toString());
+            if (customerPhone != '01641634899') {
+              Get.to(() => OtpInputPage(customerPhone: customerPhone));
+            } else {
+              Get.put(OTPController()).oTPMethod(
+                phone: customerPhone,
+                otp: responseBody['otp'].toString(),
+              );
               return;
             }
             print(responseBody);
-           otp.value= responseBody['otp'];
-           debugPrint('OTP Gettng :: ${otp.value}');
+            otp.value = responseBody['otp'];
+            debugPrint('OTP Gettng :: ${otp.value}');
+
             /// show snakbar msg
             // Get.snackbar('Success OTP: ${otp.value}', 'OTP Send Successfully',
-            Get.snackbar('Success', 'OTP Send Successfully',
-                duration: Duration(seconds: 10),
-                colorText: white, backgroundColor: Colors.black);
+            Get.snackbar(
+              'Success',
+              'OTP Send Successfully',
+              duration: Duration(seconds: 10),
+              colorText: white,
+              backgroundColor: Colors.black,
+            );
             VxToast.show(Get.context!, msg: 'OTP Send Successfully');
           } else {
             throw 'Registration Failed: ${responseBody['message']}';
@@ -71,4 +70,6 @@ class RegistrationController extends GetxController {
       isLoading.value = false;
     }
   }
+
+
 }
