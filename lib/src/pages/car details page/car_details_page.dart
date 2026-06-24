@@ -107,7 +107,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
             final vehicle = biddata?.getvehicle;
             final brand = biddata?.getBrand;
             final car = biddata?.getCar;
-            final partner = biddata?.getpartner;
+            final driver = biddata?.getDriver;
             final images = _getCarImages();
 
             return Column(
@@ -321,7 +321,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                       _buildSectionHeader('Vehicle Information', Icons.info_outline),
                       SizedBox(height: 16),
                       _buildInfoRow(Icons.directions_car_filled, 'Brand', brand?.name ?? 'N/A',
-                          subtitle: brand?.vehicleCategory ?? ''),
+                          subtitle: brand?.vehicleCategory.toString() ?? ''),
                       _buildDivider(),
                       _buildInfoRow(Icons.model_training, 'Model', car?.model ?? 'N/A',
                           subtitle: 'Model Year: ${car?.modelYear ?? 'N/A'}'),
@@ -330,7 +330,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                       _buildDivider(),
                       _buildInfoRow(Icons.location_on, 'Metro', vehicle?.metro ?? 'N/A'),
                       _buildDivider(),
-                      _buildInfoRow(Icons.category, 'Metro Type', data?.metrotype?.metroSubName ?? 'N/A'),
+                      _buildInfoRow(Icons.category, 'Metro Type', vehicle?.getMetroType?.metroSubName ?? 'N/A'),
                       _buildDivider(),
                       _buildInfoRow(Icons.color_lens, 'Vehicle Color', vehicle?.vehicleColor ?? 'N/A'),
                       _buildDivider(),
@@ -343,8 +343,8 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
 
                 SizedBox(height: 16),
 
-                // Partner/Driver Info Card
-                if (partner != null)
+                // Driver Info Card
+                if (driver != null)
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 16),
                     padding: EdgeInsets.all(20),
@@ -370,10 +370,10 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                             CircleAvatar(
                               radius: 35,
                               backgroundColor: Colors.grey[200],
-                              backgroundImage: partner.image != null
-                                  ? NetworkImage(Urls.getImageURL(endPoint: partner.image!))
+                              backgroundImage: driver.image != null
+                                  ? NetworkImage(Urls.getImageURL(endPoint: driver.image!))
                                   : null,
-                              child: partner.image == null
+                              child: driver.image == null
                                   ? Icon(Icons.person, size: 40, color: Colors.grey[600])
                                   : null,
                             ),
@@ -383,7 +383,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    partner.name ?? 'N/A',
+                                    driver.name ?? 'N/A',
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -395,7 +395,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                                       Icon(Icons.transgender, size: 16, color: Colors.grey[600]),
                                       SizedBox(width: 8),
                                       Text(
-                                        partner.gender ?? 'N/A',
+                                        driver.gender ?? 'N/A',
                                         style: TextStyle(
                                           color: Colors.grey[600],
                                           fontSize: 14,
@@ -407,12 +407,12 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                                   Row(
                                     children: [
                                       Icon(Icons.verified, size: 16,
-                                          color: partner.status == '1' ? Colors.green : Colors.grey),
+                                          color: driver.status == 'approved' ? Colors.green : Colors.grey),
                                       SizedBox(width: 8),
                                       Text(
-                                        partner.status == '1' ? 'Verified' : 'Not Verified',
+                                        driver.status??'',
                                         style: TextStyle(
-                                          color: partner.status == '1' ? Colors.green : Colors.grey[600],
+                                          color: driver.status == 'approved' ? Colors.green : Colors.grey[600],
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
                                         ),

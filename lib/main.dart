@@ -77,9 +77,7 @@ Future<void> main() async {
   );
 
   /// Get FCM Token
-  String? token = await FirebaseMessaging.instance.getToken();
-  debugPrint("FCM Token: $token");
-  GetStorage().write('fcm_token', token);
+
 
   runApp(App());
 }

@@ -120,6 +120,22 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
 
     _timerStreamController = StreamController<Duration>();
     _startCountdownTimer();
+
+    if (_remainingTime <= Duration.zero) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _handleTimeUp();
+      });
+    }
+  }
+
+  void _handleTimeUp() {
+    if (_countdownTimer.isActive) {
+      _countdownTimer.cancel();
+    }
+    _rentalTripSubmitController.liveBidStart.value = false;
+    box.write("liveBidStart", false);
+    _timerStreamController.add(Duration.zero);
+    Get.offAll(() => DashboardView());
   }
 
   void _startCountdownTimer() {
@@ -130,11 +146,12 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
           box.write('remainingTime', _remainingTime.inSeconds);
         });
         _timerStreamController.add(_remainingTime);
+
+        if (_remainingTime <= Duration.zero) {
+          _handleTimeUp();
+        }
       } else {
-        _rentalTripSubmitController.liveBidStart.value = false;
-        box.write("liveBidStart", false);
-        _countdownTimer.cancel();
-        _timerStreamController.add(Duration.zero);
+        _handleTimeUp();
       }
     });
   }
@@ -362,8 +379,7 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
                           liveBiddingController
                               .filteredLiveBidData
                               .first
-                              .tripBids ??
-                          [];
+                              .tripBids;
 
                       if (tripBids.isEmpty) {
                         return EmptyBoxWidget(
