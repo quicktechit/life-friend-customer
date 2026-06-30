@@ -53,7 +53,6 @@ class _LiveBiddingPageState extends State<LiveBiddingPage>
   var isOther = false;
 
   late StreamController<Duration> _timerStreamController;
-  late Timer _timer;
 
   final LiveBiddingController liveBiddingController = Get.put(
     LiveBiddingController(),
